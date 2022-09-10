@@ -9,7 +9,7 @@ object JoySaveMainForm: TJoySaveMainForm
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poScreenCenter
-  SessionProperties = 'cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinTimer.Value;tsDebug.TabVisible;cbSaveTagsInfo.Checked'
+  SessionProperties = 'cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;cbSaveTagsInfo.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinTimer.Value;tsDebug.TabVisible;cbAllTagsToName.Checked'
   ShowHint = True
   object PageControlMain: TPageControl
     Left = 0
@@ -728,6 +728,19 @@ object JoySaveMainForm: TJoySaveMainForm
         BorderSpacing.Top = 8
         Caption = 'Сохранять в txt теги поста'
         TabOrder = 16
+      end
+      object cbAllTagsToName: TCheckBox
+        AnchorSideLeft.Control = cbPackToCBZ
+        AnchorSideTop.Control = cbSaveTagsInfo
+        AnchorSideTop.Side = asrBottom
+        Left = 294
+        Height = 19
+        Hint = 'Писать ВСЕ теги в имя файла. Будет длинно. '#13#10'Теги разделяются знаком =.'#13#10'Символы \/:*?<>" заменяюися на @.'
+        Top = 263
+        Width = 195
+        BorderSpacing.Top = 8
+        Caption = 'Писать ВСЕ (!) теги в имя файла'
+        TabOrder = 17
       end
     end
     object tsDebug: TTabSheet

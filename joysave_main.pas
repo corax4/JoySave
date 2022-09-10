@@ -74,6 +74,7 @@ type
         cbAltFileName: TCheckBox;
         cbRenameToAltName: TCheckBox;
         cbSaveTagsInfo: TCheckBox;
+        cbAllTagsToName: TCheckBox;
         Edit_Cookie: TEdit;
         Edit_ProxyPass: TEdit;
         Edit_proxyUser: TEdit;
@@ -174,6 +175,7 @@ var
     HThread: THTTPThread;
     username: String = '';
     AppLoaded: Boolean = False;
+    TagList: TStringList;
 
 implementation
 
@@ -652,6 +654,7 @@ begin
         end;
     RowStr.Free;
     HThread := THTTPThread.Create(False);
+    TagList := TStringList.Create;
 end;
 
 procedure TJoySaveMainForm.IniPropStorage1RestoreProperties(Sender: TObject);
@@ -776,6 +779,7 @@ begin
                         end;
                 end;
             end;
+            TagList.Clear;
 
             if SpinPage.Value > SpinEnd.Value then
             begin
@@ -972,6 +976,8 @@ var
     filename, SrvFName, ids: String;
     p: SizeInt;
     ImgFromComment: Boolean;
+    i: Integer;
+    s1, s2: string;
 begin
     sURL := Memo_Imgs.Lines.Strings[ImgNow - 1];
     sURL := RightStr(sURL, Length(sURL) - 8);
@@ -1001,7 +1007,39 @@ begin
             filename := filename + IfThen(ImgFromComment, '_1_', '_0_');
             while length(ids) < 9 do
                 ids := '0' + ids;
-            filename := filename + ids + '__' + ReplaceStr(SrvFName, '-' + GetImgID(SrvFName) + '.', '.');
+            if not cbAllTagsToName.Checked then
+                filename := filename + ids + '__' + ReplaceStr(SrvFName, '-' + GetImgID(SrvFName) + '.', '.')
+            else
+            begin
+                filename := filename + ids + '__';
+                p := -1;
+                s1 := LeftStr(Memo_Imgs.Lines.Strings[ImgNow - 1], 8);
+                for i := 0 to TagList.Count - 1 do
+                begin
+                    s2 := LeftStr(TagList.Strings[i], 8);
+                    if s1 = s2 then
+                    begin
+                        p := i;
+                        Break;
+                    end;
+                end;
+                if p > -1 then
+                begin
+                    s2 := RightStr(TagList.Strings[p], Length(TagList.Strings[p]) - 8);
+                    s2 := ReplaceStr(s2, ' :: ', '=');
+                    s2 := ReplaceStr(s2, '\', '@');
+                    s2 := ReplaceStr(s2, '/', '@');
+                    s2 := ReplaceStr(s2, ':', '@');
+                    s2 := ReplaceStr(s2, '*', '@');
+                    s2 := ReplaceStr(s2, '?', '@');
+                    s2 := ReplaceStr(s2, '|', '@');
+                    s2 := ReplaceStr(s2, '<', '@');
+                    s2 := ReplaceStr(s2, '>', '@');
+                    s2 := ReplaceStr(s2, '"', '@');
+                    p := RPos('.', SrvFName);
+                    filename := filename + s2 + RightStr(SrvFName, Length(SrvFName) - p + 1);
+                end;
+            end;
             Edit_FileName.Text := filename;
         end;
         if cbAltFileName.Checked and cbRenameToAltName.Checked then
@@ -1030,7 +1068,7 @@ var
     StrSt: TStringStream;
     tags: String;
 begin
-    if not cbSaveTagsInfo.Checked then exit;
+
     s := Memo_Doc.Text;
     tags := '';
     p := posex('class="taglist">', s);
@@ -1053,12 +1091,14 @@ begin
     end;
     if tags <> '' then
     begin
+        TagList.Append(HexStr(GetPostNum, 8) + tags);
         tags := tags + LineEnding;
         StrSt := TStringStream.Create(tags);
         TagFileName := IntToStr(GetPostNum);
         while length(TagFileName) < 8 do
             TagFileName := '0' + TagFileName;
-        StrSt.SaveToFile(DirNow + TagFileName + '.txt');
+        if cbSaveTagsInfo.Checked then
+            StrSt.SaveToFile(DirNow + TagFileName + '.txt');
         StrSt.Free;
     end;
 end;
