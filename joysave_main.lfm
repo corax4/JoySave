@@ -1,37 +1,38 @@
-object Form1: TForm1
+object JoySaveMainForm: TJoySaveMainForm
   Left = 1215
   Height = 417
   Top = 208
-  Width = 589
-  Caption = 'JoySave 0.26'
+  Width = 611
+  Caption = 'JoySave 0.27'
   ClientHeight = 417
-  ClientWidth = 589
+  ClientWidth = 611
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poScreenCenter
-  SessionProperties = 'cbDelAfterPack.Checked;cbPackToCBZ.Checked;Edit_append.Text;Edit_proxyHost.Text;Edit_ProxyPort.Text;Edit_URL.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinRow.Value;SpinTimer.Value;tsDebug.TabVisible;SpinPageCount.Value'
-  LCLVersion = '2.2.2.0'
-  object PageControl1: TPageControl
+  SessionProperties = 'cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinTimer.Value;tsDebug.TabVisible;cbSaveTagsInfo.Checked'
+  ShowHint = True
+  object PageControlMain: TPageControl
     Left = 0
     Height = 394
     Top = 0
-    Width = 589
+    Width = 611
     ActivePage = tsMain
     Align = alClient
     TabIndex = 0
     TabOrder = 0
     object tsMain: TTabSheet
-      Caption = 'Main'
+      Caption = 'Главная'
       ClientHeight = 366
-      ClientWidth = 581
+      ClientWidth = 603
       object Edit_URL: TEdit
         AnchorSideTop.Control = btnStart
         AnchorSideRight.Control = tsMain
         AnchorSideRight.Side = asrBottom
         Left = 144
         Height = 23
+        Hint = 'Это только смотреть'
         Top = 5
-        Width = 430
+        Width = 452
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Right = 7
         ParentFont = False
@@ -46,8 +47,9 @@ object Form1: TForm1
         AnchorSideRight.Side = asrBottom
         Left = 144
         Height = 23
+        Hint = 'Это только смотреть'
         Top = 55
-        Width = 430
+        Width = 452
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 2
         BorderSpacing.Right = 7
@@ -62,8 +64,8 @@ object Form1: TForm1
         Left = 101
         Height = 15
         Top = 9
-        Width = 21
-        Caption = 'URL'
+        Width = 26
+        Caption = 'Сайт'
         ParentColor = False
         ParentFont = False
       end
@@ -74,8 +76,9 @@ object Form1: TForm1
         AnchorSideRight.Side = asrBottom
         Left = 144
         Height = 23
+        Hint = 'Это только смотреть'
         Top = 30
-        Width = 430
+        Width = 452
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 2
         BorderSpacing.Right = 7
@@ -90,8 +93,8 @@ object Form1: TForm1
         Left = 101
         Height = 15
         Top = 34
-        Width = 24
-        Caption = 'Path'
+        Width = 26
+        Caption = 'Путь'
         ParentColor = False
         ParentFont = False
       end
@@ -99,8 +102,9 @@ object Form1: TForm1
         AnchorSideLeft.Control = lblBegin
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
-        Left = 172
+        Left = 174
         Height = 23
+        Hint = 'Начальная страница. Берется из таблицы'
         Top = 82
         Width = 80
         BorderSpacing.Left = 12
@@ -113,8 +117,9 @@ object Form1: TForm1
         AnchorSideLeft.Control = lblPage
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
-        Left = 444
+        Left = 474
         Height = 23
+        Hint = 'Страница, которая сейчас обрабатыватся'
         Top = 82
         Width = 81
         BorderSpacing.Left = 12
@@ -127,21 +132,22 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
         AnchorSideTop.Side = asrCenter
-        Left = 406
+        Left = 422
         Height = 15
         Top = 86
-        Width = 26
+        Width = 40
         BorderSpacing.Left = 20
-        Caption = 'Page'
+        Caption = 'Сейчас'
         ParentColor = False
         ParentFont = False
       end
       object btnStart: TButton
         Left = 5
         Height = 28
+        Hint = 'Сначала заполни таблицу!'
         Top = 5
         Width = 75
-        Caption = 'Start'
+        Caption = 'Старт'
         OnClick = btnStartClick
         ParentFont = False
         TabOrder = 5
@@ -154,7 +160,7 @@ object Form1: TForm1
         Top = 41
         Width = 75
         BorderSpacing.Top = 8
-        Caption = 'Stop'
+        Caption = 'Стоп'
         OnClick = btnStopClick
         ParentFont = False
         TabOrder = 6
@@ -164,12 +170,12 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
         AnchorSideTop.Side = asrCenter
-        Left = 130
+        Left = 120
         Height = 15
         Top = 86
-        Width = 30
+        Width = 42
         BorderSpacing.Left = 20
-        Caption = 'Begin'
+        Caption = 'Начало'
         ParentColor = False
         ParentFont = False
       end
@@ -177,8 +183,9 @@ object Form1: TForm1
         AnchorSideLeft.Control = lblEnd
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
-        Left = 304
+        Left = 320
         Height = 23
+        Hint = 'Последняя страница. Берется из таблицы'
         Top = 82
         Width = 82
         BorderSpacing.Left = 12
@@ -191,12 +198,12 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
         AnchorSideTop.Side = asrCenter
-        Left = 272
+        Left = 274
         Height = 15
         Top = 86
-        Width = 20
+        Width = 34
         BorderSpacing.Left = 20
-        Caption = 'End'
+        Caption = 'Конец'
         ParentColor = False
         ParentFont = False
       end
@@ -210,30 +217,32 @@ object Form1: TForm1
         AnchorSideBottom.Side = asrBottom
         Left = 0
         Height = 257
+        Hint = 'Адрес - с Джоя. Например, https://joyreactor.cc/tag/котэ'#13#10'Начало - первая страница тега для сохранения.'#13#10'Конец - последняя страница для сохранения. 0 для самой актуальной.'#13#10'Папка - имя папки куда сохранять. Можно с подпапками через "/".'#13#10'Если поле Адрес или Начало или Конец пустое - строка пропускается.'#13#10'Если поле Папка пустое - сохраняется в папку с номером строки.'
         Top = 109
-        Width = 581
+        Width = 603
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoFillColumns = True
         BorderSpacing.Top = 4
+        CellHintPriority = chpAll
         Columns = <        
           item
             MaxSize = 0
-            Title.Caption = 'URL'
-            Width = 256
+            Title.Caption = 'Адрес'
+            Width = 257
           end        
           item
             SizePriority = 0
-            Title.Caption = 'Begin'
+            Title.Caption = 'Начало'
             Width = 80
           end        
           item
             SizePriority = 0
-            Title.Caption = 'End'
+            Title.Caption = 'Конец'
             Width = 80
           end        
           item
             SizePriority = 0
-            Title.Caption = 'Folder'
+            Title.Caption = 'Папка'
             Width = 133
           end>
         DefaultColWidth = 32
@@ -244,13 +253,13 @@ object Form1: TForm1
         TabOrder = 8
         ColWidths = (
           32
-          256
+          257
           80
           80
           133
         )
         Cells = (
-          12
+          15
           0
           0
           'No'
@@ -286,7 +295,16 @@ object Form1: TForm1
           '09'
           1
           0
-          'URL'
+          'Адрес'
+          2
+          0
+          'Начало'
+          3
+          0
+          'Конец'
+          4
+          0
+          'Папка'
         )
       end
       object Label20: TLabel
@@ -295,8 +313,8 @@ object Form1: TForm1
         Left = 101
         Height = 15
         Top = 59
-        Width = 18
-        Caption = 'File'
+        Width = 29
+        Caption = 'Файл'
         ParentColor = False
         ParentFont = False
       end
@@ -305,14 +323,16 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Edit_FileName
         AnchorSideTop.Side = asrBottom
-        Left = 46
+        Left = 36
         Height = 23
+        Hint = 'Номер строки из таблицы с которой сейчас работаем'
         Top = 82
         Width = 64
         BorderSpacing.Left = 12
         BorderSpacing.Top = 4
         MaxValue = 49
         MinValue = -1
+        OnChange = SpinRowChange
         ParentFont = False
         TabOrder = 9
         Value = -1
@@ -323,22 +343,23 @@ object Form1: TForm1
         Left = 11
         Height = 15
         Top = 86
-        Width = 23
-        Caption = 'Row'
+        Width = 13
+        Caption = '№'
         ParentColor = False
         ParentFont = False
       end
     end
     object tsSettings: TTabSheet
-      Caption = 'Settings'
+      Caption = 'Настройки'
       ClientHeight = 366
-      ClientWidth = 581
+      ClientWidth = 603
       object Edit_proxyHost: TEdit
         AnchorSideTop.Control = lblPHost
         AnchorSideTop.Side = asrBottom
         Left = 7
         Height = 23
-        Top = 178
+        Hint = 'Можно как IP так и именем'
+        Top = 95
         Width = 127
         BorderSpacing.Top = 6
         ParentFont = False
@@ -350,7 +371,8 @@ object Form1: TForm1
         AnchorSideTop.Control = Edit_proxyHost
         Left = 146
         Height = 23
-        Top = 178
+        Hint = 'Цифрами'
+        Top = 95
         Width = 128
         BorderSpacing.Left = 12
         ParentFont = False
@@ -361,10 +383,10 @@ object Form1: TForm1
         AnchorSideTop.Side = asrBottom
         Left = 7
         Height = 15
-        Top = 157
-        Width = 56
+        Top = 74
+        Width = 76
         BorderSpacing.Top = 8
-        Caption = 'Proxy host'
+        Caption = 'Прокси адрес'
         ParentColor = False
         ParentFont = False
       end
@@ -374,10 +396,10 @@ object Form1: TForm1
         AnchorSideTop.Control = lblPHost
         Left = 147
         Height = 15
-        Top = 157
-        Width = 55
+        Top = 74
+        Width = 71
         BorderSpacing.Left = 13
-        Caption = 'Proxy port'
+        Caption = 'Прокси порт'
         ParentColor = False
         ParentFont = False
       end
@@ -386,23 +408,24 @@ object Form1: TForm1
         AnchorSideTop.Side = asrCenter
         Left = 7
         Height = 15
-        Top = 130
-        Width = 33
-        Caption = 'Timer:'
+        Top = 47
+        Width = 62
+        Caption = 'Таймер, мс'
         ParentColor = False
         ParentFont = False
       end
       object SpinTimer: TSpinEdit
         AnchorSideLeft.Control = lblTimer
         AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Memo_Cookies
+        AnchorSideTop.Control = Edit_Cookie
         AnchorSideTop.Side = asrBottom
-        Left = 52
+        Left = 81
         Height = 23
-        Top = 126
+        Hint = 'Минимальная задержка между запросами на сайт. '#13#10'Не ставь мало, а то заблокируют!'
+        Top = 43
         Width = 75
         BorderSpacing.Left = 12
-        BorderSpacing.Top = 8
+        BorderSpacing.Top = 12
         MaxValue = 5000
         MinValue = 10
         OnChange = SpinTimerChange
@@ -410,28 +433,14 @@ object Form1: TForm1
         TabOrder = 2
         Value = 300
       end
-      object Memo_Cookies: TMemo
-        AnchorSideLeft.Control = tsSettings
-        AnchorSideRight.Control = tsSettings
-        AnchorSideRight.Side = asrBottom
-        Left = 7
-        Height = 91
-        Top = 27
-        Width = 567
-        Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Left = 7
-        BorderSpacing.Right = 7
-        ParentFont = False
-        ScrollBars = ssAutoBoth
-        TabOrder = 3
-        WordWrap = False
-      end
-      object Label22: TLabel
+      object lblCookie: TLabel
+        AnchorSideTop.Control = Edit_Cookie
+        AnchorSideTop.Side = asrCenter
         Left = 7
         Height = 15
-        Top = 5
-        Width = 42
-        Caption = 'Cookies'
+        Top = 12
+        Width = 128
+        Caption = 'Куки:  joyreactor_sess3='
         ParentColor = False
         ParentFont = False
       end
@@ -440,11 +449,12 @@ object Form1: TForm1
         AnchorSideTop.Side = asrBottom
         Left = 7
         Height = 23
-        Top = 228
+        Hint = 'ВНИМАНИЕ!!! Хранится в открытом виде!'
+        Top = 145
         Width = 127
         BorderSpacing.Top = 6
         ParentFont = False
-        TabOrder = 4
+        TabOrder = 3
       end
       object Edit_ProxyPass: TEdit
         AnchorSideLeft.Control = Edit_proxyHost
@@ -452,23 +462,24 @@ object Form1: TForm1
         AnchorSideTop.Control = Edit_proxyUser
         Left = 146
         Height = 23
-        Top = 228
+        Hint = 'ВНИМАНИЕ!!! Хранится в открытом виде!'
+        Top = 145
         Width = 128
         BorderSpacing.Left = 12
         EchoMode = emPassword
         ParentFont = False
         PasswordChar = '*'
-        TabOrder = 5
+        TabOrder = 4
       end
       object lblPUser: TLabel
         AnchorSideTop.Control = Edit_proxyHost
         AnchorSideTop.Side = asrBottom
         Left = 7
         Height = 15
-        Top = 207
-        Width = 55
+        Top = 124
+        Width = 78
         BorderSpacing.Top = 6
-        Caption = 'Proxy user'
+        Caption = 'Прокси логин'
         ParentColor = False
         ParentFont = False
       end
@@ -478,24 +489,25 @@ object Form1: TForm1
         AnchorSideTop.Control = lblPUser
         Left = 147
         Height = 15
-        Top = 207
-        Width = 56
+        Top = 124
+        Width = 85
         BorderSpacing.Left = 13
-        Caption = 'Proxy pass'
+        Caption = 'Прокси пароль'
         ParentColor = False
         ParentFont = False
       end
       object rgProxy: TRadioGroup
-        AnchorSideLeft.Control = Edit_ProxyPass
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = lblPHost
-        Left = 294
+        AnchorSideLeft.Control = Edit_proxyUser
+        AnchorSideTop.Control = Edit_proxyUser
+        AnchorSideTop.Side = asrBottom
+        Left = 7
         Height = 136
-        Top = 157
+        Hint = 'Под Linux еще не починил HTTP. Но SOCKS работает'
+        Top = 176
         Width = 97
         AutoFill = True
-        BorderSpacing.Left = 20
-        Caption = 'Proxy'
+        BorderSpacing.Top = 8
+        Caption = 'Прокси'
         ChildSizing.LeftRightSpacing = 6
         ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
         ChildSizing.EnlargeVertical = crsHomogenousChildResize
@@ -507,49 +519,56 @@ object Form1: TForm1
         ClientWidth = 93
         ItemIndex = 0
         Items.Strings = (
-          'None'
+          'Нет'
           'HTTP'
           'SOCKS4'
           'SOCKS5'
         )
-        TabOrder = 6
+        TabOrder = 5
       end
       object cbPackToCBZ: TCheckBox
-        AnchorSideTop.Control = Edit_ProxyPass
+        AnchorSideLeft.Control = Edit_ProxyPort
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = SpinPageCount
         AnchorSideTop.Side = asrBottom
-        Left = 7
+        Left = 294
         Height = 19
-        Top = 259
-        Width = 84
+        Hint = 'Скачанная полностью подпапка запакуется в CBZ (по сути, в ZIP)'
+        Top = 74
+        Width = 105
+        BorderSpacing.Left = 20
         BorderSpacing.Top = 8
-        Caption = 'Pack to CBZ'
-        TabOrder = 7
+        Caption = 'Паковать в CBZ'
+        TabOrder = 6
       end
       object cbDelAfterPack: TCheckBox
+        AnchorSideLeft.Control = cbPackToCBZ
         AnchorSideTop.Control = cbPackToCBZ
         AnchorSideTop.Side = asrBottom
-        Left = 7
+        Left = 294
         Height = 19
-        Top = 286
-        Width = 126
+        Hint = 'Когда папка упакована в CBZ - удалить её'
+        Top = 101
+        Width = 188
         BorderSpacing.Top = 8
-        Caption = 'Del folder after Pack'
-        TabOrder = 8
+        Caption = 'Удалять папку после упаковки'
+        TabOrder = 7
       end
       object SpinPageCount: TSpinEdit
         AnchorSideLeft.Control = lblPages
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinTimer
-        Left = 237
+        Left = 279
         Height = 23
-        Top = 126
-        Width = 75
+        Hint = 'Сколько страниц с Джоя сохранится в одной подпапке. '#13#10'Не хочешь разделять - поставь МНОГО (2 млрд, например)'
+        Top = 43
+        Width = 89
         BorderSpacing.Left = 12
         MaxValue = 2147483647
         MinValue = 1
         OnChange = SpinTimerChange
         ParentFont = False
-        TabOrder = 9
+        TabOrder = 8
         Value = 50
       end
       object lblPages: TLabel
@@ -557,19 +576,164 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinPageCount
         AnchorSideTop.Side = asrCenter
-        Left = 147
+        Left = 176
         Height = 15
-        Top = 130
-        Width = 78
+        Top = 47
+        Width = 91
         BorderSpacing.Left = 20
-        Caption = 'Pages in folder'
+        Caption = 'Страниц в папке'
         ParentColor = False
+      end
+      object Edit_Cookie: TEdit
+        AnchorSideLeft.Control = lblCookie
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideRight.Control = tsSettings
+        AnchorSideRight.Side = asrBottom
+        Left = 143
+        Height = 23
+        Hint = 'Копируем из расширения в браузере (например, расширение Cookie-Editor)'
+        Top = 8
+        Width = 450
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 8
+        BorderSpacing.Right = 10
+        TabOrder = 9
+      end
+      object cbSaveFromComments: TCheckBox
+        AnchorSideLeft.Control = cbPackToCBZ
+        AnchorSideTop.Control = cbDelAfterPack
+        AnchorSideTop.Side = asrBottom
+        Left = 294
+        Height = 19
+        Hint = 'Много мусора, но могут быть ценнейшие шедевры!'
+        Top = 128
+        Width = 210
+        BorderSpacing.Top = 8
+        Caption = 'Качать картинки из комментариев'
+        TabOrder = 10
+      end
+      object gbAnimation: TGroupBox
+        AnchorSideLeft.Control = rgProxy
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = rgProxy
+        Left = 120
+        Height = 136
+        Top = 176
+        Width = 97
+        BorderSpacing.Left = 16
+        Caption = 'Анимация'
+        ClientHeight = 116
+        ClientWidth = 93
+        TabOrder = 11
+        object cbAniGif: TCheckBox
+          Left = 8
+          Height = 19
+          Hint = 'Формат самый тяжелый, но качественный'
+          Top = 8
+          Width = 37
+          Caption = 'GIF'
+          Checked = True
+          State = cbChecked
+          TabOrder = 0
+        end
+        object cbAniWebm: TCheckBox
+          Left = 8
+          Height = 19
+          Hint = 'Сильно меньше весит чем GIF, но качество сильно хуже'
+          Top = 40
+          Width = 55
+          Caption = 'WebM'
+          TabOrder = 1
+        end
+        object cbAniMp4: TCheckBox
+          Left = 8
+          Height = 19
+          Hint = 'По качеству как WebM, но больше весит'
+          Top = 72
+          Width = 44
+          Caption = 'MP4'
+          TabOrder = 2
+        end
+      end
+      object cbSaveGifIfNoWebm: TCheckBox
+        AnchorSideLeft.Control = cbDelAfterPack
+        AnchorSideTop.Control = cbSaveFromComments
+        AnchorSideTop.Side = asrBottom
+        Left = 294
+        Height = 19
+        Hint = 'Это применяется если галочка GIF отключена'
+        Top = 155
+        Width = 194
+        BorderSpacing.Top = 8
+        Caption = 'Качать GIF если нет Webm/MP4'
+        Checked = True
+        State = cbChecked
+        TabOrder = 12
+      end
+      object cbSaveJpgPng: TCheckBox
+        AnchorSideLeft.Control = SpinPageCount
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = SpinPageCount
+        AnchorSideTop.Side = asrCenter
+        Left = 388
+        Height = 19
+        Hint = 'Отключи если хочешь качать только анимацию'
+        Top = 45
+        Width = 122
+        BorderSpacing.Left = 20
+        Caption = 'Качать JPEG и PNG'
+        Checked = True
+        State = cbChecked
+        TabOrder = 13
+      end
+      object cbAltFileName: TCheckBox
+        AnchorSideLeft.Control = cbDelAfterPack
+        AnchorSideTop.Control = cbSaveGifIfNoWebm
+        AnchorSideTop.Side = asrBottom
+        Left = 294
+        Height = 19
+        Hint = '<номер поста>_<1 если картинка из комментов, иначе 0>_<ID>__имя файла как на сервере без ID'
+        Top = 182
+        Width = 119
+        BorderSpacing.Top = 8
+        Caption = 'Альт. имя файлов'
+        Checked = True
+        State = cbChecked
+        TabOrder = 14
+      end
+      object cbRenameToAltName: TCheckBox
+        AnchorSideLeft.Control = cbDelAfterPack
+        AnchorSideTop.Control = cbAltFileName
+        AnchorSideTop.Side = asrBottom
+        Left = 294
+        Height = 19
+        Hint = 'Если включен альт имена, но найдена картинка с именем как на сервере - переименовать в альт имя'
+        Top = 209
+        Width = 186
+        BorderSpacing.Top = 8
+        Caption = 'Переименовывать в альт. имя'
+        Checked = True
+        State = cbChecked
+        TabOrder = 15
+      end
+      object cbSaveTagsInfo: TCheckBox
+        AnchorSideLeft.Control = cbPackToCBZ
+        AnchorSideTop.Control = cbRenameToAltName
+        AnchorSideTop.Side = asrBottom
+        Left = 294
+        Height = 19
+        Hint = 'Сохранять все теги в <номер поста>.txt для каждого поста'
+        Top = 236
+        Width = 164
+        BorderSpacing.Top = 8
+        Caption = 'Сохранять в txt теги поста'
+        TabOrder = 16
       end
     end
     object tsDebug: TTabSheet
       Caption = 'Debug'
       ClientHeight = 366
-      ClientWidth = 581
+      ClientWidth = 603
       TabVisible = False
       object Memo_Doc: TMemo
         Left = 21
@@ -722,34 +886,44 @@ object Form1: TForm1
         TabOrder = 9
         Visible = False
       end
+      object Memo_SG_Save: TMemo
+        Left = 280
+        Height = 56
+        Top = 272
+        Width = 216
+        ParentFont = False
+        ScrollBars = ssAutoBoth
+        TabOrder = 10
+        WordWrap = False
+      end
     end
     object tsHelp: TTabSheet
-      Caption = 'Help'
+      Caption = 'Помощь'
       ClientHeight = 366
-      ClientWidth = 581
+      ClientWidth = 603
       object MemoHelp: TMemo
         Left = 0
         Height = 366
         Top = 0
-        Width = 581
+        Width = 603
         Align = alClient
         Lines.Strings = (
           '        === ИСПОЛЬЗОВАНИЕ ==='
           ''
-          '  На вкладке Main таблица заполняется ссылками для сохранения. Копируем адрес в строке адреса браузера, вставляем в клетку URL.'
-          '  Какой адрес копировать? Например, переходим в раздел "Котэ". Копируем адрес. Получится https://joyreactor.cc/tag/котэ. Хотим больше котиков? Переключаем на "Бездну" и копируем. Получается https://joyreactor.cc/tag/котэ/all. Или может только лучших котиков? Переключаем на "Лучшее" и получаем https://joyreactor.cc/tag/котэ/best. Вобщем, понятно. Но если копируете не на последней странице, то в адресе будет номер страницы, например https://joyreactor.cc/tag/котэ/best/2698. Вот его не надо. Номер подставляться будет автоматически, так что номер и последний "/" сотрите.'
+          '  На вкладке "Главная" заполняем таблицу ссылками для сохранения. Копируем адрес в строке адреса браузера, вставляем в клетку "Адрес".'
+          '  Какой адрес копировать? Например, переходим в раздел "Котэ". Копируем адрес. Получится https://joyreactor.cc/tag/котэ. Хотим больше котиков? Переключаем на "Бездну" и копируем - получается https://joyreactor.cc/tag/котэ/all. Или может только лучших котиков? Переключаем на "Лучшее" и получаем https://joyreactor.cc/tag/котэ/best. Вобщем, понятно.'
           '  '
-          '  В столбцах Begin и End вводим номера страниц с какого по какое сохранять. Столбец Folder не обязательный. Это название папки, куда будет сохраняться картинки. Т.е. если введем "SuperCat", то будет сохраняться в папке Pic/SuperCat (папка Pic не настраивается, она прописана прямо в проге). Можно указать и подпаки, например SuperCat/Best. Но если используете подпапки, то создайте папки и подпапки заранее для такой строки! Используйте "/" для указания подпапок (не "\"). Если оставить пустым, то будет имя папки будет номер из столбца No.'
+          '  В столбцах "Начало" и "Конец" вводим номера страниц с какого по какое сохранять. Если "Конец" - 0, то в это поле автоматически запишется актуальный последний номер страницы для этого тега. Столбец "Папка" не обязательный. Это название папки, куда будет сохраняться картинки. Т.е. если введем "SuperCat", то будет сохраняться в папке Pic/SuperCat (папка Pic не настраивается, она прописана прямо в проге). Можно указать и подпаки, например SuperCat/Best. Если оставить пустым, то будет имя папки будет номер из столбца No.'
           '  '
-          '  Строки можно пропускать. Если пустое хоть одно из полей [URL, Begin, End], то строка пропускается. Это удобно, чтоб держать записи на будущее. Например, скачали котиков до страницы 200. Очистим поле Begin, и у нас сохранен адрес и последняя скачанная страница. Когда накопятся новые картинки, то в поле Begin поставим те же 200, а в End уже, например, 250.'
+          '  Строки можно пропускать. Если пустое хоть одно из полей [Адрес, Начало, Конец], то строка пропускается. Это удобно, чтоб держать записи на будущее. Например, скачали котиков до страницы 200. Очистим поле "Начало", и у нас сохранен адрес и последняя скачанная страница. Когда накопятся новые картинки, то в поле "Начало" поставим те же 200, а в "Конец" уже, например, 250.'
           '  '
           '  Крутилки на главной странице без надобности не трогайте, они сами меняются. Но опишу что они делают. '
           '  '
           '        === Описание работы ==='
           '  '
-          '  Row определяет какой строкой сейчас занимаемся. -1 значит что пока никакой не занимаемся. Наращивается автоматически пока всю таблицу не пройдет. Когда переключается на новую строку, то заполняет крутилки Begin, End, Page и создает нужные папки. Begin и End копируются из соответствующих столбцов таблицы. И начинает перебираться Page, т.е. страницу. На странице анализируются все посты (как правило, 10 постов на странице, но в некоторых случаях бывает меньше). Количество обработанных постов в статус-баре (внизу) (Post:). Там же внизу слева показывает работает сейчас прога (Run) или выключена (Stop). Когда получены ссылки на картинки со всех постов на странице (в т.ч. из комментариев, так как часто в комментариях прячую "продолжения"), то начинают закачиваться картинки (Img в статус-баре). Картинки закачиваются полноразмерные (при наличии). Общее количество сохраненных картинок в статус-баре в Tot. Если картинка уже скачана - заново качаться не будет, что позволяет экономить трафик если запустить закачку заново (чтоб докачать всё что не скачалось из-за каких-нибудь сбоев). Как закачаются все картинки со страницы - переходим на следующую страницу. Если закончились страницы - на следующую строку. На панели задач отображается номер "работающей" строки, а так же какая страница обрабатывается, и какая будет последней.'
+          '  "Строка" определяет какой строкой сейчас занимаемся. -1 значит что пока никакой не занимаемся. Наращивается автоматически пока всю таблицу не пройдет. Когда переключается на новую строку, то заполняет крутилки "Начало", "Конец", "Сейчас". "Начало" и "Конец" копируются из соответствующих столбцов таблицы. И начинает перебираться "Сейчас", т.е. страницу. На странице анализируются все посты (как правило, 10 постов на странице, но в некоторых случаях бывает меньше). Количество обработанных постов в статус-баре (внизу) (Пост:). Там же внизу слева показывает работает сейчас прога (Кач / Пак) или выключена (Стоп). Если в настройках указан правильный Куки, то рядом с Кач будет логин с Джоя в квадратных скобках. Когда получены ссылки на картинки со всех постов на странице (в т.ч. из комментариев, если это включено), то начинают закачиваться картинки (Файл в статус-баре). Картинки закачиваются полноразмерные (при наличии). Общее количество сохраненных картинок в статус-баре в Всего. Если картинка уже скачана - заново качаться не будет, что позволяет экономить трафик если запустить закачку заново (чтоб докачать всё что не скачалось из-за каких-нибудь сбоев). Как закачаются все картинки со страницы - переходим на следующую страницу. Если закончились страницы - на следующую строку. На панели задач отображается номер "работающей" строки, а так же какая страница обрабатывается, и какая будет последней.'
           '  '
-          '  Картинки группируются по подпапкам. По умолчанию - по 50 страниц. Т.е. например Pic/SuperCat/0, Pic/SuperCat/50 и т.д. Количество страниц для группировки меняется в настройках, но об этом позже. Еще (если включено в настройках), завершенные подпапки пакуются в CBZ. Зачем? Для удобства :) Когда картинок очень много, то это вызывает неудобства. Поиск становится медленным, потому что очень много файлов, растет база данных индексирования, миллионы картинок долго копировать на флешки/винты, ну и прочие неудобства. Короче, мне нравится когда упакованы в более-менее крупные файлы :) Опционально после упаковки удаляется папка.'
+          '  Картинки группируются по подпапкам. По умолчанию - по 50 страниц. Т.е. например Pic/SuperCat/0, Pic/SuperCat/50 и т.д. Изменить можно в настройках. Еще (если включено в настройках), завершенные подпапки пакуются в CBZ. Зачем? Для удобства :) Когда картинок очень много, то это вызывает неудобства. Поиск становится медленным, потому что очень много файлов, растет база данных индексирования, миллионы картинок долго копировать на флешки/винты, ну и прочие неудобства. Короче, мне нравится когда упакованы в более-менее крупные файлы :) Опционально после упаковки удаляется папка.'
           '  '
           '        === Что есть CBZ ? ==='
           #9#9
@@ -757,24 +931,15 @@ object Form1: TForm1
           '  '
           '        === Настройки ==='
           #9#9
-          '  На вкладке Settings имеем некоторые настройки. В первую очередь - куки. Нужно чтоб качать картинки из-под своего аккаунта. Это нужно, например, для доступа туда, куда только зарегистрированные пользователи могут ходить. Например, в избранное. Куки можно взять из расширений браузера. Например, для Хрома - Cookie Editor. Достаточно только joyreactor_sess3. Т.е. должна быть строка joyreactor_sess3=значение_этого_поля.'
-          '  '
-          '  Далее крутилка Timer. Это сколько миллисекунд минимум задержки между запросами (получением постов, скачиванием картинок и прочее). Не ставь мало - заблокируют.'
-          '  '
-          '  Pages in folder - сколько страниц группируется в подпапку. На мой вкус 50 - оптимально. Больше за раз посмотреть напряжно.'
-          '  '
-          '  Настройки прокси. Думаю, там и так всё понятно. Логин и пароль не запоминаются, ибо сложно их надежно зашифровать. Если пользуетесь прокси, то логин/пароль придется вводить после каждого запуска проги.'
-          '  '
-          '  Pack to CBZ - пакует завершенную подпапку в CBZ (Спасибо, Кэп!).'
-          '  Del folder after Pack - удалить подпапку которую только что запаковали. '
+          '  Там для всего есть всплывающие подсказки. '
           '  '
           '        === Прочее ==='
           #9#9
-          '  Под Windows при запуске сохраняет рядом с прогой пару DLL. Это так и надо, чтоб HTTPS работал. '
-          '  '
-          '  Прога при закрытии сохраняет таблицу в файл list.csv рядом с самой прогой, куки в cookies.txt, а всё остальное - в JoySave.ini. Имеет смысл закрыть прогу после заполнения таблицы, чтоб сохранила всё. А то вдруг глюканет и вылетит без сохранения!'
+          '  Под Windows при запуске сохраняет рядом с прогой пару DLL. Это так и надо, чтоб HTTPS работал. Во всех системах создается JoySave.ini - там храняться все настройки. '
           '  '
           '  Исходники проги - в самой проге! Запустите прогу с ключем sources ("JoySave.exe sources") - и исходики будут сохранены в файл JoySave_sources.zip рядом с прогой. Там же будет архив openssl-1.0.2u-i386-win32.zip с библиотеками SSL для Windows (взяты отсюда: https://github.com/IndySockets/OpenSSL-Binaries). Сделано в Lazarus с использованием библиотеки synapse. Для правильной компиляции из исходников нужна версия с FPC не ниже 3.2.0 (т.е. Lazarus 2.0.10 или новее, или CodeTyphon 6.60 или новее).'
+          '  '
+          '  Можно запустить прогу с ключем start - тогда сразу начнет качать. Полезно для запуска из планировщиков.'
           ''
           ''
           '        === MIT License ==='
@@ -812,24 +977,25 @@ object Form1: TForm1
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
+    Hint = 'Когда качает ("Кач" в первом поле), то при правильном куки будет показан Кач [твой логин]'
     Top = 394
-    Width = 589
+    Width = 611
     Panels = <    
       item
-        Text = 'Stop'
-        Width = 100
+        Text = 'Стоп'
+        Width = 140
       end    
       item
-        Text = 'Tot: 0'
-        Width = 100
+        Text = 'Всего: 0'
+        Width = 140
       end    
       item
-        Text = 'Post: 0'
-        Width = 100
+        Text = 'Пост: 0'
+        Width = 140
       end    
       item
-        Text = 'Img: 0'
-        Width = 100
+        Text = 'Файл: 0'
+        Width = 140
       end>
     SimplePanel = False
   end
@@ -840,6 +1006,9 @@ object Form1: TForm1
   end
   object IniPropStorage1: TIniPropStorage
     StoredValues = <>
+    IniFileName = 'JoySave.ini'
+    OnSavingProperties = IniPropStorage1SavingProperties
+    OnRestoringProperties = IniPropStorage1RestoringProperties
     OnRestoreProperties = IniPropStorage1RestoreProperties
     Left = 400
     Top = 341

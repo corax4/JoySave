@@ -4,24 +4,28 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="43">
+    <Units Count="32">
       <Unit0>
         <Filename Value="JoySave.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos Y="21"/>
-        <UsageCount Value="165"/>
+        <CursorPos Y="16"/>
+        <UsageCount Value="201"/>
       </Unit0>
       <Unit1>
         <Filename Value="joysave_main.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form1"/>
+        <ComponentName Value="JoySaveMainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="450"/>
-        <CursorPos X="44" Y="472"/>
-        <UsageCount Value="165"/>
+        <TopLine Value="801"/>
+        <CursorPos X="15" Y="822"/>
+        <FoldState Value=" T3lB0311162 pjUq906114e"/>
+        <UsageCount Value="201"/>
+        <Bookmarks Count="1">
+          <Item0 Y="728" ID="1"/>
+        </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -30,375 +34,329 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="137"/>
         <CursorPos X="12" Y="158"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="4"/>
       </Unit2>
       <Unit3>
-        <Filename Value="C:\lazarus\components\lazutils\fileutil.pas"/>
-        <UnitName Value="FileUtil"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="100"/>
-        <CursorPos X="10" Y="58"/>
-        <UsageCount Value="8"/>
-      </Unit3>
-      <Unit4>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\win64\windows.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="22"/>
-        <UsageCount Value="10"/>
-      </Unit4>
-      <Unit5>
+        <UsageCount Value="4"/>
+      </Unit3>
+      <Unit4>
         <Filename Value="C:\lazarus\fpc\3.0.4\source\rtl\win\wininc\base.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1080"/>
-        <UsageCount Value="10"/>
-      </Unit5>
-      <Unit6>
-        <Filename Value="C:\lazarus\components\lazutils\lazfileutils.pas"/>
-        <UnitName Value="LazFileUtils"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="86"/>
-        <CursorPos X="10" Y="127"/>
-        <UsageCount Value="8"/>
-      </Unit6>
-      <Unit7>
+        <UsageCount Value="4"/>
+      </Unit4>
+      <Unit5>
         <Filename Value="C:\lazarus\my\lNet\lib\lnetssl.pp"/>
         <UnitName Value="lNetSSL"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="486"/>
         <CursorPos X="7" Y="512"/>
-        <UsageCount Value="10"/>
-      </Unit7>
-      <Unit8>
-        <Filename Value="C:\lazarus\my\synapse\source\lib\httpsend.pas"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="29" Y="728"/>
-        <UsageCount Value="2"/>
-      </Unit8>
-      <Unit9>
-        <Filename Value="C:\lazarus\my\synapse\source\lib\blcksock.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="137"/>
-        <CursorPos X="3" Y="147"/>
-        <UsageCount Value="1"/>
-      </Unit9>
-      <Unit10>
-        <Filename Value="C:\lazarus\lcl\grids.pas"/>
-        <UnitName Value="Grids"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="9869"/>
-        <CursorPos Y="9895"/>
-        <UsageCount Value="1"/>
-      </Unit10>
-      <Unit11>
-        <Filename Value="C:\lazarus\lcl\include\spinedit.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="223"/>
-        <CursorPos Y="264"/>
-        <UsageCount Value="1"/>
-      </Unit11>
-      <Unit12>
-        <Filename Value="C:\lazarus\my\uniqueinstance-1.0\simpleipcwrapper.pas"/>
-        <UnitName Value="SimpleIPCWrapper"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="1"/>
-      </Unit12>
-      <Unit13>
-        <Filename Value="F:\Share\MK\FPGA\marzoul\riffa-master\fpga\xilinx\kc705\KC705_Gen1x8If64 — копия\prj\KC705_Gen1x8If64.hw\KC705_Gen1x8If64.lpr"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="1"/>
-      </Unit13>
-      <Unit14>
-        <Filename Value="C:\lazarus\My\bgrabitmap\bgratypewriter.pas"/>
-        <UnitName Value="BGRATypewriter"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="584"/>
-        <CursorPos X="91" Y="598"/>
-        <UsageCount Value="1"/>
-      </Unit14>
-      <Unit15>
+        <UsageCount Value="4"/>
+      </Unit5>
+      <Unit6>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\paszlib\src\zipper.pp"/>
         <UnitName Value="Zipper"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="353"/>
-        <CursorPos X="14" Y="394"/>
-        <UsageCount Value="11"/>
-      </Unit15>
-      <Unit16>
-        <Filename Value="C:\lazarus\components\lazutils\winlazfileutils.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="102"/>
-        <CursorPos X="3" Y="104"/>
-        <UsageCount Value="6"/>
-      </Unit16>
-      <Unit17>
+        <TopLine Value="952"/>
+        <CursorPos X="30" Y="993"/>
+        <UsageCount Value="3"/>
+      </Unit6>
+      <Unit7>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\paszlib\src\zstream.pp"/>
         <UnitName Value="ZStream"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13"/>
-        <UsageCount Value="10"/>
-      </Unit17>
-      <Unit18>
+        <UsageCount Value="4"/>
+      </Unit7>
+      <Unit8>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\diskh.inc"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="13" Y="22"/>
-        <UsageCount Value="6"/>
-      </Unit18>
-      <Unit19>
+        <CursorPos X="10" Y="29"/>
+        <UsageCount Value="3"/>
+      </Unit8>
+      <Unit9>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\disk.inc"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="3" Y="62"/>
-        <UsageCount Value="6"/>
-      </Unit19>
-      <Unit20>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\systemh.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1333"/>
-        <CursorPos X="11" Y="1374"/>
-        <UsageCount Value="6"/>
-      </Unit20>
-      <Unit21>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\system.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1937"/>
-        <CursorPos X="3" Y="1977"/>
-        <UsageCount Value="6"/>
-      </Unit21>
-      <Unit22>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\sysdir.inc"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="11" Y="42"/>
-        <UsageCount Value="6"/>
-      </Unit22>
-      <Unit23>
-        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\sysos.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="298"/>
-        <CursorPos X="13" Y="339"/>
-        <UsageCount Value="6"/>
-      </Unit23>
-      <Unit24>
-        <Filename Value="C:\lazarus\ext\synapse\ssl_openssl.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="81"/>
-        <UsageCount Value="14"/>
-      </Unit24>
-      <Unit25>
-        <Filename Value="C:\lazarus\ext\synapse\ssl_openssl_lib.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="101"/>
-        <UsageCount Value="14"/>
-      </Unit25>
-      <Unit26>
+        <TopLine Value="73"/>
+        <CursorPos X="12" Y="78"/>
+        <UsageCount Value="3"/>
+      </Unit9>
+      <Unit10>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\ssl_openssl.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="160"/>
         <CursorPos Y="186"/>
-        <UsageCount Value="9"/>
-      </Unit26>
-      <Unit27>
+        <UsageCount Value="3"/>
+      </Unit10>
+      <Unit11>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\ssl_openssl_lib.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="120"/>
         <CursorPos X="90" Y="160"/>
-        <UsageCount Value="9"/>
-      </Unit27>
-      <Unit28>
+        <UsageCount Value="3"/>
+      </Unit11>
+      <Unit12>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\httpsend.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="338"/>
         <CursorPos Y="358"/>
-        <UsageCount Value="9"/>
-      </Unit28>
-      <Unit29>
+        <UsageCount Value="3"/>
+      </Unit12>
+      <Unit13>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\synautil.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1286"/>
         <CursorPos Y="1310"/>
-        <UsageCount Value="9"/>
-      </Unit29>
-      <Unit30>
+        <UsageCount Value="3"/>
+      </Unit13>
+      <Unit14>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\synacode.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="457"/>
         <CursorPos Y="480"/>
-        <UsageCount Value="9"/>
-      </Unit30>
-      <Unit31>
+        <UsageCount Value="3"/>
+      </Unit14>
+      <Unit15>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\synaip.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="119"/>
         <CursorPos Y="150"/>
-        <UsageCount Value="9"/>
-      </Unit31>
-      <Unit32>
+        <UsageCount Value="3"/>
+      </Unit15>
+      <Unit16>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\blcksock.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3746"/>
         <CursorPos Y="3779"/>
-        <UsageCount Value="9"/>
-      </Unit32>
-      <Unit33>
+        <UsageCount Value="3"/>
+      </Unit16>
+      <Unit17>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\ssfpc.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="760"/>
         <CursorPos Y="800"/>
-        <UsageCount Value="9"/>
-      </Unit33>
-      <Unit34>
+        <UsageCount Value="3"/>
+      </Unit17>
+      <Unit18>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\synafpc.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="82"/>
         <CursorPos Y="110"/>
-        <UsageCount Value="9"/>
-      </Unit34>
-      <Unit35>
+        <UsageCount Value="3"/>
+      </Unit18>
+      <Unit19>
         <Filename Value="C:\lazarus\lcl\interfaces\customdrawn\customdrawnwinapi_win.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1224"/>
         <CursorPos X="23" Y="1248"/>
-        <UsageCount Value="10"/>
-      </Unit35>
-      <Unit36>
+        <UsageCount Value="4"/>
+      </Unit19>
+      <Unit20>
         <Filename Value="C:\lazarus\lcl\interfaces\customdrawn\customdrawnwinapi.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1488"/>
         <CursorPos X="23" Y="1512"/>
-        <UsageCount Value="10"/>
-      </Unit36>
-      <Unit37>
+        <UsageCount Value="4"/>
+      </Unit20>
+      <Unit21>
         <Filename Value="D:\usr\lib\lazarus\2.2.0\ide\lazarus.pp"/>
         <UnitName Value="Lazarus"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="116"/>
         <CursorPos Y="167"/>
-        <UsageCount Value="10"/>
-      </Unit37>
-      <Unit38>
-        <Filename Value="D:\usr\lib\lazarus\2.2.0\ext\synapse40.1\ssl_openssl.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="81"/>
-        <UsageCount Value="12"/>
-      </Unit38>
-      <Unit39>
-        <Filename Value="D:\usr\lib\lazarus\2.2.0\ext\synapse40.1\ssl_openssl_lib.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="57"/>
-        <CursorPos X="36" Y="1883"/>
-        <UsageCount Value="12"/>
-      </Unit39>
-      <Unit40>
+        <UsageCount Value="4"/>
+      </Unit21>
+      <Unit22>
         <Filename Value="D:\usr\lib\lazarus\2.2.0\lcl\graphics.pp"/>
         <UnitName Value="Graphics"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
-      </Unit40>
-      <Unit41>
+        <UsageCount Value="4"/>
+      </Unit22>
+      <Unit23>
         <Filename Value="D:\usr\share\fpcsrc\3.2.2\rtl\inc\dynlibh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos X="10" Y="50"/>
-        <UsageCount Value="10"/>
-      </Unit41>
-      <Unit42>
+        <UsageCount Value="4"/>
+      </Unit23>
+      <Unit24>
         <Filename Value="D:\usr\share\fpcsrc\3.2.2\rtl\unix\sysdlh.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="21"/>
-        <UsageCount Value="10"/>
-      </Unit42>
+        <UsageCount Value="4"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win32\windows.pp"/>
+        <UnitName Value="Windows"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <UsageCount Value="4"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\winunits-base\src\winutils.pp"/>
+        <UnitName Value="WinUtils"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="4"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win32\winsysut.pp"/>
+        <UnitName Value="WinSysUt"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="4"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\sysutils.pp"/>
+        <UnitName Value="SysUtils"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="2"/>
+        <UsageCount Value="4"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <UnitName Value="StrUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="169"/>
+        <CursorPos X="15" Y="254"/>
+        <UsageCount Value="5"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="synapse40.1\blcksock.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1421"/>
+        <CursorPos X="36" Y="1436"/>
+        <UsageCount Value="4"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="synapse40.1\httpsend.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="64"/>
+        <CursorPos X="5" Y="89"/>
+        <UsageCount Value="5"/>
+      </Unit31>
     </Units>
-    <JumpHistory Count="23" HistoryIndex="22">
+    <OtherDefines Count="1">
+      <Define0 Value="UseCThreads"/>
+    </OtherDefines>
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="660" TopLine="634"/>
+        <Caret Line="849" Column="39" TopLine="815"/>
       </Position1>
       <Position2>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="664" TopLine="634"/>
+        <Caret Line="798" Column="16" TopLine="786"/>
       </Position2>
       <Position3>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="666" TopLine="634"/>
+        <Caret Line="164" Column="9" TopLine="139"/>
       </Position3>
       <Position4>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="675" TopLine="634"/>
+        <Caret Line="312" Column="39" TopLine="271"/>
       </Position4>
       <Position5>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="667" Column="59" TopLine="630"/>
+        <Caret Line="316" Column="9" TopLine="275"/>
       </Position5>
       <Position6>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="675" TopLine="634"/>
+        <Caret Line="319" Column="16" TopLine="278"/>
       </Position6>
       <Position7>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="34" Column="73"/>
+        <Caret Line="342" Column="21" TopLine="301"/>
       </Position7>
       <Position8>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="134" Column="22" TopLine="121"/>
+        <Caret Line="343" Column="31" TopLine="302"/>
       </Position8>
       <Position9>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="108" Column="19" TopLine="85"/>
+        <Caret Line="344" Column="38" TopLine="303"/>
       </Position9>
       <Position10>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="471" Column="63" TopLine="452"/>
+        <Caret Line="345" Column="25" TopLine="304"/>
       </Position10>
       <Position11>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="462" Column="53" TopLine="12"/>
+        <Caret Line="363" Column="21" TopLine="323"/>
       </Position11>
       <Position12>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="202" Column="43" TopLine="174"/>
+        <Caret Line="364" Column="31" TopLine="324"/>
       </Position12>
       <Position13>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="484" Column="46" TopLine="449"/>
+        <Caret Line="365" Column="38" TopLine="325"/>
       </Position13>
       <Position14>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="483" Column="42" TopLine="469"/>
+        <Caret Line="366" Column="25" TopLine="326"/>
       </Position14>
       <Position15>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="490" Column="53" TopLine="452"/>
+        <Caret Line="422" Column="22" TopLine="398"/>
       </Position15>
       <Position16>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="44" Column="45" TopLine="9"/>
+        <Caret Line="743" Column="55" TopLine="979"/>
       </Position16>
       <Position17>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="38" Column="87" TopLine="9"/>
+        <Caret Line="393" TopLine="415"/>
       </Position17>
       <Position18>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="51" Column="57" TopLine="9"/>
+        <Caret Line="830" Column="53" TopLine="794"/>
       </Position18>
       <Position19>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="49" Column="103" TopLine="9"/>
+        <Caret Line="130" Column="19" TopLine="106"/>
       </Position19>
       <Position20>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="34" Column="76" TopLine="9"/>
+        <Caret Line="847" Column="18" TopLine="824"/>
       </Position20>
       <Position21>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="33" Column="71" TopLine="10"/>
+        <Caret Line="333" Column="40" TopLine="307"/>
       </Position21>
       <Position22>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="34" Column="73" TopLine="10"/>
+        <Caret Line="848" Column="20" TopLine="822"/>
       </Position22>
       <Position23>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="35" Column="78" TopLine="10"/>
+        <Caret Line="333" Column="37" TopLine="327"/>
       </Position23>
+      <Position24>
+        <Filename Value="joysave_main.pas"/>
+        <Caret Line="838" Column="23" TopLine="822"/>
+      </Position24>
+      <Position25>
+        <Filename Value="joysave_main.pas"/>
+        <Caret Line="319" Column="49" TopLine="308"/>
+      </Position25>
+      <Position26>
+        <Filename Value="joysave_main.pas"/>
+        <Caret Line="154" Column="28" TopLine="142"/>
+      </Position26>
+      <Position27>
+        <Filename Value="joysave_main.pas"/>
+        <Caret Line="1063" Column="16" TopLine="1039"/>
+      </Position27>
+      <Position28>
+        <Filename Value="joysave_main.pas"/>
+        <Caret Line="821" Column="37" TopLine="789"/>
+      </Position28>
+      <Position29>
+        <Filename Value="joysave_main.pas"/>
+        <Caret Line="701" Column="23" TopLine="678"/>
+      </Position29>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
