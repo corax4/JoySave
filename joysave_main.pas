@@ -49,6 +49,13 @@ type
         Headers: TStringList;
         Go: Boolean;
         URL: String;
+        referer: string;
+        ProxyHost: string;
+        ProxyPort: string;
+        ProxyUser: string;
+        ProxyPass: string;
+        ProxyType: integer;
+        Cookie: string;
         constructor Create(CreateSuspended: Boolean);
     end;
 
@@ -145,7 +152,7 @@ type
         { private declarations }
     Public
         { public declarations }
-        procedure SetProxy(HTTP: THTTPSend);
+        procedure SetProxy;
         function GetImgID(str: String): String;
         procedure ZipProgress(Sender: TObject; const Pct: Double);
         procedure ZipFolder;
@@ -190,7 +197,39 @@ end;
 
 procedure THTTPThread.ProxySettings;
 begin
-    JoySaveMainForm.SetProxy(HTTP);
+    HTTP.Headers.Append('Referer: ' + referer);
+    if ProxyType = 0 then
+    begin
+        HTTP.Sock.SocksIP := '';
+        HTTP.ProxyHost := '';
+    end;
+    if ProxyType = 1 then
+    begin
+        HTTP.ProxyHost := proxyHost;
+        HTTP.ProxyPort := ProxyPort;
+        HTTP.ProxyUser := proxyUser;
+        HTTP.ProxyPass := ProxyPass;
+        HTTP.Sock.SocksIP := '';
+    end;
+    HTTP.Sock.CreateWithSSL(TSSLOpenSSL);
+    if ProxyType > 1 then
+    begin
+        HTTP.ProxyHost := '';
+        HTTP.Sock.SocksIP := proxyHost;
+        HTTP.Sock.SocksPort := ProxyPort;
+        HTTP.Sock.SocksUsername := proxyUser;
+        HTTP.Sock.SocksPassword := ProxyPass;
+        HTTP.Sock.SocksResolver := True;
+    end;
+
+    if ProxyType = 2 then
+        HTTP.Sock.SocksType := ST_Socks4;
+    if ProxyType = 3 then
+        HTTP.Sock.SocksType := ST_Socks5;
+    if length(Cookie) > 5 then
+        HTTP.Cookies.Text := 'joyreactor_sess3=' + Cookie
+    else
+        HTTP.Cookies.Text := '';
 end;
 
 procedure THTTPThread.Execute;
@@ -205,7 +244,7 @@ begin
                     Doc.Clear;
                     Headers.Clear;
                     HTTP := THTTPSend.Create;
-                    Synchronize(@ProxySettings);
+                    ProxySettings;
                     HTTP.HTTPMethod('GET', URL);
                     Headers.Assign(HTTP.Headers);
                     Doc.LoadFromStream(HTTP.Document);
@@ -858,40 +897,15 @@ begin
 end;
 
 // подготовка HTTP к работе - прокси и общие мелочи
-procedure TJoySaveMainForm.SetProxy(HTTP: THTTPSend);
+procedure TJoySaveMainForm.SetProxy;
 begin
-    HTTP.Headers.Append('Referer: ' + Edit_URL.Text);
-    if rgProxy.ItemIndex = 0 then
-    begin
-        HTTP.Sock.SocksIP := '';
-        HTTP.ProxyHost := '';
-    end;
-    if rgProxy.ItemIndex = 1 then
-    begin
-        HTTP.ProxyHost := Edit_proxyHost.Text;
-        HTTP.ProxyPort := Edit_ProxyPort.Text;
-        HTTP.ProxyUser := Edit_proxyUser.Text;
-        HTTP.ProxyPass := Edit_ProxyPass.Text;
-        HTTP.Sock.SocksIP := '';
-    end;
-    if rgProxy.ItemIndex > 1 then
-    begin
-        HTTP.ProxyHost := '';
-        HTTP.Sock.SocksIP := Edit_proxyHost.Text;
-        HTTP.Sock.SocksPort := Edit_ProxyPort.Text;
-        HTTP.Sock.SocksUsername := Edit_proxyUser.Text;
-        HTTP.Sock.SocksPassword := Edit_ProxyPass.Text;
-        HTTP.Sock.SocksResolver := True;
-    end;
-    HTTP.Sock.CreateWithSSL(TSSLOpenSSL);
-    if rgProxy.ItemIndex = 2 then
-        HTTP.Sock.SocksType := ST_Socks4;
-    if rgProxy.ItemIndex = 3 then
-        HTTP.Sock.SocksType := ST_Socks5;
-    if length(Edit_Cookie.Text) > 5 then
-        HTTP.Cookies.Text := 'joyreactor_sess3=' + Edit_Cookie.Text
-    else
-        HTTP.Cookies.Text := '';
+    HThread.referer := Edit_URL.Text;
+    HThread.ProxyType := rgProxy.ItemIndex;
+    HThread.ProxyHost := Edit_proxyHost.Text;
+    HThread.ProxyPort := Edit_ProxyPort.Text;
+    HThread.ProxyUser := Edit_proxyUser.Text;
+    HThread.ProxyPass := Edit_ProxyPass.Text;
+    HThread.Cookie := Edit_Cookie.Text;
 end;
 
 // получаем ID картинки из её имени или URL
@@ -948,6 +962,7 @@ end;
 
 procedure TJoySaveMainForm.GetInThread(URL: String);
 begin
+    SetProxy;
     HThread.URL := URL;
     HThread.Go := True;
     while HThread.Go do
@@ -967,7 +982,7 @@ begin
     pStart := posex('/post/', sURL);
     if pStart = 0 then exit;
     pStart := pStart + Length('/post/');
-    s := RightStr(sURL, Length(sURL) - pStart);
+    s := RightStr(sURL, Length(sURL) - pStart + 1);
     Result := StrToIntDef(s, 0);
 end;
 
@@ -978,11 +993,15 @@ var
     ImgFromComment: Boolean;
     i: Integer;
     s1, s2: string;
+    BadFileName: string;
+    BadPostNum: string;
+    PostNum: string;
 begin
     sURL := Memo_Imgs.Lines.Strings[ImgNow - 1];
     sURL := RightStr(sURL, Length(sURL) - 8);
     ImgFromComment := (posex('/pics/comment/', sURL) <> 0);
 
+    BadPostNum := '';
     if cbSaveFromComments.Checked or not ImgFromComment then
     begin
         if length(sURL) > 2 then
@@ -991,20 +1010,27 @@ begin
         p := RPos('/', SrvFName);
         SrvFName := RightStr(SrvFName, Length(SrvFName) - p);
         if not cbAltFileName.Checked then
-            Edit_FileName.Text := SrvFName
+            filename := SrvFName
         else
         begin
-            filename := LeftStr(Memo_Imgs.Lines.Strings[ImgNow - 1], 8);
+            PostNum := LeftStr(Memo_Imgs.Lines.Strings[ImgNow - 1], 8);
             try
-                filename := IntToStr(Hex2Dec(filename));
-                while length(filename) < 8 do
-                    filename := '0' + filename;
+                PostNum := IntToStr(Hex2Dec(PostNum));
+                BadPostNum := PostNum;
+                while length(PostNum) < 8 do
+                    PostNum := '0' + PostNum;
             except
-                filename := '';
+                PostNum := '';
             end;
             ids := GetImgID(SrvFName);
+            if length(BadPostNum) > 0 then
+            begin
+                BadPostNum := RightStr(BadPostNum, Length(BadPostNum) - 1);
+                while length(BadPostNum) < 8 do
+                    BadPostNum := '0' + BadPostNum;
+            end;
 
-            filename := filename + IfThen(ImgFromComment, '_1_', '_0_');
+            filename := PostNum + IfThen(ImgFromComment, '_1_', '_0_');
             while length(ids) < 9 do
                 ids := '0' + ids;
             if not cbAllTagsToName.Checked then
@@ -1027,24 +1053,31 @@ begin
                 begin
                     s2 := RightStr(TagList.Strings[p], Length(TagList.Strings[p]) - 8);
                     s2 := ReplaceStr(s2, ' :: ', '=');
-                    s2 := ReplaceStr(s2, '\', '@');
-                    s2 := ReplaceStr(s2, '/', '@');
-                    s2 := ReplaceStr(s2, ':', '@');
-                    s2 := ReplaceStr(s2, '*', '@');
-                    s2 := ReplaceStr(s2, '?', '@');
-                    s2 := ReplaceStr(s2, '|', '@');
-                    s2 := ReplaceStr(s2, '<', '@');
-                    s2 := ReplaceStr(s2, '>', '@');
-                    s2 := ReplaceStr(s2, '"', '@');
+
                     p := RPos('.', SrvFName);
                     filename := filename + s2 + RightStr(SrvFName, Length(SrvFName) - p + 1);
                 end;
             end;
-            Edit_FileName.Text := filename;
         end;
+        filename := ReplaceStr(filename, '\', '@');
+        filename := ReplaceStr(filename, '/', '@');
+        filename := ReplaceStr(filename, ':', '@');
+        filename := ReplaceStr(filename, '*', '@');
+        filename := ReplaceStr(filename, '?', '@');
+        filename := ReplaceStr(filename, '|', '@');
+        filename := ReplaceStr(filename, '<', '@');
+        filename := ReplaceStr(filename, '>', '@');
+        filename := ReplaceStr(filename, '"', '@');
+        Edit_FileName.Text := filename;
+        if BadPostNum <> '' then BadFileName := ReplaceStr(filename, PostNum + '_', BadPostNum + '_');
+
         if cbAltFileName.Checked and cbRenameToAltName.Checked then
+        begin
             if FileExistsUTF8(DirNow + SrvFName) then
                 RenameFileUTF8(DirNow + SrvFName, DirNow + Edit_FileName.Text);
+            if FileExistsUTF8(DirNow + BadFileName) then
+                RenameFileUTF8(DirNow + BadFileName, DirNow + Edit_FileName.Text);
+        end;
         if not (FileExistsUTF8(DirNow + Edit_FileName.Text) or FileExistsUTF8(DirNow + SrvFName)) then
             btnSaveImgClick(nil);
     end;

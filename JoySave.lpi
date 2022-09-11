@@ -26,7 +26,7 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MinorVersionNr Value="27"/>
+      <MinorVersionNr Value="28"/>
       <Language Value="0419"/>
       <StringTable ProductName="JoySave"/>
     </VersionInfo>
@@ -72,6 +72,9 @@
       <OtherUnitFiles Value="synapse40.1"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <CodeGeneration>
+      <TargetCPU Value="i386"/>
+    </CodeGeneration>
     <Linking>
       <Debugging>
         <UseExternalDbgSyms Value="True"/>

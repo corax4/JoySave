@@ -3,7 +3,7 @@ object JoySaveMainForm: TJoySaveMainForm
   Height = 417
   Top = 208
   Width = 611
-  Caption = 'JoySave 0.27'
+  Caption = 'JoySave 0.28'
   ClientHeight = 417
   ClientWidth = 611
   OnClose = FormClose
@@ -502,7 +502,7 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideTop.Side = asrBottom
         Left = 7
         Height = 136
-        Hint = 'Под Linux еще не починил HTTP. Но SOCKS работает'
+        Hint = 'В Linux прокси не работает. Пользуйте tsocks если нужно.'
         Top = 176
         Width = 97
         AutoFill = True
