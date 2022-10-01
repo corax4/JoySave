@@ -29,9 +29,9 @@ unit joysave_main;
 interface
 
 uses
-    Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-    Spin, ExtCtrls, Grids, IniPropStorage, MaskEdit, ComCtrls, HTTPSend, synacode, dateutils,
-    strutils, LazFileUtils, blcksock, {$IFDEF WINDOWS} Windows,{$ENDIF} ssl_openssl, zipper, ZStream;
+    Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls, base64, fpjson, types,
+    Spin, ExtCtrls, Grids, IniPropStorage, MaskEdit, ComCtrls, HTTPSend, synacode, dateutils, jsonparser,
+    strutils, LazFileUtils, blcksock, {$IFDEF WINDOWS} Windows,{$ENDIF} ssl_openssl, zipper, ZStream, eventlog;
 
 type
 
@@ -49,13 +49,15 @@ type
         Headers: TStringList;
         Go: Boolean;
         URL: String;
-        referer: string;
-        ProxyHost: string;
-        ProxyPort: string;
-        ProxyUser: string;
-        ProxyPass: string;
-        ProxyType: integer;
-        Cookie: string;
+        referer: String;
+        ProxyHost: String;
+        ProxyPort: String;
+        ProxyUser: String;
+        ProxyPass: String;
+        ProxyType: Integer;
+        Cookie: String;
+        PostJSON: String;
+        ResultCode: Integer;
         constructor Create(CreateSuspended: Boolean);
     end;
 
@@ -68,7 +70,6 @@ type
         btnFindPosts: TButton;
         btnStart: TButton;
         btnStop: TButton;
-        btnFindGifs: TButton;
         btnIncRow: TButton;
         cbPackToCBZ: TCheckBox;
         cbDelAfterPack: TCheckBox;
@@ -90,6 +91,7 @@ type
         Edit_proxyHost: TEdit;
         Edit_ProxyPort: TEdit;
         Edit_append: TEdit;
+        EventLog1: TEventLog;
         gbAnimation: TGroupBox;
         IniPropStorage1: TIniPropStorage;
         lblPHost: TLabel;
@@ -127,6 +129,7 @@ type
         SG: TStringGrid;
         SpinPageCount: TSpinEdit;
         StatusBar1: TStatusBar;
+        TrayIcon1: TTrayIcon;
         tsHelp: TTabSheet;
         tsDebug: TTabSheet;
         tsSettings: TTabSheet;
@@ -139,7 +142,6 @@ type
         procedure btnFindPostsClick(Sender: TObject);
         procedure btnStartClick(Sender: TObject);
         procedure btnStopClick(Sender: TObject);
-        procedure btnFindGifsClick(Sender: TObject);
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure IniPropStorage1RestoreProperties(Sender: TObject);
@@ -148,18 +150,20 @@ type
         procedure SpinRowChange(Sender: TObject);
         procedure SpinTimerChange(Sender: TObject);
         procedure Timer1Timer(Sender: TObject);
+        procedure TrayIcon1Click(Sender: TObject);
     Private
         { private declarations }
     Public
         { public declarations }
         procedure SetProxy;
-        function GetImgID(str: String): String;
+        function GetImgID(Src: String; var IsComment: Boolean): String;
+        function GetPostID(Src: String): String;
         procedure ZipProgress(Sender: TObject; const Pct: Double);
         procedure ZipFolder;
         procedure GetInThread(URL: String);
-        function GetPostNum: Cardinal;
         procedure SaveImgProc;
-        procedure SaveTags;
+        procedure GenJsonPosts;
+        procedure GetLastPage;
     end;
 
 var
@@ -183,6 +187,9 @@ var
     username: String = '';
     AppLoaded: Boolean = False;
     TagList: TStringList;
+    IsTag: boolean;
+    TagStr: string;
+    TagType: string;
 
 implementation
 
@@ -233,6 +240,8 @@ begin
 end;
 
 procedure THTTPThread.Execute;
+var
+    ss: TStringStream = nil;
 begin
     while (not Terminated) do
     begin
@@ -241,15 +250,28 @@ begin
             if (Length(URL) > 0) and not stop then
             begin
                 try
+                    ResultCode := 0;
                     Doc.Clear;
                     Headers.Clear;
                     HTTP := THTTPSend.Create;
                     ProxySettings;
-                    HTTP.HTTPMethod('GET', URL);
+                    if Length(PostJSON) = 0 then
+                        HTTP.HTTPMethod('GET', URL)
+                    else
+                    begin
+                        HTTP.Cookies.Text := '';
+                        ss := TStringStream.Create(PostJSON);
+                        HTTP.MimeType := 'application/json; charset=UTF-8';
+                        HTTP.Document.LoadFromStream(ss);
+                        HTTP.HTTPMethod('POST', 'https://api.joyreactor.cc/graphql');
+                        PostJSON := '';
+                    end;
+                    ResultCode := HTTP.ResultCode;
                     Headers.Assign(HTTP.Headers);
                     Doc.LoadFromStream(HTTP.Document);
                 finally
                     FreeAndNil(HTTP);
+                    if Assigned(ss) then FreeAndNil(ss);
                 end;
             end;
             Go := False;
@@ -287,7 +309,7 @@ begin
     PostNow := 0;
     ImgNow := 0;
     // проверка на заполенность строки в таблице
-    while not ((length(SG.Cells[1, StageNow + 1]) > 10) and (StrToIntDef(SG.Cells[2, StageNow + 1], -1) > 0) and
+    while not ((length(SG.Cells[1, StageNow + 1]) > 0) and (StrToIntDef(SG.Cells[2, StageNow + 1], -1) > 0) and
             (StrToIntDef(SG.Cells[3, StageNow + 1], -1) > -1)) do
     begin
         Inc(StageNow);
@@ -304,22 +326,40 @@ begin
     begin
         SpinRow.Value := StageNow;
         s := SG.Cells[1, StageNow + 1]; // URL
-        p := posex('/', s, 10); // находим ближайший '/' после https://
-        if p > 1 then p := p - 1;
-        Edit_URL.Text := ReplaceStr(LeftStr(s, p), '//old.', '//');
-        if p = 0 then Edit_URL.Text := ReplaceStr(s, '//old.', '//'); // главноая страница
-        Edit_append.Text := RightStr(s, length(s) - p);
-        if p = 0 then Edit_append.Text := '';
-        // удаляем номер страницы, если есть
-        s := Edit_append.Text;
-        p := RPos('/', s);
-        if p > 4 then
+        IsTag := LowerCase(copy(s, 1, 8)) <> 'https://';
+        if IsTag then
         begin
-            if (StrToIntDef(RightStr(s, Length(s) - p), -1) > -1) {numb} and (MidStr(s, p - 4, 5) <> '/tag/') then
-                Edit_append.Text := LeftStr(s, p - 1);
+            TagType := '';
+            p := pos('/', s);
+            if p <> 0 then
+            begin
+                TagStr := LowerCase( copy(s, 1, p - 1) );
+                TagType := UpperCase( copy(s, p + 1, length(s)) );
+            end
+            else
+                TagStr := LowerCase(s);
+            if (TagType <> 'ALL') and (TagType <> 'GOOD') and (TagType <> 'NEW') and (TagType <> 'BEST') then
+                    TagType := 'GOOD';
+            Edit_append.Text := s;
+            Edit_URL.Text := 'https://api.joyreactor.cc';
         end
-        else
-            Edit_append.Text := '';
+        else  // it is https
+        begin
+            p := posex('/', s, 10); // находим ближайший '/' после https://
+            if p > 1 then p := p - 1;
+            if p <> 0 then Edit_URL.Text := LeftStr(s, p) else Edit_URL.Text := s;
+            Edit_append.Text := RightStr(s, length(s) - p);
+            if p = 0 then Edit_append.Text := '';
+            // удаляем номер страницы, если есть
+            s := Edit_append.Text;
+            p := RPos('/', s);
+            if p > 4 then
+            begin
+                if (StrToIntDef(RightStr(s, Length(s) - p), -1) > -1) {numb} and (MidStr(s, p - 4, 5) <> '/tag/') then
+                    Edit_append.Text := LeftStr(s, p - 1);
+            end;
+        end;
+
         SpinBegin.Value := StrToIntDef(SG.Cells[2, StageNow + 1], -1);
         SpinEnd.Value := StrToIntDef(SG.Cells[3, StageNow + 1], 0);
 
@@ -346,82 +386,124 @@ begin
                 HThread.Doc.SaveToFile(DirNow + Edit_FileName.Text);
                 Inc(Total);
             except
-                ShowMessage('Не могу сохранить файл: ' + DirNow + Edit_FileName.Text);
+                EventLog1.Log('Не могу сохранить файл: ' + DirNow + Edit_FileName.Text);
             end;
 end;
 
 // ищем ссылки на картинки в посте
 procedure TJoySaveMainForm.btnFindImgsClick(Sender: TObject);
 var
-    docLen: Integer;
-    s: String;
-    ImgStr: String;
-    p, p1, p2: Integer;
-begin
-    if not cbSaveJpgPng.Checked then exit;
-    s := Memo_Doc.Text;
-    docLen := length(s);
-    p := posex('<div class="image">', s);
-    if p <> 0 then
+    hasVideo: Boolean;
+    ImgID: String;
+    Imgtype: String;
+
+    StrSt: TStringStream;
+    tags: String;
+    PostFNum: String;
+
+    jFull: TJSONData;
+    jData: TJSONData;
+    jItem: TJSONData;
+    jPost: TJSONData;
+    jPostAr: TJSONArray;
+    jComm: TJSONArray;
+    i, p: Integer;
+    NodeName: String;
+    Dbg: string;
+
+    procedure ProcAttrib(Attr: TJSONArray);
+    var
+        j: Integer;
     begin
-        p1 := p + Length('<div class="image">');
-        p := posex('<', s, p1);
+        if Attr <> nil then for j := 0 to Attr.Count - 1 do
+            begin
+                jItem := Attr.Items[j].FindPath('id');
+                if jItem = nil then Continue;
+                ImgID := jItem.Value;
+                jItem := Attr.Items[j].FindPath('image.type');
+                if jItem = nil then Continue;
+                Imgtype := jItem.Value;
+                jItem := Attr.Items[j].FindPath('image.hasVideo');
+                if jItem = nil then Continue;
+                hasVideo := jItem.Value;
+                if Length(Imgtype) < 3 then Continue;
+                if (Imgtype = 'GIF') then
+                begin
+                    if cbAniGif.Checked or (cbSaveGifIfNoWebm.Checked and (not hasVideo) and
+                        (cbAniMp4.Checked or cbAniWebm.Checked)) then
+                        Memo_Imgs.Append(PostFNum + 'G' + ImgID + '@' + tags);
+                    if hasVideo and cbAniWebm.Checked then
+                        Memo_Imgs.Append(PostFNum + 'W' + ImgID + '@' + tags);
+                    if hasVideo and cbAniMp4.Checked then
+                        Memo_Imgs.Append(PostFNum + 'M' + ImgID + '@' + tags);
+                end
+                else if cbSaveJpgPng.Checked then
+                    Memo_Imgs.Append(PostFNum + LeftStr(Imgtype, 1) + ImgID + '@' + tags);
+                imgs := Memo_Imgs.Lines.Count;
+            end;
     end;
-    while (p <> 0) do
+
+    procedure ProcPost(aPost: TJSONData);
+    var
+        k: Integer;
     begin
-        if docLen < (p + 20) then
-            Break;
-        // смотрим, не ссылка ли это на большую картинку
-        if MidStr(s, p, Length('<a href="')) = '<a href="' then
+        // Post num
+        jItem := aPost.FindPath('id');
+        if jItem = nil then exit;
+        PostFNum := GetPostID(jItem.Value);
+        while Length(PostFNum) < 9 do PostFNum := '0' + PostFNum;
+        if Length(PostFNum) > 9 then PostFNum := RightStr(PostFNum, 9);
+
+        // tags
+        jItem := aPost.FindPath('seoAttributes.title');
+        if jItem = nil then exit;
+        tags := jItem.Value;
+        p := RPos('/ ', tags);
+        if p <> 0 then tags := copy(tags, p + 2, length(tags));
+        if (Length(tags) > 0) and cbSaveTagsInfo.Checked then
         begin
-            p1 := p + Length('<a href="');
-            p2 := posex('"', s, p1);
-            if p2 = 0 then
-                p := 0
-            else
-            begin
-                ImgStr := HexStr(GetPostNum, 8);
-                ImgStr := ImgStr + midstr(s, p1, p2 - p1);
-                Memo_Imgs.Append(ImgStr);
-                Inc(imgs);
-                p := posex('<div class="image">', s, p1);
-                if p <> 0 then
-                begin
-                    p1 := p + Length('<div class="image">');
-                    p := posex('<', s, p1);
-                end;
+            StrSt := TStringStream.Create(tags);
+            try
+                StrSt.SaveToFile(DirNow + PostFNum + '.txt');
+            except
+                EventLog1.Log('Не могу сохранить файл: ' + DirNow + PostFNum + '.txt');
             end;
-        end
-        // или это картинка
-        else if MidStr(s, p, Length('<img src="')) = '<img src="' then
-        begin
-            p1 := p + Length('<img src="');
-            p2 := posex('"', s, p1);
-            if p2 = 0 then
-                p := 0
-            else
-            begin
-                ImgStr := HexStr(GetPostNum, 8);
-                ImgStr := ImgStr + midstr(s, p1, p2 - p1);
-                Memo_Imgs.Append(ImgStr);
-                Inc(imgs);
-                p := posex('<div class="image">', s, p1);
-                if p <> 0 then
-                begin
-                    p1 := p + Length('<div class="image">');
-                    p := posex('<', s, p1);
-                end;
-            end;
-        end
-        else
-        begin
-            p := posex('<div class="image">', s, p1);
-            if p <> 0 then
-            begin
-                p1 := p + Length('<div class="image">');
-                p := posex('<', s, p1);
-            end;
+            StrSt.Free;
         end;
+
+        ProcAttrib(TJSONArray(aPost.FindPath('attributes')));
+        // from comments
+        jComm := TJSONArray(aPost.FindPath('comments'));
+        if jComm = nil then exit;
+        for k := 0 to jComm.Count - 1 do
+            ProcAttrib(TJSONArray(jComm.Items[k].FindPath('attributes')));
+    end;
+
+begin
+    if HThread.ResultCode <> 200 then exit;
+    Dbg := Memo_Doc.Text;
+    try
+        jFull := GetJSON(Memo_Doc.Text);
+    except
+        jFull := GetJSON('{}');
+    end;
+    jData := jFull.FindPath('data');
+    if jData = nil then exit;
+    if IsTag then
+    begin
+        jPostAr := TJSONArray(jData.FindPath('tag.postPager.posts'));
+        if jPostAr = nil then exit;
+        for i := 0 to jPostAr.Count - 1 do
+            ProcPost(jPostAr[i]);
+    end
+    else
+    for i := 0 to jData.Count - 1 do
+    begin
+        // node -- post
+        NodeName := TJSONObject(jData).Names[i];
+        jPost := jData.FindPath(NodeName);
+        if jPost = nil then Continue;
+        ProcPost(jPost);
     end;
 end;
 
@@ -452,7 +534,7 @@ begin
             p := 0
         else
         begin
-            Memo_Posts.Append('/post/' + midstr(s, p1, p2 - p1));
+            Memo_Posts.Append(midstr(s, p1, p2 - p1));
             p := posex('<a href="/post/', s, p1);
         end;
     end;
@@ -492,7 +574,7 @@ begin
     IniPropStorage1.Save;
     Application.Title := IntToStr(StageNow) + ':' + IntToStr(SpinPage.Value) + '/' + IntToStr(SpinEnd.Value);
     if not ForceDirectories('Pic/') then
-        ShowMessage('Не могу создать папку: Pic');
+        EventLog1.Log('Не могу создать папку: Pic');
     Timer1.Enabled := True;
 end;
 
@@ -507,117 +589,6 @@ begin
     Application.Title := 'JoySave';
 end;
 
-// найти ссылки на гифки в посте
-procedure TJoySaveMainForm.btnFindGifsClick(Sender: TObject);
-var
-    docLen: Integer;
-    s: String;
-    i: Integer;
-    p, p1, p2: Integer;
-    ids: TStringList;
-    id: String;
-    ImgStr: String;
-    NeedGif: Boolean;
-begin
-    if not (cbAniGif.Checked or cbAniWebm.Checked or cbAniMp4.Checked) then
-        exit;
-
-    ids := TStringList.Create;
-    s := Memo_Doc.Text;
-    docLen := length(s);
-
-    // webm
-    if cbAniWebm.Checked then
-    begin
-        p := posex('.webm"', s);
-        while p <> 0 do
-        begin
-            p1 := RPosEx('"', s, p);
-            if (p1 <> 0) then
-            begin
-                ImgStr := HexStr(GetPostNum, 8);
-                ImgStr := ImgStr + midstr(s, p1 + 1, p - p1 + 4 {webm});
-                Memo_Imgs.Append(ImgStr);
-                Inc(imgs);
-                id := GetImgID(ImgStr);
-                if (id <> '') then ids.Append(id);
-            end;
-            p := posex('.webm"', s, p + 4);
-        end;
-    end;
-
-    // mp4
-    if cbAniMp4.Checked then
-    begin
-        p := posex('.mp4"', s);
-        while p <> 0 do
-        begin
-            p1 := RPosEx('"', s, p);
-            if (p1 <> 0) then
-            begin
-                ImgStr := HexStr(GetPostNum, 8);
-                ImgStr := ImgStr + midstr(s, p1 + 1, p - p1 + 3 {mp4});
-                Memo_Imgs.Append(ImgStr);
-                Inc(imgs);
-                id := GetImgID(ImgStr);
-                if (id <> '') then ids.Append(id);
-            end;
-            p := posex('.mp4"', s, p + 4);
-        end;
-    end;
-
-    // gif
-    p := posex('<span class="video_gif_holder">', s);
-    if p <> 0 then
-    begin
-        p1 := p + Length('<span class="video_gif_holder">');
-        p := posex('<', s, p1);
-    end;
-    while (p <> 0) do
-    begin
-        if docLen < (p + 20) then
-            Break;
-        // смотрим, не ссылка ли это на большую картинку
-        if MidStr(s, p, Length('<a href="')) = '<a href="' then
-        begin
-            p1 := p + Length('<a href="');
-            p2 := posex('"', s, p1);
-            if p2 = 0 then
-                p := 0
-            else
-            begin
-                ImgStr := HexStr(GetPostNum, 8);
-                ImgStr := ImgStr + midstr(s, p1, p2 - p1);
-                NeedGif := True;
-                if not cbAniGif.Checked then
-                begin
-                    if not cbSaveGifIfNoWebm.Checked then NeedGif := False;
-                    id := GetImgID(ImgStr);
-                    if (id <> '') then
-                        for i := 0 to ids.Count - 1 do
-                            if ids.Strings[i] = id then NeedGif := False;
-                end;
-                if NeedGif then
-                begin
-                    Memo_Imgs.Append(ImgStr);
-                    Inc(imgs);
-                end;
-            end;
-        end;
-        if p <> 0 then
-        begin
-            p := posex('<span class="video_gif_holder">', s, p1);
-            if p <> 0 then
-            begin
-                p1 := p + Length('<span class="video_gif_holder">');
-                p := posex('<', s, p1);
-            end;
-        end;
-    end;
-
-    ids.Free;
-end;
-
 procedure TJoySaveMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     if stop then exit;
@@ -630,7 +601,6 @@ procedure TJoySaveMainForm.FormCreate(Sender: TObject);
 var
     rsSources: TResourceStream;
     uz: TUnZipper;
-    RowStr: TStringList;
 begin
     {$IFDEF WINDOWS}
     if not (FileExistsUTF8('libeay32.dll') and FileExistsUTF8('ssleay32.dll')) then
@@ -677,21 +647,6 @@ begin
     Edit_ProxyPort.Text := '';
     Edit_append.Text := '';
 
-
-    // старые файлы настроек
-    RowStr := TStringList.Create;
-    if FileExistsUTF8('JoySave.ini') then
-        try
-            RowStr.LoadFromFile('JoySave.ini');
-            if RowStr.Strings[0] = '[TApplication.Form1]' then
-            begin
-                RowStr.Strings[0] := '[TApplication.JoySaveMainForm]';
-                RowStr.SaveToFile('JoySave.ini');
-            end;
-        finally;
-            DeleteFileUTF8('cookies.txt');
-        end;
-    RowStr.Free;
     HThread := THTTPThread.Create(False);
     TagList := TStringList.Create;
 end;
@@ -708,43 +663,6 @@ begin
         RowStr.CommaText := IniPropStorage1.StoredValue['MainGrid_row_' + IntToStr(i - 1)];
         SG.Rows[i] := RowStr;
     end;
-
-    // старые файлы настроек
-    RowStr.Clear;
-    if FileExistsUTF8('cookies.txt') then
-        try
-            RowStr.LoadFromFile('cookies.txt');
-            for i := 0 to RowStr.Count - 1 do
-            begin
-                if PosEx('joyreactor_sess3=', RowStr.Strings[i]) > 0 then
-                begin
-                    Edit_Cookie.Text := RightStr(RowStr.Strings[i], length(RowStr.Strings[i]) - length('joyreactor_sess3='));
-                    IniPropStorage1.Save;
-                    Break;
-                end;
-            end;
-        finally;
-            DeleteFileUTF8('cookies.txt');
-        end;
-    RowStr.Clear;
-
-    if FileExistsUTF8('list.csv') then
-        try
-            SG.LoadFromCSVFile('list.csv', ';');
-            SG.RowCount := 101;
-            for i := 1 to 10 do
-                SG.Cells[0, i] := '0' + IntToStr(i - 1);
-            for i := 11 to SG.RowCount - 1 do
-                SG.Cells[0, i] := IntToStr(i - 1);
-            SG.Cells[0, 0] := '№';
-            SG.Cells[1, 0] := 'Адрес';
-            SG.Cells[2, 0] := 'Начало';
-            SG.Cells[3, 0] := 'Конец';
-            SG.Cells[4, 0] := 'Папка';
-            IniPropStorage1.Save;
-        finally;
-            DeleteFileUTF8('list.csv');
-        end;
 
     RowStr.Free;
 
@@ -782,8 +700,8 @@ end;
 
 procedure TJoySaveMainForm.Timer1Timer(Sender: TObject);
 var
-    s: TCaption;
-    p, pEnd: SizeInt;
+    s: string;
+    i: Integer;
 begin
     if Stop then
         exit;
@@ -797,26 +715,15 @@ begin
         if PostNow = 0 then
         begin
             // если конечная страница 0, то получаем номер последней страницы для тега
-            if SpinEnd.Value = 0 then
+            if SpinEnd.Value = 0 then GetLastPage;
+            s := Memo_Doc.Lines.Text;
+            if copy(s, 1, Length('{"errors":[{"message":"Rate')) = '{"errors":[{"message":"Rate' then
             begin
-                sURL := Edit_URL.Text + Edit_append.Text;
-                Edit_FileName.Text := DecodeURL(sURL);
-                btnGetHTMLClick(nil);
-                s := Memo_Doc.Text;
-                p := PosEx('"pagination_expanded"><span class=''current''>', s);
-                if p <> 0 then
-                begin
-                    p := p + Length('"pagination_expanded"><span class=''current''>');
-                    pEnd := PosEx('<', s, p);
-                    if pEnd <> 0 then
-                        if StrToIntDef(MidStr(s, p, pEnd - p), -1) > 0 then
-                        begin
-                            SG.Cells[3, StageNow + 1] := MidStr(s, p, pEnd - p);
-                            SpinEnd.Value := StrToIntDef(SG.Cells[3, StageNow + 1], -1);
-                            if SpinEnd.Value > 0 then
-                                IniPropStorage1.Save;
-                        end;
-                end;
+                StatusBar1.Panels.Items[1].Text := 'Всего: ' + IntToStr(Total) + '  Lim';
+                for i := 1 to 1024 do Application.ProcessMessages;
+                SaveSecond := SecondOf(now);
+                timer1.Enabled := True;
+                exit;
             end;
             TagList.Clear;
 
@@ -831,14 +738,22 @@ begin
                     exit;
                 end;
             end;
-            sURL := Edit_URL.Text + Edit_append.Text;
-            if SpinPage.Value <> 0 then
-                sURL := sURL + '/' + SpinPage.Text;
-            Edit_FileName.Text := DecodeURL(sURL);
-            btnGetHTMLClick(nil);
-            Memo_Posts.Clear;
+
             Memo_Imgs.Clear;
-            btnFindPostsClick(nil);
+            Memo_Posts.Clear;
+            if IsTag then
+            begin
+                Memo_Posts.Lines.Text := 'API';
+            end
+            else
+            begin
+                sURL := Edit_URL.Text + Edit_append.Text;
+                if SpinPage.Value <> 0 then
+                    sURL := sURL + '/' + SpinPage.Text;
+                Edit_FileName.Text := DecodeURL(sURL);
+                btnGetHTMLClick(nil);
+                btnFindPostsClick(nil);
+            end;
             imgs := 0;
             if Memo_Posts.Lines.Count > 0 then
             begin
@@ -854,35 +769,41 @@ begin
         // посты получены
         else
         begin
-            sURL := Edit_URL.Text + Memo_Posts.Lines.Strings[PostNow - 1];
-            Inc(PostNow);
-            Edit_FileName.Text := DecodeURL(sURL);
-            btnGetHTMLClick(nil);
+            sURL := 'api'; //Edit_URL.Text + Memo_Posts.Lines.Strings[PostNow - 1];
+            Edit_FileName.Text := 'API';
 
-            if PostNow = 2 then
+            SubDir := ReplaceStr(Trim(SG.Cells[4, StageNow + 1]), '\', '/');
+            if SubDir = '' then SubDir := Trim(SG.Cells[0, StageNow + 1]);
+            DirNow := 'Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value) *
+                SpinPageCount.Value) + '/';
+            if not ForceDirectories(DirNow) then
+                EventLog1.Log('Не могу создать папку: ' + DirNow);
+
+            if Memo_Posts.Lines.Count > 0 then
             begin
-                SubDir := ReplaceStr(Trim(SG.Cells[4, StageNow + 1]), '\', '/');
-                if SubDir = '' then SubDir := Trim(SG.Cells[0, StageNow + 1]);
-                DirNow := 'Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value) *
-                    SpinPageCount.Value) + '/';
-                if not ForceDirectories(DirNow) then
-                    ShowMessage('Не могу создать папку: ' + DirNow);
-            end;
-            SaveTags;
-            btnFindImgsClick(nil);
-            btnFindGifsClick(nil);
-            if PostNow > Memo_Posts.Lines.Count then
-            begin
-                PostNow := 0;
+                GenJsonPosts;
+                SaveSecond := SecondOf(now);
+                s := Memo_Doc.Lines.Text;
+                if copy(s, 1, Length('{"errors":[{"message":"Rate')) = '{"errors":[{"message":"Rate' then
+                begin
+                    StatusBar1.Panels.Items[1].Text := 'Всего: ' + IntToStr(Total) + '  Lim';
+                    for i := 1 to 1024 do Application.ProcessMessages;
+                    SaveSecond := SecondOf(now);
+                    timer1.Enabled := True;
+                    exit;
+                end;
+                btnFindImgsClick(nil);
+
                 if Memo_Imgs.Lines.Count > 0 then
                     ImgNow := 1;
+            end;
 
-                if ImgNow = 0 then
-                begin
-                    SpinPage.Value := SpinPage.Value + 1;
-                    if ((SpinPage.Value mod SpinPageCount.Value) = 0) and cbPackToCBZ.Checked then ZipFolder;
-                    Application.Title := IntToStr(StageNow) + ':' + IntToStr(SpinPage.Value) + '/' + IntToStr(SpinEnd.Value);
-                end;
+            PostNow := 0;
+            if ImgNow = 0 then
+            begin
+                SpinPage.Value := SpinPage.Value + 1;
+                if ((SpinPage.Value mod SpinPageCount.Value) = 0) and cbPackToCBZ.Checked then ZipFolder;
+                Application.Title := IntToStr(StageNow) + ':' + IntToStr(SpinPage.Value) + '/' + IntToStr(SpinEnd.Value);
             end;
         end
     else // картинки получены, ImgNow <> 0
@@ -891,15 +812,20 @@ begin
     lblImagesOnPage.Caption := IntToStr(imgs);
     StatusBar1.Panels.Items[0].Text := 'Кач' + username;
     StatusBar1.Panels.Items[1].Text := 'Всего: ' + IntToStr(Total);
-    StatusBar1.Panels.Items[2].Text := 'Пост: ' + IntToStr(PostNow);
-    StatusBar1.Panels.Items[3].Text := 'Файл: ' + IntToStr(ImgNow) + '/' + IntToStr(imgs);
+    StatusBar1.Panels.Items[2].Text := 'Файл: ' + IntToStr(ImgNow) + '/' + IntToStr(imgs);
     timer1.Enabled := True;
+end;
+
+procedure TJoySaveMainForm.TrayIcon1Click(Sender: TObject);
+begin
+    JoySaveMainForm.Visible := not JoySaveMainForm.Visible;
 end;
 
 // подготовка HTTP к работе - прокси и общие мелочи
 procedure TJoySaveMainForm.SetProxy;
 begin
     HThread.referer := Edit_URL.Text;
+    if IsTag then HThread.referer := 'https://joyreactor.cc';
     HThread.ProxyType := rgProxy.ItemIndex;
     HThread.ProxyHost := Edit_proxyHost.Text;
     HThread.ProxyPort := Edit_ProxyPort.Text;
@@ -909,16 +835,38 @@ begin
 end;
 
 // получаем ID картинки из её имени или URL
-function TJoySaveMainForm.GetImgID(str: String): String;
+function TJoySaveMainForm.GetImgID(Src: String; var IsComment: Boolean): String;
 var
-    pStart, pEnd: Integer;
+    ln: Integer;
+    deco: String;
 begin
     Result := '';
-    pEnd := RPos('.', str);
-    if pEnd < 3 then exit;
-    pStart := RPos('-', str);
-    if (pStart <> 0) and (pEnd > pStart) then
-        Result := MidStr(str, pStart + 1, pEnd - pStart - 1);
+    IsComment := False;
+    deco := DecodeBase64(Src);
+    ln := Length('PostAttributePicture:');
+    if LeftStr(deco, ln) = 'PostAttributePicture:' then
+        Result := RightStr(deco, Length(deco) - ln);
+    if Result <> '' then exit;
+    IsComment := True;
+    ln := Length('CommentAttributePicture:');
+    if LeftStr(deco, ln) = 'CommentAttributePicture:' then
+        Result := RightStr(deco, Length(deco) - ln);
+    if Result <> '' then exit;
+    //EventLog1.Log('ID картинки неправильный: ' + deco);
+end;
+
+function TJoySaveMainForm.GetPostID(Src: String): String;
+var
+    deco: String;
+    ln: Integer;
+begin
+    Result := '';
+    deco := DecodeBase64(Src);
+    ln := Length('Post:');
+    if LeftStr(deco, ln) = 'Post:' then
+        Result := RightStr(deco, Length(deco) - ln);
+    if Result <> '' then exit;
+    EventLog1.Log('Post ID неправильный: ' + deco);
 end;
 
 procedure TJoySaveMainForm.ZipProgress(Sender: TObject; const Pct: Double);
@@ -973,113 +921,130 @@ begin
     HThread.URL := '';
 end;
 
-function TJoySaveMainForm.GetPostNum: Cardinal;
-var
-    pStart: Integer;
-    s: String;
-begin
-    Result := 0;
-    pStart := posex('/post/', sURL);
-    if pStart = 0 then exit;
-    pStart := pStart + Length('/post/');
-    s := RightStr(sURL, Length(sURL) - pStart + 1);
-    Result := StrToIntDef(s, 0);
-end;
-
 procedure TJoySaveMainForm.SaveImgProc;
 var
-    filename, SrvFName, ids: String;
+    filename, SrvFName: String;
     p: SizeInt;
     ImgFromComment: Boolean;
-    i: Integer;
-    s1, s2: string;
-    BadFileName: string;
-    BadPostNum: string;
-    PostNum: string;
-begin
-    sURL := Memo_Imgs.Lines.Strings[ImgNow - 1];
-    sURL := RightStr(sURL, Length(sURL) - 8);
-    ImgFromComment := (posex('/pics/comment/', sURL) <> 0);
+    s1: String;
+    BadFileName: String;
+    PostNum: String;
+    ImgType: String;
+    ImgId: String;
+    Tags: String;
+    aTags: TStringDynArray;
+    ext: String;
+    saved: boolean;
 
-    BadPostNum := '';
-    if cbSaveFromComments.Checked or not ImgFromComment then
+    OldFiles: TStringList;
+begin
+    s1 := Memo_Imgs.Lines.Strings[ImgNow - 1];
+    PostNum := leftstr(s1, 9);
+    ImgType := copy(s1, 10, 1);
+    ImgFromComment := False;
+    p := pos('@', s1);
+    ImgId := GetImgID(copy(s1, 11, p - 11), ImgFromComment);
+    tags := copy(s1, p + 1, length(s1));
+
+    case ImgType of
+        'G': ext := '.gif';
+        'J': ext := '.jpeg';
+        'P': ext := '.png';
+        'B': ext := '.bmp';
+        'T': ext := '.tiff';
+        'W': ext := '.webm';
+        'M': ext := '.mp4';
+        else
+            ext := '.jpeg';
+    end;
+    case ImgType of
+        'G': if ImgFromComment then
+                sURL := 'https://img10.reactor.cc/pics/comment/post-' + ImgId + ext
+            else
+                sURL := 'https://img10.reactor.cc/pics/post/post-' + ImgId + ext;
+        'W': if ImgFromComment then
+                sURL := 'https://img10.reactor.cc/pics/comment/webm/post-' + ImgId + ext
+            else
+                sURL := 'https://img10.reactor.cc/pics/post/webm/post-' + ImgId + ext;
+        'M': if ImgFromComment then
+                sURL := 'https://img10.reactor.cc/pics/comment/mp4/post-' + ImgId + ext
+            else
+                sURL := 'https://img10.reactor.cc/pics/post/mp4/post-' + ImgId + ext;
+        else
+            if ImgFromComment then
+                sURL := 'https://img10.reactor.cc/pics/comment/full/post-' + ImgId + ext
+            else
+                sURL := 'https://img10.reactor.cc/pics/post/full/post-' + ImgId + ext;
+    end;
+
+    atags := SplitString(tags, ' :: ');
+
+    SrvFName := DecodeURL(sURL);
+    if not cbAltFileName.Checked then
+        filename := SrvFName
+    else
     begin
-        if length(sURL) > 2 then
-            if (sURL[1] = '/') and (sURL[2] = '/') then sURL := 'https:' + sURL;
-        SrvFName := DecodeURL(sURL);
-        p := RPos('/', SrvFName);
-        SrvFName := RightStr(SrvFName, Length(SrvFName) - p);
-        if not cbAltFileName.Checked then
-            filename := SrvFName
+        BadFileName := '';
+        OldFiles := FindAllFiles(DirNow, '*-' + ImgId + ext, False);
+        //OldFiles := FindAllFiles('Pic/' + SubDir, '*-' + ImgId + '.*', true);
+        if OldFiles.Count = 1 then
+            BadFileName := OldFiles.Strings[0];
+        if OldFiles.Count > 1 then
+            EventLog1.Log('Many old files: ' + OldFiles.Text);
+        OldFiles.Free;
+
+        filename := PostNum + IfThen(ImgFromComment, '_1_', '_0_');
+        while length(ImgId) < 9 do
+            ImgId := '0' + ImgId;
+        filename := filename + ImgId + '__';
+        if not cbAllTagsToName.Checked then
+        begin
+            if length(aTags) > 0 then filename := filename + ReplaceStr(aTags[0], ' ', '-');
+            if length(aTags) > 1 then filename := filename + '-' + ReplaceStr(aTags[1], ' ', '-');
+            if length(aTags) > 2 then filename := filename + '-' + ReplaceStr(aTags[2], ' ', '-');
+            if length(aTags) > 3 then filename := filename + '-' + ReplaceStr(aTags[3], ' ', '-');
+        end
         else
         begin
-            PostNum := LeftStr(Memo_Imgs.Lines.Strings[ImgNow - 1], 8);
-            try
-                PostNum := IntToStr(Hex2Dec(PostNum));
-                BadPostNum := PostNum;
-                while length(PostNum) < 8 do
-                    PostNum := '0' + PostNum;
-            except
-                PostNum := '';
-            end;
-            ids := GetImgID(SrvFName);
-            if length(BadPostNum) > 0 then
-            begin
-                BadPostNum := RightStr(BadPostNum, Length(BadPostNum) - 1);
-                while length(BadPostNum) < 8 do
-                    BadPostNum := '0' + BadPostNum;
-            end;
-
-            filename := PostNum + IfThen(ImgFromComment, '_1_', '_0_');
-            while length(ids) < 9 do
-                ids := '0' + ids;
-            if not cbAllTagsToName.Checked then
-                filename := filename + ids + '__' + ReplaceStr(SrvFName, '-' + GetImgID(SrvFName) + '.', '.')
-            else
-            begin
-                filename := filename + ids + '__';
-                p := -1;
-                s1 := LeftStr(Memo_Imgs.Lines.Strings[ImgNow - 1], 8);
-                for i := 0 to TagList.Count - 1 do
-                begin
-                    s2 := LeftStr(TagList.Strings[i], 8);
-                    if s1 = s2 then
-                    begin
-                        p := i;
-                        Break;
-                    end;
-                end;
-                if p > -1 then
-                begin
-                    s2 := RightStr(TagList.Strings[p], Length(TagList.Strings[p]) - 8);
-                    s2 := ReplaceStr(s2, ' :: ', '=');
-
-                    p := RPos('.', SrvFName);
-                    filename := filename + s2 + RightStr(SrvFName, Length(SrvFName) - p + 1);
-                end;
-            end;
+            filename := filename + ReplaceStr(Tags, ' :: ', '=');
         end;
-        filename := ReplaceStr(filename, '\', '@');
-        filename := ReplaceStr(filename, '/', '@');
-        filename := ReplaceStr(filename, ':', '@');
-        filename := ReplaceStr(filename, '*', '@');
-        filename := ReplaceStr(filename, '?', '@');
-        filename := ReplaceStr(filename, '|', '@');
-        filename := ReplaceStr(filename, '<', '@');
-        filename := ReplaceStr(filename, '>', '@');
-        filename := ReplaceStr(filename, '"', '@');
-        Edit_FileName.Text := filename;
-        if BadPostNum <> '' then BadFileName := ReplaceStr(filename, PostNum + '_', BadPostNum + '_');
+        filename := filename + ext;
+    end;
+    filename := ReplaceStr(filename, '\', '@');
+    filename := ReplaceStr(filename, '/', '@');
+    filename := ReplaceStr(filename, ':', '@');
+    filename := ReplaceStr(filename, '*', '@');
+    filename := ReplaceStr(filename, '?', '@');
+    filename := ReplaceStr(filename, '|', '@');
+    filename := ReplaceStr(filename, '<', '@');
+    filename := ReplaceStr(filename, '>', '@');
+    filename := ReplaceStr(filename, '"', '@');
+    Edit_FileName.Text := filename;
 
-        if cbAltFileName.Checked and cbRenameToAltName.Checked then
-        begin
-            if FileExistsUTF8(DirNow + SrvFName) then
-                RenameFileUTF8(DirNow + SrvFName, DirNow + Edit_FileName.Text);
-            if FileExistsUTF8(DirNow + BadFileName) then
-                RenameFileUTF8(DirNow + BadFileName, DirNow + Edit_FileName.Text);
-        end;
-        if not (FileExistsUTF8(DirNow + Edit_FileName.Text) or FileExistsUTF8(DirNow + SrvFName)) then
-            btnSaveImgClick(nil);
+    if cbAltFileName.Checked and cbRenameToAltName.Checked then
+    begin
+        //if FileExistsUTF8(DirNow + SrvFName) then
+        //    RenameFileUTF8(DirNow + SrvFName, DirNow + Edit_FileName.Text);
+        if (Length(BadFileName) > 0) and FileExistsUTF8(BadFileName) then
+            RenameFileUTF8(BadFileName, DirNow + Edit_FileName.Text);
+
+        BadFileName := '';
+        OldFiles := FindAllFiles(DirNow, '*_' + ImgId + '__*' + ext, False);
+        //OldFiles := FindAllFiles('Pic/' + SubDir, '*_' + ImgId + '__*', true);
+        if OldFiles.Count = 1 then
+            BadFileName := OldFiles.Strings[0];
+        if OldFiles.Count > 1 then
+            EventLog1.Log('Many old files: ' + OldFiles.Text);
+        OldFiles.Free;
+        if BadFileName = DirNow + filename then BadFileName := '';
+        if (Length(BadFileName) > 0) and FileExistsUTF8(BadFileName) then
+            RenameFileUTF8(BadFileName, DirNow + Edit_FileName.Text);
+    end;
+    saved := false;
+    if not (FileExistsUTF8(DirNow + Edit_FileName.Text) or FileExistsUTF8(DirNow + SrvFName)) then
+    begin
+        btnSaveImgClick(nil);
+        saved := true;
     end;
 
     Inc(ImgNow);
@@ -1091,48 +1056,112 @@ begin
         if ((SpinPage.Value mod SpinPageCount.Value) = 0) and cbPackToCBZ.Checked then ZipFolder;
         Application.Title := IntToStr(StageNow) + ':' + IntToStr(SpinPage.Value) + '/' + IntToStr(SpinEnd.Value);
     end;
+    Application.ProcessMessages;
+    if (ImgNow <> 0) and not saved then SaveImgProc;
 end;
 
-procedure TJoySaveMainForm.SaveTags;
+procedure TJoySaveMainForm.GenJsonPosts;
 var
-    s: String;
-    TagFileName: String;
-    p, p1, p2: Integer;
-    StrSt: TStringStream;
-    tags: String;
+    json: String;
+    i: Integer;
+    PostStr: String;
 begin
-
-    s := Memo_Doc.Text;
-    tags := '';
-    p := posex('class="taglist">', s);
-    p2 := posex('class="post_content">', s);
-    if (p <> 0) and (p2 <> 0) and (p2 > p) then
+    json := '{"query":"{';
+    if IsTag then
     begin
-        p := p + Length('class="taglist">');
-        p2 := RPosEx('</a>', s, p2);
-        p1 := RPosEx('>', s, p2);
-        while p1 > p do
+        if cbSaveFromComments.Checked then
+            json := json + 'tag(name:\"' + TagStr + '\") { postPager(type:' + TagType +
+                ' ){ posts(page:' + SpinPage.Text + ') {... on Post {id, rating, seoAttributes{title}, attributes{ ' +
+                '... on AttributePicture {id, image { type, width, height, hasVideo }} }  comments { attributes { ' +
+                '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } } } }'
+        else
+            json := json + 'tag(name:\"' + TagStr + '\") { postPager(type:' + TagType +
+                ' ){ posts(page:' + SpinPage.Text + ') {... on Post {id, rating, seoAttributes{title}, attributes{ ' +
+                '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } } }';
+    end
+    else if cbSaveFromComments.Checked then
+        for i := 0 to Memo_Posts.Lines.Count - 1 do
         begin
-            p1 := p1 + 1;
-            if tags = '' then
-                tags := MidStr(s, p1, p2 - p1)
-            else
-                tags := tags + ' :: ' + MidStr(s, p1, p2 - p1);
-            p2 := RPosEx('</a>', s, p1);
-            p1 := RPosEx('>', s, p2);
+            if i <> 0 then json := json + ', ';
+            json := json + 'node' + IntToStr(i + 10) + ':node(id : \"';
+            PostStr := EncodeBase64('Post:' + Memo_Posts.Lines.Strings[i]);
+            json := json + PostStr + '\") {... on Post { id, rating, seoAttributes{title}, attributes{ ' +
+                '... on AttributePicture {id, image { type, width, height, hasVideo }} }  comments { attributes { ' +
+                '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } }';
+        end
+    else
+        for i := 0 to Memo_Posts.Lines.Count - 1 do
+        begin
+            if i <> 0 then json := json + ', ';
+            json := json + 'node' + IntToStr(i + 10) + ':node(id : \"';
+            PostStr := EncodeBase64('Post:' + Memo_Posts.Lines.Strings[i]);
+            json := json + PostStr + '\") {... on Post { id, rating, seoAttributes{title}, attributes{ ' +
+                '... on AttributePicture {id, image { type, width, height, hasVideo }} } } }';
         end;
-    end;
-    if tags <> '' then
+    json := json + '}"}';
+    HThread.PostJSON := json;
+    GetInThread('api');
+    Memo_Header.Lines.Text := HThread.Headers.Text;
+    Memo_Doc.Lines.LoadFromStream(HThread.Doc);
+end;
+
+procedure TJoySaveMainForm.GetLastPage;
+var
+    s: TCaption;
+    p, pEnd: SizeInt;
+    json: string;
+    last: integer;
+begin
+    if IsTag then
     begin
-        TagList.Append(HexStr(GetPostNum, 8) + tags);
-        tags := tags + LineEnding;
-        StrSt := TStringStream.Create(tags);
-        TagFileName := IntToStr(GetPostNum);
-        while length(TagFileName) < 8 do
-            TagFileName := '0' + TagFileName;
-        if cbSaveTagsInfo.Checked then
-            StrSt.SaveToFile(DirNow + TagFileName + '.txt');
-        StrSt.Free;
+        json := '{"query":"{tag(name:\"' + TagStr + '\") { postPager(type:' + TagType + ') {count} } }"}';
+        HThread.PostJSON := json;
+        GetInThread('api');
+        Memo_Header.Lines.Text := HThread.Headers.Text;
+        Memo_Doc.Lines.LoadFromStream(HThread.Doc);
+        if HThread.ResultCode <> 200 then exit;
+        s := Memo_Doc.Text;
+        p := PosEx('"count":', s);
+        if p <> 0 then
+        begin
+            p := p + Length('"count":');
+            pEnd := PosEx('}', s, p);
+            if pEnd <> 0 then
+                if StrToIntDef(MidStr(s, p, pEnd - p), -1) > 0 then
+                begin
+                    last := StrToIntDef(MidStr(s, p, pEnd - p), -1);
+                    if last < 0 then exit;
+                    if last mod 10 = 0 then
+                        last := last div 10
+                    else
+                        last := (last div 10) + 1;
+                    SG.Cells[3, StageNow + 1] := IntToStr(last);
+                    SpinEnd.Value := last;
+                    if SpinEnd.Value > 0 then
+                        IniPropStorage1.Save;
+                end;
+        end;
+    end
+    else
+    begin
+        sURL := Edit_URL.Text + Edit_append.Text;
+        Edit_FileName.Text := DecodeURL(sURL);
+        btnGetHTMLClick(nil);
+        s := Memo_Doc.Text;
+        p := PosEx('"pagination_expanded"><span class=''current''>', s);
+        if p <> 0 then
+        begin
+            p := p + Length('"pagination_expanded"><span class=''current''>');
+            pEnd := PosEx('<', s, p);
+            if pEnd <> 0 then
+                if StrToIntDef(MidStr(s, p, pEnd - p), -1) > 0 then
+                begin
+                    SG.Cells[3, StageNow + 1] := MidStr(s, p, pEnd - p);
+                    SpinEnd.Value := StrToIntDef(SG.Cells[3, StageNow + 1], -1);
+                    if SpinEnd.Value > 0 then
+                        IniPropStorage1.Save;
+                end;
+        end;
     end;
 end;
 
