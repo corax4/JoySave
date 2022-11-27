@@ -2,20 +2,20 @@ object JoySaveMainForm: TJoySaveMainForm
   Left = 1215
   Height = 417
   Top = 208
-  Width = 611
-  Caption = 'JoySave 0.29'
+  Width = 769
+  Caption = 'JoySave 0.30'
   ClientHeight = 417
-  ClientWidth = 611
+  ClientWidth = 769
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poScreenCenter
-  SessionProperties = 'cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;cbSaveTagsInfo.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinTimer.Value;tsDebug.TabVisible;cbAllTagsToName.Checked'
+  SessionProperties = 'cbAllTagsToName.Checked;cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;cbSaveTagsInfo.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinTimer.Value;tsDebug.TabVisible;SpinSearchFolderRange.Value'
   ShowHint = True
   object PageControlMain: TPageControl
     Left = 0
     Height = 394
     Top = 0
-    Width = 611
+    Width = 769
     ActivePage = tsMain
     Align = alClient
     TabIndex = 0
@@ -23,80 +23,29 @@ object JoySaveMainForm: TJoySaveMainForm
     object tsMain: TTabSheet
       Caption = 'Главная'
       ClientHeight = 366
-      ClientWidth = 603
-      object Edit_URL: TEdit
-        AnchorSideTop.Control = btnStart
+      ClientWidth = 761
+      object Edit_FileName: TEdit
+        AnchorSideLeft.Control = Label20
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = btnStop
+        AnchorSideTop.Side = asrCenter
         AnchorSideRight.Control = tsMain
         AnchorSideRight.Side = asrBottom
-        Left = 144
-        Height = 23
+        Left = 234
+        Height = 15
         Hint = 'Это только смотреть'
-        Top = 5
-        Width = 452
+        Top = 12
+        Width = 520
         Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 20
+        BorderSpacing.Top = 4
         BorderSpacing.Right = 7
+        BorderStyle = bsNone
+        Enabled = False
         ParentFont = False
         ReadOnly = True
         TabOrder = 0
-        Text = 'Edit_URL'
-      end
-      object Edit_FileName: TEdit
-        AnchorSideTop.Control = Edit_append
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = tsMain
-        AnchorSideRight.Side = asrBottom
-        Left = 144
-        Height = 23
-        Hint = 'Это только смотреть'
-        Top = 55
-        Width = 452
-        Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Top = 2
-        BorderSpacing.Right = 7
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 1
         Text = 'Edit_FileName'
-      end
-      object Label3: TLabel
-        AnchorSideTop.Control = Edit_URL
-        AnchorSideTop.Side = asrCenter
-        Left = 101
-        Height = 15
-        Top = 9
-        Width = 26
-        Caption = 'Сайт'
-        ParentColor = False
-        ParentFont = False
-      end
-      object Edit_append: TEdit
-        AnchorSideTop.Control = Edit_URL
-        AnchorSideTop.Side = asrBottom
-        AnchorSideRight.Control = tsMain
-        AnchorSideRight.Side = asrBottom
-        Left = 144
-        Height = 23
-        Hint = 'Это только смотреть'
-        Top = 30
-        Width = 452
-        Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Top = 2
-        BorderSpacing.Right = 7
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 2
-        Text = 'Edit_append'
-      end
-      object Label6: TLabel
-        AnchorSideTop.Control = Edit_append
-        AnchorSideTop.Side = asrCenter
-        Left = 101
-        Height = 15
-        Top = 34
-        Width = 26
-        Caption = 'Путь'
-        ParentColor = False
-        ParentFont = False
       end
       object SpinBegin: TSpinEdit
         AnchorSideLeft.Control = lblBegin
@@ -105,12 +54,12 @@ object JoySaveMainForm: TJoySaveMainForm
         Left = 174
         Height = 23
         Hint = 'Начальная страница. Берется из таблицы'
-        Top = 82
+        Top = 45
         Width = 80
         BorderSpacing.Left = 12
         MaxValue = 99999
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 1
         Value = 1
       end
       object SpinPage: TSpinEdit
@@ -120,12 +69,12 @@ object JoySaveMainForm: TJoySaveMainForm
         Left = 474
         Height = 23
         Hint = 'Страница, которая сейчас обрабатыватся'
-        Top = 82
+        Top = 45
         Width = 81
         BorderSpacing.Left = 12
         MaxValue = 99999
         ParentFont = False
-        TabOrder = 4
+        TabOrder = 2
       end
       object lblPage: TLabel
         AnchorSideLeft.Control = SpinEnd
@@ -134,7 +83,7 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideTop.Side = asrCenter
         Left = 422
         Height = 15
-        Top = 86
+        Top = 49
         Width = 40
         BorderSpacing.Left = 20
         Caption = 'Сейчас'
@@ -150,20 +99,21 @@ object JoySaveMainForm: TJoySaveMainForm
         Caption = 'Старт'
         OnClick = btnStartClick
         ParentFont = False
-        TabOrder = 5
+        TabOrder = 3
       end
       object btnStop: TButton
+        AnchorSideLeft.Control = btnStart
+        AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = btnStart
-        AnchorSideTop.Side = asrBottom
-        Left = 5
+        Left = 90
         Height = 28
-        Top = 41
+        Top = 5
         Width = 75
-        BorderSpacing.Top = 8
+        BorderSpacing.Left = 10
         Caption = 'Стоп'
         OnClick = btnStopClick
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 4
       end
       object lblBegin: TLabel
         AnchorSideLeft.Control = SpinRow
@@ -172,7 +122,7 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideTop.Side = asrCenter
         Left = 120
         Height = 15
-        Top = 86
+        Top = 49
         Width = 42
         BorderSpacing.Left = 20
         Caption = 'Начало'
@@ -186,12 +136,12 @@ object JoySaveMainForm: TJoySaveMainForm
         Left = 320
         Height = 23
         Hint = 'Последняя страница. Берется из таблицы'
-        Top = 82
+        Top = 45
         Width = 82
         BorderSpacing.Left = 12
         MaxValue = 99999
         ParentFont = False
-        TabOrder = 7
+        TabOrder = 5
       end
       object lblEnd: TLabel
         AnchorSideLeft.Control = SpinBegin
@@ -200,7 +150,7 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideTop.Side = asrCenter
         Left = 274
         Height = 15
-        Top = 86
+        Top = 49
         Width = 34
         BorderSpacing.Left = 20
         Caption = 'Конец'
@@ -216,19 +166,19 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideBottom.Control = tsMain
         AnchorSideBottom.Side = asrBottom
         Left = 0
-        Height = 257
-        Hint = 'Адрес - с Джоя. Например, https://joyreactor.cc/tag/котэ'#13#10'Начало - первая страница тега для сохранения.'#13#10'Конец - последняя страница для сохранения. 0 для самой актуальной.'#13#10'Папка - имя папки куда сохранять. Можно с подпапками через "/".'#13#10'Если поле Адрес или Начало или Конец пустое - строка пропускается.'#13#10'Если поле Папка пустое - сохраняется в папку с номером строки.'#13#10'В качестве адреса можно писать тег. Например, котэ/best.'
-        Top = 109
-        Width = 603
+        Height = 294
+        Top = 72
+        Width = 761
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoFillColumns = True
         BorderSpacing.Top = 4
         CellHintPriority = chpAll
+        ColCount = 6
         Columns = <        
           item
             MaxSize = 0
             Title.Caption = 'Адрес'
-            Width = 257
+            Width = 275
           end        
           item
             SizePriority = 0
@@ -244,19 +194,26 @@ object JoySaveMainForm: TJoySaveMainForm
             SizePriority = 0
             Title.Caption = 'Папка'
             Width = 133
+          end        
+          item
+            SizePriority = 0
+            Title.Caption = 'Искл. теги'
+            Width = 140
           end>
         DefaultColWidth = 32
         MouseWheelOption = mwGrid
-        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing, goSmoothScroll]
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing, goSmoothScroll, goCellHints]
         ParentFont = False
         RowCount = 101
-        TabOrder = 8
+        TabOrder = 6
+        OnGetCellHint = SGGetCellHint
         ColWidths = (
           32
-          257
+          275
           80
           80
           133
+          140
         )
         Cells = (
           15
@@ -308,33 +265,37 @@ object JoySaveMainForm: TJoySaveMainForm
         )
       end
       object Label20: TLabel
+        AnchorSideLeft.Control = btnStop
+        AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Edit_FileName
         AnchorSideTop.Side = asrCenter
-        Left = 101
+        Left = 185
         Height = 15
-        Top = 59
+        Top = 12
         Width = 29
+        BorderSpacing.Left = 20
         Caption = 'Файл'
+        Enabled = False
         ParentColor = False
         ParentFont = False
       end
       object SpinRow: TSpinEdit
         AnchorSideLeft.Control = lblRow
         AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Edit_FileName
+        AnchorSideTop.Control = btnStop
         AnchorSideTop.Side = asrBottom
         Left = 36
         Height = 23
         Hint = 'Номер строки из таблицы с которой сейчас работаем'
-        Top = 82
+        Top = 45
         Width = 64
         BorderSpacing.Left = 12
-        BorderSpacing.Top = 4
+        BorderSpacing.Top = 12
         MaxValue = 49
         MinValue = -1
         OnChange = SpinRowChange
         ParentFont = False
-        TabOrder = 9
+        TabOrder = 7
         Value = -1
       end
       object lblRow: TLabel
@@ -342,7 +303,7 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideTop.Side = asrCenter
         Left = 11
         Height = 15
-        Top = 86
+        Top = 49
         Width = 13
         Caption = '№'
         ParentColor = False
@@ -352,7 +313,7 @@ object JoySaveMainForm: TJoySaveMainForm
     object tsSettings: TTabSheet
       Caption = 'Настройки'
       ClientHeight = 366
-      ClientWidth = 603
+      ClientWidth = 761
       object Edit_proxyHost: TEdit
         AnchorSideTop.Control = lblPHost
         AnchorSideTop.Side = asrBottom
@@ -593,7 +554,7 @@ object JoySaveMainForm: TJoySaveMainForm
         Height = 23
         Hint = 'Копируем из расширения в браузере (например, расширение Cookie-Editor)'
         Top = 8
-        Width = 450
+        Width = 608
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 8
         BorderSpacing.Right = 10
@@ -742,11 +703,26 @@ object JoySaveMainForm: TJoySaveMainForm
         Caption = 'Писать ВСЕ (!) теги в имя файла'
         TabOrder = 17
       end
+      object SpinSearchFolderRange: TSpinEdit
+        AnchorSideLeft.Control = cbAllTagsToName
+        AnchorSideTop.Control = cbAllTagsToName
+        AnchorSideTop.Side = asrBottom
+        Left = 294
+        Height = 23
+        Hint = 'Сколько папок "до" и "после" будет использовано для поиска старой картинки'
+        Top = 290
+        Width = 66
+        BorderSpacing.Top = 8
+        MaxValue = 500
+        TabOrder = 18
+        Value = 2
+        Visible = False
+      end
     end
     object tsDebug: TTabSheet
       Caption = 'Debug'
       ClientHeight = 366
-      ClientWidth = 603
+      ClientWidth = 761
       TabVisible = False
       object Memo_Doc: TMemo
         Left = 21
@@ -902,12 +878,12 @@ object JoySaveMainForm: TJoySaveMainForm
     object tsHelp: TTabSheet
       Caption = 'Помощь'
       ClientHeight = 366
-      ClientWidth = 603
+      ClientWidth = 761
       object MemoHelp: TMemo
         Left = 0
         Height = 366
         Top = 0
-        Width = 603
+        Width = 761
         Align = alClient
         Lines.Strings = (
           '        === ИСПОЛЬЗОВАНИЕ ==='
@@ -915,7 +891,7 @@ object JoySaveMainForm: TJoySaveMainForm
           '  На вкладке "Главная" заполняем таблицу ссылками для сохранения. Копируем адрес в строке адреса браузера, вставляем в клетку "Адрес".'
           '  Какой адрес копировать? Например, переходим в раздел "Котэ". Копируем адрес. Получится https://joyreactor.cc/tag/котэ. Хотим больше котиков? Переключаем на "Бездну" и копируем - получается https://joyreactor.cc/tag/котэ/all. Или может только лучших котиков? Переключаем на "Лучшее" и получаем https://joyreactor.cc/tag/котэ/best. Вобщем, понятно. Вместо ссылки можно просто написать туда тег. Можно так же указать качать ли Бездну, Новое, Хорошее или Лучшее дописав после соотвественно одно из: /new /all /good /best. Например, котэ/best.'
           '  '
-          '  В столбцах "Начало" и "Конец" вводим номера страниц с какого по какое сохранять. Если "Конец" - 0, то в это поле автоматически запишется актуальный последний номер страницы для этого тега. Столбец "Папка" не обязательный. Это название папки, куда будет сохраняться картинки. Т.е. если введем "SuperCat", то будет сохраняться в папке Pic/SuperCat (папка Pic не настраивается, она прописана прямо в проге). Можно указать и подпаки, например SuperCat/Best. Если оставить пустым, то будет имя папки будет номер из столбца No.'
+          '  В столбцах "Начало" и "Конец" вводим номера страниц с какого по какое сохранять. Если "Конец" - 0, то в это поле автоматически запишется актуальный последний номер страницы для этого тега. Столбец "Папка" не обязательный. Это название папки, куда будет сохраняться картинки. Т.е. если введем "SuperCat", то будет сохраняться в папке Pic/SuperCat (папка Pic не настраивается, она прописана прямо в проге). Можно указать и подпаки, например SuperCat/Best. Если оставить пустым, то будет имя папки будет номер из столбца No. В поле "Искл. тэги" можно вписать теги (через точку с запятой ; ), которые качать не надо.'
           '  '
           '  Строки можно пропускать. Если пустое хоть одно из полей [Адрес, Начало, Конец], то строка пропускается. Это удобно, чтоб держать записи на будущее. Например, скачали котиков до страницы 200. Очистим поле "Начало", и у нас сохранен адрес и последняя скачанная страница. Когда накопятся новые картинки, то в поле "Начало" поставим те же 200, а в "Конец" уже, например, 250.'
           '  '
@@ -985,7 +961,7 @@ object JoySaveMainForm: TJoySaveMainForm
     Height = 23
     Hint = 'Когда качает ("Кач" в первом поле), то при правильном куки будет показан Кач [твой логин] (кроме скачки по тегу).'#13#10'Если будет достигнут лимит на API реактора, то в поле "Всего" будет "Lim". Будет небольшая пауза и продолжение.'
     Top = 394
-    Width = 611
+    Width = 769
     Panels = <    
       item
         Text = 'Стоп'

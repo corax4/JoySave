@@ -29,7 +29,7 @@ unit joysave_main;
 interface
 
 uses
-    Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls, base64, fpjson, types,
+    Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls, base64, fpjson, types, LazUTF8,
     Spin, ExtCtrls, Grids, IniPropStorage, MaskEdit, ComCtrls, HTTPSend, synacode, dateutils, jsonparser,
     strutils, LazFileUtils, blcksock, {$IFDEF WINDOWS} Windows,{$ENDIF} ssl_openssl, zipper, ZStream, eventlog;
 
@@ -86,11 +86,9 @@ type
         Edit_Cookie: TEdit;
         Edit_ProxyPass: TEdit;
         Edit_proxyUser: TEdit;
-        Edit_URL: TEdit;
         Edit_FileName: TEdit;
         Edit_proxyHost: TEdit;
         Edit_ProxyPort: TEdit;
-        Edit_append: TEdit;
         EventLog1: TEventLog;
         gbAnimation: TGroupBox;
         IniPropStorage1: TIniPropStorage;
@@ -106,10 +104,8 @@ type
         lblCookie: TLabel;
         lblPUser: TLabel;
         lblPPass: TLabel;
-        Label3: TLabel;
         Label4: TLabel;
         Label5: TLabel;
-        Label6: TLabel;
         Label7: TLabel;
         Label8: TLabel;
         lblBegin: TLabel;
@@ -122,6 +118,7 @@ type
         PageControlMain: TPageControl;
         rgProxy: TRadioGroup;
         SpinBegin: TSpinEdit;
+        SpinSearchFolderRange: TSpinEdit;
         SpinRow: TSpinEdit;
         SpinTimer: TSpinEdit;
         SpinPage: TSpinEdit;
@@ -147,6 +144,7 @@ type
         procedure IniPropStorage1RestoreProperties(Sender: TObject);
         procedure IniPropStorage1RestoringProperties(Sender: TObject);
         procedure IniPropStorage1SavingProperties(Sender: TObject);
+        procedure SGGetCellHint(Sender: TObject; ACol, ARow: Integer; var HintText: String);
         procedure SpinRowChange(Sender: TObject);
         procedure SpinTimerChange(Sender: TObject);
         procedure Timer1Timer(Sender: TObject);
@@ -190,6 +188,9 @@ var
     IsTag: boolean;
     TagStr: string;
     TagType: string;
+    Global_URL: string;
+    Global_Append: string;
+    NoTags: TStringDynArray;
 
 implementation
 
@@ -305,6 +306,7 @@ procedure TJoySaveMainForm.btnIncRowClick(Sender: TObject);
 var
     p: Integer;
     s: String;
+    i: Integer;
 begin
     PostNow := 0;
     ImgNow := 0;
@@ -339,29 +341,31 @@ begin
             else
                 TagStr := LowerCase(s);
             if (TagType <> 'ALL') and (TagType <> 'GOOD') and (TagType <> 'NEW') and (TagType <> 'BEST') then
-                    TagType := 'GOOD';
-            Edit_append.Text := s;
-            Edit_URL.Text := 'https://api.joyreactor.cc';
+                    TagType := 'ALL';
+            Global_Append := s;
+            Global_URL := 'https://api.joyreactor.cc';
         end
         else  // it is https
         begin
             p := posex('/', s, 10); // находим ближайший '/' после https://
             if p > 1 then p := p - 1;
-            if p <> 0 then Edit_URL.Text := LeftStr(s, p) else Edit_URL.Text := s;
-            Edit_append.Text := RightStr(s, length(s) - p);
-            if p = 0 then Edit_append.Text := '';
+            if p <> 0 then Global_URL := LeftStr(s, p) else Global_URL := s;
+            Global_Append := RightStr(s, length(s) - p);
+            if p = 0 then Global_Append := '';
             // удаляем номер страницы, если есть
-            s := Edit_append.Text;
+            s := Global_Append;
             p := RPos('/', s);
             if p > 4 then
             begin
                 if (StrToIntDef(RightStr(s, Length(s) - p), -1) > -1) {numb} and (MidStr(s, p - 4, 5) <> '/tag/') then
-                    Edit_append.Text := LeftStr(s, p - 1);
+                    Global_Append := LeftStr(s, p - 1);
             end;
         end;
 
         SpinBegin.Value := StrToIntDef(SG.Cells[2, StageNow + 1], -1);
         SpinEnd.Value := StrToIntDef(SG.Cells[3, StageNow + 1], 0);
+        NoTags := SplitString(UTF8LowerCase(SG.Cells[5, StageNow + 1]), ';');
+        for i := 0 to High(NoTags) do NoTags[i] := trim(NoTags[i]);
 
         if (SpinPage.Value < SpinBegin.Value) or (SpinPage.Value > SpinEnd.Value) then
             SpinPage.Value := SpinBegin.Value;
@@ -399,6 +403,8 @@ var
 
     StrSt: TStringStream;
     tags: String;
+    info: String;
+    rating: Single;
     PostFNum: String;
 
     jFull: TJSONData;
@@ -445,7 +451,10 @@ var
 
     procedure ProcPost(aPost: TJSONData);
     var
-        k: Integer;
+        k, ti, tj: Integer;
+        aTags: TStringDynArray;
+        bTags: TStringDynArray;
+        tag: ansistring;
     begin
         // Post num
         jItem := aPost.FindPath('id');
@@ -460,9 +469,38 @@ var
         tags := jItem.Value;
         p := RPos('/ ', tags);
         if p <> 0 then tags := copy(tags, p + 2, length(tags));
+        atags := SplitString(tags, ' :: ');
+        btags := SplitString(UTF8lowercase(tags), ' :: ');
+        for ti := 0 to High(NoTags) do
+            for tj := 0 to High(bTags) do
+                begin
+                    tag := trim(bTags[tj]);
+                    if NoTags[ti] = tag Then exit;
+                end;
+
+        jItem := aPost.FindPath('createdAt');
+        if jItem = nil then exit;
+        info := tags + #13#10 + 'createdAt: ' + jItem.Value;
+
+        jItem := aPost.FindPath('nsfw');
+        if jItem = nil then exit;
+        info := info + #13#10 + 'nsfw: ' + BoolToStr(jItem.Value, true);
+
+        jItem := aPost.FindPath('unsafe');
+        if jItem = nil then exit;
+        info := info + #13#10 + 'unsafe: ' + BoolToStr(jItem.Value, true);
+
+        jItem := aPost.FindPath('user.username');
+        if jItem = nil then exit;
+        info := info + #13#10 + 'username: ' + jItem.Value;
+
+        jItem := aPost.FindPath('rating');
+        if jItem = nil then exit;
+        rating := jItem.Value;
+        info := info + #13#10 + 'rating: ' + FloatToStrF(rating, ffFixed, 6, 1);
         if (Length(tags) > 0) and cbSaveTagsInfo.Checked then
         begin
-            StrSt := TStringStream.Create(tags);
+            StrSt := TStringStream.Create(info);
             try
                 StrSt.SaveToFile(DirNow + PostFNum + '.txt');
             except
@@ -641,11 +679,11 @@ begin
     Memo_Header.Clear;
     Memo_Imgs.Clear;
     Memo_Posts.Clear;
-    Edit_URL.Text := '';
+    Global_URL := '';
     Edit_FileName.Text := '';
     Edit_proxyHost.Text := '';
     Edit_ProxyPort.Text := '';
-    Edit_append.Text := '';
+    Global_Append := '';
 
     HThread := THTTPThread.Create(False);
     TagList := TStringList.Create;
@@ -685,6 +723,23 @@ var
 begin
     for i := 1 to SG.RowCount - 1 do
         IniPropStorage1.StoredValue['MainGrid_row_' + IntToStr(i - 1)] := SG.Rows[i].CommaText;
+end;
+
+procedure TJoySaveMainForm.SGGetCellHint(Sender: TObject; ACol, ARow: Integer; var HintText: String);
+begin
+    case ACol of
+        0: HintText := 'Номер строки, номер задания';
+        1: HintText := 'Адрес - с Джоя. Например, https://joyreactor.cc/tag/котэ'#13#10 +
+            'В качестве адреса можно писать тег. Например, котэ/best.'#13#10 +
+            'Если поле пустое - строка пропускается.';
+        2: HintText := 'Начало - первая страница тега для сохранения.'#13#10 +
+            'Если поле пустое - строка пропускается.';
+        3: HintText := 'Конец - последняя страница для сохранения. 0 для самой актуальной.'#13#10 +
+            'Если поле пустое - строка пропускается.';
+        4: HintText := 'Папка - имя папки куда сохранять. Можно с подпапками через "/".'#13#10 +
+            'Если поле пустое - сохраняется в папку с номером строки.';
+        5: HintText := 'Теги через ";". Если хоть один из тегов есть в посте - пост пропускается.';
+    end;
 end;
 
 procedure TJoySaveMainForm.SpinRowChange(Sender: TObject);
@@ -747,7 +802,7 @@ begin
             end
             else
             begin
-                sURL := Edit_URL.Text + Edit_append.Text;
+                sURL := Global_URL + Global_Append;
                 if SpinPage.Value <> 0 then
                     sURL := sURL + '/' + SpinPage.Text;
                 Edit_FileName.Text := DecodeURL(sURL);
@@ -769,7 +824,7 @@ begin
         // посты получены
         else
         begin
-            sURL := 'api'; //Edit_URL.Text + Memo_Posts.Lines.Strings[PostNow - 1];
+            sURL := 'api'; //Global_URL + Memo_Posts.Lines.Strings[PostNow - 1];
             Edit_FileName.Text := 'API';
 
             SubDir := ReplaceStr(Trim(SG.Cells[4, StageNow + 1]), '\', '/');
@@ -824,7 +879,7 @@ end;
 // подготовка HTTP к работе - прокси и общие мелочи
 procedure TJoySaveMainForm.SetProxy;
 begin
-    HThread.referer := Edit_URL.Text;
+    HThread.referer := Global_URL;
     if IsTag then HThread.referer := 'https://joyreactor.cc';
     HThread.ProxyType := rgProxy.ItemIndex;
     HThread.ProxyHost := Edit_proxyHost.Text;
@@ -925,6 +980,7 @@ procedure TJoySaveMainForm.SaveImgProc;
 var
     filename, SrvFName: String;
     p: SizeInt;
+    i: integer;
     ImgFromComment: Boolean;
     s1: String;
     BadFileName: String;
@@ -987,6 +1043,19 @@ begin
         BadFileName := '';
         OldFiles := FindAllFiles(DirNow, '*-' + ImgId + ext, False);
         //OldFiles := FindAllFiles('Pic/' + SubDir, '*-' + ImgId + '.*', true);
+        if OldFiles.Count = 0 then
+            for i := 1 to SpinSearchFolderRange.Value do
+            begin
+                if OldFiles.Count > 0 then Break;
+                OldFiles.Free;
+                OldFiles := FindAllFiles('Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value - i) *
+                    SpinPageCount.Value) + '/', '*-' + ImgId + ext, False);
+                if OldFiles.Count > 0 then Break;
+                OldFiles.Free;
+                OldFiles := FindAllFiles('Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value + i) *
+                    SpinPageCount.Value) + '/', '*-' + ImgId + ext, False);
+            end;
+
         if OldFiles.Count = 1 then
             BadFileName := OldFiles.Strings[0];
         if OldFiles.Count > 1 then
@@ -1031,6 +1100,19 @@ begin
         BadFileName := '';
         OldFiles := FindAllFiles(DirNow, '*_' + ImgId + '__*' + ext, False);
         //OldFiles := FindAllFiles('Pic/' + SubDir, '*_' + ImgId + '__*', true);
+        if OldFiles.Count = 0 then
+            for i := 1 to SpinSearchFolderRange.Value do
+            begin
+                if OldFiles.Count > 0 then Break;
+                OldFiles.Free;
+                OldFiles := FindAllFiles('Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value - i) *
+                    SpinPageCount.Value) + '/', '*_' + ImgId + '__*' + ext, False);
+                if OldFiles.Count > 0 then Break;
+                OldFiles.Free;
+                OldFiles := FindAllFiles('Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value + i) *
+                    SpinPageCount.Value) + '/', '*_' + ImgId + '__*' + ext, False);
+            end;
+
         if OldFiles.Count = 1 then
             BadFileName := OldFiles.Strings[0];
         if OldFiles.Count > 1 then
@@ -1071,12 +1153,14 @@ begin
     begin
         if cbSaveFromComments.Checked then
             json := json + 'tag(name:\"' + TagStr + '\") { postPager(type:' + TagType +
-                ' ){ posts(page:' + SpinPage.Text + ') {... on Post {id, rating, seoAttributes{title}, attributes{ ' +
+                ' ){ posts(page:' + SpinPage.Text + ') {... on Post {id, rating, createdAt, nsfw, unsafe, ' +
+                'user{username}, seoAttributes{title}, attributes{ ' +
                 '... on AttributePicture {id, image { type, width, height, hasVideo }} }  comments { attributes { ' +
                 '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } } } }'
         else
             json := json + 'tag(name:\"' + TagStr + '\") { postPager(type:' + TagType +
-                ' ){ posts(page:' + SpinPage.Text + ') {... on Post {id, rating, seoAttributes{title}, attributes{ ' +
+                ' ){ posts(page:' + SpinPage.Text + ') {... on Post {id, rating, createdAt, nsfw, unsafe, ' +
+                'user{username}, seoAttributes{title}, attributes{ ' +
                 '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } } }';
     end
     else if cbSaveFromComments.Checked then
@@ -1085,7 +1169,8 @@ begin
             if i <> 0 then json := json + ', ';
             json := json + 'node' + IntToStr(i + 10) + ':node(id : \"';
             PostStr := EncodeBase64('Post:' + Memo_Posts.Lines.Strings[i]);
-            json := json + PostStr + '\") {... on Post { id, rating, seoAttributes{title}, attributes{ ' +
+            json := json + PostStr + '\") {... on Post { id, rating, createdAt, nsfw, unsafe, ' +
+                'user{username}, seoAttributes{title}, attributes{ ' +
                 '... on AttributePicture {id, image { type, width, height, hasVideo }} }  comments { attributes { ' +
                 '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } }';
         end
@@ -1095,7 +1180,8 @@ begin
             if i <> 0 then json := json + ', ';
             json := json + 'node' + IntToStr(i + 10) + ':node(id : \"';
             PostStr := EncodeBase64('Post:' + Memo_Posts.Lines.Strings[i]);
-            json := json + PostStr + '\") {... on Post { id, rating, seoAttributes{title}, attributes{ ' +
+            json := json + PostStr + '\") {... on Post { id, rating, createdAt, nsfw, unsafe, ' +
+                'user{username}, seoAttributes{title}, attributes{ ' +
                 '... on AttributePicture {id, image { type, width, height, hasVideo }} } } }';
         end;
     json := json + '}"}';
@@ -1144,7 +1230,7 @@ begin
     end
     else
     begin
-        sURL := Edit_URL.Text + Edit_append.Text;
+        sURL := Global_URL + Global_Append;
         Edit_FileName.Text := DecodeURL(sURL);
         btnGetHTMLClick(nil);
         s := Memo_Doc.Text;

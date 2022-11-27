@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="12"/>
     <BuildModes Active="Default"/>
-    <Units Count="18">
+    <Units Count="22">
       <Unit0>
         <Filename Value="JoySave.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -19,14 +19,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="5"/>
-        <CursorPos X="37" Y="28"/>
-        <FoldState Value=" T3nO08q"/>
+        <TopLine Value="765"/>
+        <CursorPos X="67" Y="782"/>
+        <FoldState Value=" T3nP08x"/>
         <UsageCount Value="201"/>
         <Bookmarks Count="3">
-          <Item0 X="11" Y="453" ID="1"/>
-          <Item1 X="9" Y="1122" ID="2"/>
-          <Item2 Y="728" ID="3"/>
+          <Item0 X="11" Y="462" ID="1"/>
+          <Item1 X="9" Y="1208" ID="2"/>
+          <Item2 Y="783" ID="3"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -37,90 +37,90 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="952"/>
         <CursorPos X="30" Y="993"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit2>
       <Unit3>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\diskh.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="10" Y="29"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit3>
       <Unit4>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\disk.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="73"/>
         <CursorPos X="12" Y="78"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit4>
       <Unit5>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\ssl_openssl.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="160"/>
         <CursorPos Y="186"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit5>
       <Unit6>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\ssl_openssl_lib.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="120"/>
         <CursorPos X="90" Y="160"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit6>
       <Unit7>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\httpsend.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="338"/>
         <CursorPos Y="358"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit7>
       <Unit8>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\synautil.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1286"/>
         <CursorPos Y="1310"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit8>
       <Unit9>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\synacode.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="457"/>
         <CursorPos Y="480"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit9>
       <Unit10>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\synaip.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="119"/>
         <CursorPos Y="150"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit10>
       <Unit11>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\blcksock.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3746"/>
         <CursorPos Y="3779"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit11>
       <Unit12>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\ssfpc.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="760"/>
         <CursorPos Y="800"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit12>
       <Unit13>
         <Filename Value="D:\usr\share\lazarus\2.2.2\ext\synapse\synafpc.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="82"/>
         <CursorPos Y="110"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
       </Unit13>
       <Unit14>
         <Filename Value="synapse40.1\httpsend.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="239"/>
         <CursorPos X="43" Y="380"/>
-        <UsageCount Value="72"/>
+        <UsageCount Value="71"/>
       </Unit14>
       <Unit15>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\strutils.pp"/>
@@ -135,7 +135,7 @@
         <UnitName Value="Types"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="42"/>
-        <CursorPos X="3" Y="66"/>
+        <CursorPos X="22" Y="68"/>
         <UsageCount Value="37"/>
       </Unit16>
       <Unit17>
@@ -143,8 +143,39 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="457"/>
         <CursorPos Y="481"/>
-        <UsageCount Value="30"/>
+        <UsageCount Value="29"/>
       </Unit17>
+      <Unit18>
+        <Filename Value="C:\lazarus\components\lazutils\fileutil.pas"/>
+        <UnitName Value="FileUtil"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="159"/>
+        <CursorPos X="10" Y="183"/>
+        <UsageCount Value="9"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="C:\lazarus\components\lazutils\lazfileutils.pas"/>
+        <UnitName Value="LazFileUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="96"/>
+        <CursorPos X="10" Y="120"/>
+        <UsageCount Value="9"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\objpas\sysutils\sysstrh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="50"/>
+        <CursorPos X="10" Y="74"/>
+        <UsageCount Value="10"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="C:\lazarus\components\lazutils\lazutf8.pas"/>
+        <UnitName Value="LazUTF8"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="84"/>
+        <CursorPos X="19" Y="125"/>
+        <UsageCount Value="10"/>
+      </Unit21>
     </Units>
     <OtherDefines Count="1">
       <Define0 Value="UseCThreads"/>
@@ -152,123 +183,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="121" Column="19" TopLine="98"/>
+        <Caret Line="371" TopLine="353"/>
       </Position1>
       <Position2>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="535" Column="23" TopLine="494"/>
+        <Caret Line="476" Column="46" TopLine="456"/>
       </Position2>
       <Position3>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="641" Column="15" TopLine="601"/>
+        <Caret Line="371" TopLine="347"/>
       </Position3>
       <Position4>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="735" Column="47" TopLine="719"/>
+        <Caret Line="32" Column="111"/>
       </Position4>
       <Position5>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="964" TopLine="943"/>
+        <Caret Line="32" Column="111" TopLine="32"/>
       </Position5>
       <Position6>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="267" Column="28" TopLine="236"/>
+        <Caret Line="474" Column="34" TopLine="462"/>
       </Position6>
       <Position7>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="500" Column="35" TopLine="477"/>
+        <Caret Line="371" TopLine="347"/>
       </Position7>
       <Position8>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="256" Column="34" TopLine="246"/>
+        <Caret Line="479" TopLine="456"/>
       </Position8>
       <Position9>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="44" Column="19" TopLine="19"/>
+        <Caret Line="519" TopLine="496"/>
       </Position9>
       <Position10>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="1084" Column="13" TopLine="1072"/>
+        <Caret Line="1084" Column="56" TopLine="207"/>
       </Position10>
       <Position11>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="161" Column="19" TopLine="137"/>
+        <Caret Line="368" Column="75" TopLine="341"/>
       </Position11>
       <Position12>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="893" Column="5" TopLine="890"/>
+        <Caret Line="367" Column="75" TopLine="340"/>
       </Position12>
       <Position13>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="156" Column="19" TopLine="133"/>
+        <Caret Line="366" Column="75" TopLine="339"/>
       </Position13>
       <Position14>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="807" Column="5" TopLine="803"/>
+        <Caret Line="367" Column="75" TopLine="340"/>
       </Position14>
       <Position15>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="1081" Column="59" TopLine="1054"/>
+        <Caret Line="28" Column="67"/>
       </Position15>
       <Position16>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="782" Column="26" TopLine="760"/>
+        <Caret Line="89" Column="17" TopLine="48"/>
       </Position16>
       <Position17>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="715" Column="34" TopLine="706"/>
+        <Caret Line="346" Column="21" TopLine="305"/>
       </Position17>
       <Position18>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="181" Column="15" TopLine="157"/>
+        <Caret Line="352" Column="72" TopLine="312"/>
       </Position18>
       <Position19>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="389" Column="27" TopLine="358"/>
+        <Caret Line="682" Column="13" TopLine="642"/>
       </Position19>
       <Position20>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="783" Column="27" TopLine="755"/>
+        <Caret Line="805" Column="33" TopLine="765"/>
       </Position20>
       <Position21>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="789" Column="26" TopLine="757"/>
+        <Caret Line="827" Column="38" TopLine="787"/>
       </Position21>
       <Position22>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="726" Column="51" TopLine="695"/>
+        <Caret Line="882" Column="32" TopLine="841"/>
       </Position22>
       <Position23>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="270" Column="62" TopLine="239"/>
+        <Caret Line="1233" Column="25" TopLine="1192"/>
       </Position23>
       <Position24>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="921" TopLine="907"/>
+        <Caret Line="89" Column="17" TopLine="65"/>
       </Position24>
       <Position25>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="445" Column="9" TopLine="442"/>
+        <Caret Line="194" Column="27" TopLine="161"/>
       </Position25>
       <Position26>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="43" Column="83" TopLine="19"/>
+        <Caret Line="1235" Column="46" TopLine="1194"/>
       </Position26>
       <Position27>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="50" Column="46" TopLine="19"/>
+        <Caret Line="1201" Column="31" TopLine="1194"/>
       </Position27>
       <Position28>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="417" Column="47" TopLine="506"/>
+        <Caret Line="1200" Column="31" TopLine="1193"/>
       </Position28>
       <Position29>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="835" Column="55" TopLine="587"/>
+        <Caret Line="1199" Column="31" TopLine="1192"/>
       </Position29>
       <Position30>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="842" Column="55" TopLine="794"/>
+        <Caret Line="171" Column="46" TopLine="153"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -280,6 +311,15 @@
     <Watches>
       <Item>
         <Expression Value="tags"/>
+      </Item>
+      <Item>
+        <Expression Value="NoTags"/>
+      </Item>
+      <Item>
+        <Expression Value="btags"/>
+      </Item>
+      <Item>
+        <Expression Value="tag"/>
       </Item>
     </Watches>
   </Debugging>
