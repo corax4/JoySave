@@ -310,6 +310,13 @@ var
 begin
     PostNow := 0;
     ImgNow := 0;
+    if StageNow > 99 then
+    begin
+        StageNow := -1;
+        SpinRow.Value := -1;
+        btnStopClick(nil);
+        exit;
+    end;
     // проверка на заполенность строки в таблице
     while not ((length(SG.Cells[1, StageNow + 1]) > 0) and (StrToIntDef(SG.Cells[2, StageNow + 1], -1) > 0) and
             (StrToIntDef(SG.Cells[3, StageNow + 1], -1) > -1)) do
@@ -326,6 +333,7 @@ begin
     end
     else    // строка в таблице вроде в порядке
     begin
+        Total := 0;
         SpinRow.Value := StageNow;
         s := SG.Cells[1, StageNow + 1]; // URL
         IsTag := LowerCase(copy(s, 1, 8)) <> 'https://';
@@ -700,6 +708,10 @@ begin
     begin
         RowStr.CommaText := IniPropStorage1.StoredValue['MainGrid_row_' + IntToStr(i - 1)];
         SG.Rows[i] := RowStr;
+        if i <= 10 then
+            SG.Cells[0, i] := '0' + IntToStr(i - 1)
+        else
+            SG.Cells[0, i] := IntToStr(i - 1);
     end;
 
     RowStr.Free;

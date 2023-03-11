@@ -3,7 +3,7 @@ object JoySaveMainForm: TJoySaveMainForm
   Height = 417
   Top = 208
   Width = 769
-  Caption = 'JoySave 0.30'
+  Caption = 'JoySave 0.31'
   ClientHeight = 417
   ClientWidth = 769
   OnClose = FormClose
@@ -11,6 +11,7 @@ object JoySaveMainForm: TJoySaveMainForm
   Position = poScreenCenter
   SessionProperties = 'cbAllTagsToName.Checked;cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;cbSaveTagsInfo.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinTimer.Value;tsDebug.TabVisible;SpinSearchFolderRange.Value'
   ShowHint = True
+  LCLVersion = '2.2.6.0'
   object PageControlMain: TPageControl
     Left = 0
     Height = 394
@@ -178,7 +179,7 @@ object JoySaveMainForm: TJoySaveMainForm
           item
             MaxSize = 0
             Title.Caption = 'Адрес'
-            Width = 275
+            Width = 296
           end        
           item
             SizePriority = 0
@@ -209,7 +210,7 @@ object JoySaveMainForm: TJoySaveMainForm
         OnGetCellHint = SGGetCellHint
         ColWidths = (
           32
-          275
+          296
           80
           80
           133
@@ -291,7 +292,7 @@ object JoySaveMainForm: TJoySaveMainForm
         Width = 64
         BorderSpacing.Left = 12
         BorderSpacing.Top = 12
-        MaxValue = 49
+        MaxValue = 99
         MinValue = -1
         OnChange = SpinRowChange
         ParentFont = False
