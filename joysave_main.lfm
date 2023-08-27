@@ -1,20 +1,20 @@
 object JoySaveMainForm: TJoySaveMainForm
   Left = 1215
-  Height = 417
+  Height = 440
   Top = 208
   Width = 769
-  Caption = 'JoySave 0.31'
-  ClientHeight = 417
+  Caption = 'JoySave 0.32'
+  ClientHeight = 440
   ClientWidth = 769
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poScreenCenter
-  SessionProperties = 'cbAllTagsToName.Checked;cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;cbSaveTagsInfo.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinTimer.Value;tsDebug.TabVisible;SpinSearchFolderRange.Value'
+  SessionProperties = 'cbAllTagsToName.Checked;cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;cbSaveTagsInfo.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinSearchFolderRange.Value;SpinTimer.Value;tsDebug.TabVisible;cbSaveWebmIfNoGif.Checked'
   ShowHint = True
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '3.0.0.1'
   object PageControlMain: TPageControl
     Left = 0
-    Height = 394
+    Height = 417
     Top = 0
     Width = 769
     ActivePage = tsMain
@@ -23,7 +23,7 @@ object JoySaveMainForm: TJoySaveMainForm
     TabOrder = 0
     object tsMain: TTabSheet
       Caption = 'Главная'
-      ClientHeight = 366
+      ClientHeight = 389
       ClientWidth = 761
       object Edit_FileName: TEdit
         AnchorSideLeft.Control = Label20
@@ -167,7 +167,7 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideBottom.Control = tsMain
         AnchorSideBottom.Side = asrBottom
         Left = 0
-        Height = 294
+        Height = 317
         Top = 72
         Width = 761
         Anchors = [akTop, akLeft, akRight, akBottom]
@@ -177,7 +177,6 @@ object JoySaveMainForm: TJoySaveMainForm
         ColCount = 6
         Columns = <        
           item
-            MaxSize = 0
             Title.Caption = 'Адрес'
             Width = 296
           end        
@@ -313,7 +312,7 @@ object JoySaveMainForm: TJoySaveMainForm
     end
     object tsSettings: TTabSheet
       Caption = 'Настройки'
-      ClientHeight = 366
+      ClientHeight = 389
       ClientWidth = 761
       object Edit_proxyHost: TEdit
         AnchorSideTop.Control = lblPHost
@@ -497,7 +496,7 @@ object JoySaveMainForm: TJoySaveMainForm
         Height = 19
         Hint = 'Скачанная полностью подпапка запакуется в CBZ (по сути, в ZIP)'
         Top = 74
-        Width = 105
+        Width = 103
         BorderSpacing.Left = 20
         BorderSpacing.Top = 8
         Caption = 'Паковать в CBZ'
@@ -511,7 +510,7 @@ object JoySaveMainForm: TJoySaveMainForm
         Height = 19
         Hint = 'Когда папка упакована в CBZ - удалить её'
         Top = 101
-        Width = 188
+        Width = 186
         BorderSpacing.Top = 8
         Caption = 'Удалять папку после упаковки'
         TabOrder = 7
@@ -569,7 +568,7 @@ object JoySaveMainForm: TJoySaveMainForm
         Height = 19
         Hint = 'Много мусора, но могут быть ценнейшие шедевры!'
         Top = 128
-        Width = 210
+        Width = 208
         BorderSpacing.Top = 8
         Caption = 'Качать картинки из комментариев'
         TabOrder = 10
@@ -592,7 +591,7 @@ object JoySaveMainForm: TJoySaveMainForm
           Height = 19
           Hint = 'Формат самый тяжелый, но качественный'
           Top = 8
-          Width = 37
+          Width = 35
           Caption = 'GIF'
           Checked = True
           State = cbChecked
@@ -603,7 +602,7 @@ object JoySaveMainForm: TJoySaveMainForm
           Height = 19
           Hint = 'Сильно меньше весит чем GIF, но качество сильно хуже'
           Top = 40
-          Width = 55
+          Width = 53
           Caption = 'WebM'
           TabOrder = 1
         end
@@ -612,7 +611,7 @@ object JoySaveMainForm: TJoySaveMainForm
           Height = 19
           Hint = 'По качеству как WebM, но больше весит'
           Top = 72
-          Width = 44
+          Width = 42
           Caption = 'MP4'
           TabOrder = 2
         end
@@ -625,7 +624,7 @@ object JoySaveMainForm: TJoySaveMainForm
         Height = 19
         Hint = 'Это применяется если галочка GIF отключена'
         Top = 155
-        Width = 194
+        Width = 192
         BorderSpacing.Top = 8
         Caption = 'Качать GIF если нет Webm/MP4'
         Checked = True
@@ -641,7 +640,7 @@ object JoySaveMainForm: TJoySaveMainForm
         Height = 19
         Hint = 'Отключи если хочешь качать только анимацию'
         Top = 45
-        Width = 122
+        Width = 120
         BorderSpacing.Left = 20
         Caption = 'Качать JPEG и PNG'
         Checked = True
@@ -650,13 +649,13 @@ object JoySaveMainForm: TJoySaveMainForm
       end
       object cbAltFileName: TCheckBox
         AnchorSideLeft.Control = cbDelAfterPack
-        AnchorSideTop.Control = cbSaveGifIfNoWebm
+        AnchorSideTop.Control = cbSaveWebmIfNoGif
         AnchorSideTop.Side = asrBottom
         Left = 294
         Height = 19
         Hint = '<номер поста>_<1 если картинка из комментов, иначе 0>_<ID>__имя файла как на сервере без ID'
-        Top = 182
-        Width = 119
+        Top = 209
+        Width = 117
         BorderSpacing.Top = 8
         Caption = 'Альт. имя файлов'
         Checked = True
@@ -670,8 +669,8 @@ object JoySaveMainForm: TJoySaveMainForm
         Left = 294
         Height = 19
         Hint = 'Если включен альт имена, но найдена картинка с именем как на сервере - переименовать в альт имя'
-        Top = 209
-        Width = 186
+        Top = 236
+        Width = 184
         BorderSpacing.Top = 8
         Caption = 'Переименовывать в альт. имя'
         Checked = True
@@ -685,8 +684,8 @@ object JoySaveMainForm: TJoySaveMainForm
         Left = 294
         Height = 19
         Hint = 'Сохранять все теги в <номер поста>.txt для каждого поста'
-        Top = 236
-        Width = 164
+        Top = 263
+        Width = 162
         BorderSpacing.Top = 8
         Caption = 'Сохранять в txt теги поста'
         TabOrder = 16
@@ -698,8 +697,8 @@ object JoySaveMainForm: TJoySaveMainForm
         Left = 294
         Height = 19
         Hint = 'Писать ВСЕ теги в имя файла. Будет длинно. '#13#10'Теги разделяются знаком =.'#13#10'Символы \/:*?<>" заменяюися на @.'
-        Top = 263
-        Width = 195
+        Top = 290
+        Width = 193
         BorderSpacing.Top = 8
         Caption = 'Писать ВСЕ (!) теги в имя файла'
         TabOrder = 17
@@ -711,7 +710,7 @@ object JoySaveMainForm: TJoySaveMainForm
         Left = 294
         Height = 23
         Hint = 'Сколько папок "до" и "после" будет использовано для поиска старой картинки'
-        Top = 290
+        Top = 317
         Width = 66
         BorderSpacing.Top = 8
         MaxValue = 500
@@ -719,10 +718,25 @@ object JoySaveMainForm: TJoySaveMainForm
         Value = 2
         Visible = False
       end
+      object cbSaveWebmIfNoGif: TCheckBox
+        AnchorSideLeft.Control = cbDelAfterPack
+        AnchorSideTop.Control = cbSaveGifIfNoWebm
+        AnchorSideTop.Side = asrBottom
+        Left = 294
+        Height = 19
+        Hint = 'Это применяется если галочка WebM/MP4 отключена'
+        Top = 182
+        Width = 192
+        BorderSpacing.Top = 8
+        Caption = 'Качать WebM/MP4 если нет GIF'
+        Checked = True
+        State = cbChecked
+        TabOrder = 19
+      end
     end
     object tsDebug: TTabSheet
       Caption = 'Debug'
-      ClientHeight = 366
+      ClientHeight = 389
       ClientWidth = 761
       TabVisible = False
       object Memo_Doc: TMemo
@@ -878,11 +892,11 @@ object JoySaveMainForm: TJoySaveMainForm
     end
     object tsHelp: TTabSheet
       Caption = 'Помощь'
-      ClientHeight = 366
+      ClientHeight = 389
       ClientWidth = 761
       object MemoHelp: TMemo
         Left = 0
-        Height = 366
+        Height = 389
         Top = 0
         Width = 761
         Align = alClient
@@ -961,7 +975,7 @@ object JoySaveMainForm: TJoySaveMainForm
     Left = 0
     Height = 23
     Hint = 'Когда качает ("Кач" в первом поле), то при правильном куки будет показан Кач [твой логин] (кроме скачки по тегу).'#13#10'Если будет достигнут лимит на API реактора, то в поле "Всего" будет "Lim". Будет небольшая пауза и продолжение.'
-    Top = 394
+    Top = 417
     Width = 769
     Panels = <    
       item

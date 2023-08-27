@@ -71,6 +71,7 @@ type
         btnStart: TButton;
         btnStop: TButton;
         btnIncRow: TButton;
+        cbSaveWebmIfNoGif: TCheckBox;
         cbPackToCBZ: TCheckBox;
         cbDelAfterPack: TCheckBox;
         cbSaveFromComments: TCheckBox;
@@ -191,6 +192,7 @@ var
     Global_URL: string;
     Global_Append: string;
     NoTags: TStringDynArray;
+    ExeDir: string;
 
 implementation
 
@@ -441,15 +443,26 @@ var
                 if jItem = nil then Continue;
                 hasVideo := jItem.Value;
                 if Length(Imgtype) < 3 then Continue;
-                if (Imgtype = 'GIF') then
+                if (Imgtype = 'GIF') or (Imgtype = 'WEBM') or (Imgtype = 'MP4') then
                 begin
-                    if cbAniGif.Checked or (cbSaveGifIfNoWebm.Checked and (not hasVideo) and
-                        (cbAniMp4.Checked or cbAniWebm.Checked)) then
-                        Memo_Imgs.Append(PostFNum + 'G' + ImgID + '@' + tags);
-                    if hasVideo and cbAniWebm.Checked then
+                    if (Imgtype = 'GIF') then
+                    begin
+                        if cbAniGif.Checked or (cbSaveGifIfNoWebm.Checked and (not hasVideo) and
+                            (cbAniMp4.Checked or cbAniWebm.Checked)) then
+                            Memo_Imgs.Append(PostFNum + 'G' + ImgID + '@' + tags);
+                        if hasVideo and cbAniWebm.Checked then
+                            Memo_Imgs.Append(PostFNum + 'W' + ImgID + '@' + tags);
+                        if hasVideo and cbAniMp4.Checked then
+                            Memo_Imgs.Append(PostFNum + 'M' + ImgID + '@' + tags);
+                    end;
+                    if (Imgtype = 'WEBM') and (cbAniWebm.Checked or cbSaveWebmIfNoGif.Checked) then
+                    begin
                         Memo_Imgs.Append(PostFNum + 'W' + ImgID + '@' + tags);
-                    if hasVideo and cbAniMp4.Checked then
+                    end;
+                    if (Imgtype = 'MP4') and (cbAniMp4.Checked or cbSaveWebmIfNoGif.Checked) then
+                    begin
                         Memo_Imgs.Append(PostFNum + 'M' + ImgID + '@' + tags);
+                    end;
                 end
                 else if cbSaveJpgPng.Checked then
                     Memo_Imgs.Append(PostFNum + LeftStr(Imgtype, 1) + ImgID + '@' + tags);
@@ -619,7 +632,7 @@ begin
     SpinRow.Enabled := False;
     IniPropStorage1.Save;
     Application.Title := IntToStr(StageNow) + ':' + IntToStr(SpinPage.Value) + '/' + IntToStr(SpinEnd.Value);
-    if not ForceDirectories('Pic/') then
+    if not ForceDirectories(ExeDir + 'Pic/') then
         EventLog1.Log('Не могу создать папку: Pic');
     Timer1.Enabled := True;
 end;
@@ -648,6 +661,17 @@ var
     rsSources: TResourceStream;
     uz: TUnZipper;
 begin
+    ExeDir := ExtractFilepath( Application.ExeName);
+    //ShowMessage(GetUserDir());
+    {$IFDEF DARWIN}
+        IniPropStorage1.IniFileName := ExeDir + '../../../' + ExtractFileNameOnly(Application.ExeName) + '.ini';
+        EventLog1.FileName := ExeDir + '../../../' + ExtractFileNameOnly(Application.ExeName) + '.log';
+        if not ForceDirectories(ExeDir + '../../../' + 'Pic/') then
+            EventLog1.Log('Не могу создать папку: Pic');
+    {$ELSE}
+        if not ForceDirectories(ExeDir + 'Pic/') then
+            EventLog1.Log('Не могу создать папку: Pic');
+    {$ENDIF}
     {$IFDEF WINDOWS}
     if not (FileExistsUTF8('libeay32.dll') and FileExistsUTF8('ssleay32.dll')) then
     begin
@@ -671,7 +695,7 @@ begin
         begin
             rsSources := TResourceStream.Create(HINSTANCE, 'SOURCES', RT_RCDATA);
             try
-                rsSources.SaveToFile('JoySave_sources.zip');
+                rsSources.SaveToFile({$IFDEF DARWIN} ExeDir + '../../../' + {$ENDIF} 'JoySave_sources.zip');
             finally
                 FreeAndNil(rsSources);
             end;
@@ -841,7 +865,8 @@ begin
 
             SubDir := ReplaceStr(Trim(SG.Cells[4, StageNow + 1]), '\', '/');
             if SubDir = '' then SubDir := Trim(SG.Cells[0, StageNow + 1]);
-            DirNow := 'Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value) *
+            DirNow := {$IFDEF DARWIN} ExeDir + '../../../' + {$ENDIF} 'Pic/' + SubDir + '/' +
+                IntToStr((SpinPage.Value div SpinPageCount.Value) *
                 SpinPageCount.Value) + '/';
             if not ForceDirectories(DirNow) then
                 EventLog1.Log('Не могу создать папку: ' + DirNow);
@@ -1060,11 +1085,13 @@ begin
             begin
                 if OldFiles.Count > 0 then Break;
                 OldFiles.Free;
-                OldFiles := FindAllFiles('Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value - i) *
+                OldFiles := FindAllFiles({$IFDEF DARWIN} ExeDir + '../../../' + {$ENDIF} 'Pic/' + SubDir + '/'
+                    + IntToStr((SpinPage.Value div SpinPageCount.Value - i) *
                     SpinPageCount.Value) + '/', '*-' + ImgId + ext, False);
                 if OldFiles.Count > 0 then Break;
                 OldFiles.Free;
-                OldFiles := FindAllFiles('Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value + i) *
+                OldFiles := FindAllFiles({$IFDEF DARWIN} ExeDir + '../../../' + {$ENDIF} 'Pic/' + SubDir + '/'
+                    + IntToStr((SpinPage.Value div SpinPageCount.Value + i) *
                     SpinPageCount.Value) + '/', '*-' + ImgId + ext, False);
             end;
 
@@ -1117,11 +1144,13 @@ begin
             begin
                 if OldFiles.Count > 0 then Break;
                 OldFiles.Free;
-                OldFiles := FindAllFiles('Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value - i) *
+                OldFiles := FindAllFiles({$IFDEF DARWIN} ExeDir + '../../../' + {$ENDIF} 'Pic/' + SubDir + '/'
+                    + IntToStr((SpinPage.Value div SpinPageCount.Value - i) *
                     SpinPageCount.Value) + '/', '*_' + ImgId + '__*' + ext, False);
                 if OldFiles.Count > 0 then Break;
                 OldFiles.Free;
-                OldFiles := FindAllFiles('Pic/' + SubDir + '/' + IntToStr((SpinPage.Value div SpinPageCount.Value + i) *
+                OldFiles := FindAllFiles({$IFDEF DARWIN} ExeDir + '../../../' + {$ENDIF} 'Pic/' + SubDir + '/'
+                    + IntToStr((SpinPage.Value div SpinPageCount.Value + i) *
                     SpinPageCount.Value) + '/', '*_' + ImgId + '__*' + ext, False);
             end;
 
