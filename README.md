@@ -4,8 +4,10 @@
 
 ![JoySave_scr_main.png](JoySave_scr_main.png)
 
-- Системные требования ["версии для Windows"](https://github.com/corax4/JoySave/releases/download/v31.0.0/JoySave_v31.zip): Windows 2000 или новее.
+- Системные требования ["версии для Windows"](https://github.com/corax4/JoySave/releases/download/v32.0.0/JoySave_Windows_v32.zip): Windows 2000 или новее.
 
-- Системные требования ["версии для Linux x64"](https://github.com/corax4/JoySave/releases/download/v31.0.0/JoySave_v31.tar.gz): GTK-2.
+- Системные требования ["версии для Linux x64"](https://github.com/corax4/JoySave/releases/download/v32.0.0/JoySave_Linux_v32.tar.gz): GTK-2.
+
+- Системные требования ["версии для MacOS"](https://github.com/corax4/JoySave/releases/download/v32.0.0/JoySave_MacOS_v32.tar.bz2): MacOS 10.12.
 
 Установка не требуется - распакуйте и запускайте. Исходники содержатся в исполняемом файле (запустите прогу с ключем sources).
