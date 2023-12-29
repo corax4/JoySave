@@ -1,30 +1,30 @@
 object JoySaveMainForm: TJoySaveMainForm
   Left = 1215
-  Height = 440
+  Height = 660
   Top = 208
-  Width = 769
-  Caption = 'JoySave 0.32'
-  ClientHeight = 440
-  ClientWidth = 769
+  Width = 1154
+  Caption = 'JoySave 0.33'
+  ClientHeight = 660
+  ClientWidth = 1154
+  DesignTimePPI = 144
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poScreenCenter
   SessionProperties = 'cbAllTagsToName.Checked;cbAltFileName.Checked;cbAniGif.Checked;cbAniMp4.Checked;cbAniWebm.Checked;cbDelAfterPack.Checked;cbPackToCBZ.Checked;cbRenameToAltName.Checked;cbSaveFromComments.Checked;cbSaveGifIfNoWebm.Checked;cbSaveJpgPng.Checked;cbSaveTagsInfo.Checked;Edit_Cookie.Text;Edit_proxyHost.Text;Edit_ProxyPass.Text;Edit_ProxyPort.Text;Edit_proxyUser.Text;rgProxy.ItemIndex;SpinBegin.Value;SpinEnd.Value;SpinPage.Value;SpinPageCount.Value;SpinRow.Value;SpinSearchFolderRange.Value;SpinTimer.Value;tsDebug.TabVisible;cbSaveWebmIfNoGif.Checked'
   ShowHint = True
-  LCLVersion = '3.0.0.1'
   object PageControlMain: TPageControl
     Left = 0
-    Height = 417
+    Height = 624
     Top = 0
-    Width = 769
+    Width = 1154
     ActivePage = tsMain
     Align = alClient
     TabIndex = 0
     TabOrder = 0
     object tsMain: TTabSheet
       Caption = 'Главная'
-      ClientHeight = 389
-      ClientWidth = 761
+      ClientHeight = 586
+      ClientWidth = 1146
       object Edit_FileName: TEdit
         AnchorSideLeft.Control = Label20
         AnchorSideLeft.Side = asrBottom
@@ -32,15 +32,15 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideTop.Side = asrCenter
         AnchorSideRight.Control = tsMain
         AnchorSideRight.Side = asrBottom
-        Left = 234
-        Height = 15
+        Left = 348
+        Height = 25
         Hint = 'Это только смотреть'
-        Top = 12
-        Width = 520
+        Top = 17
+        Width = 788
         Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Left = 20
-        BorderSpacing.Top = 4
-        BorderSpacing.Right = 7
+        BorderSpacing.Left = 30
+        BorderSpacing.Top = 6
+        BorderSpacing.Right = 10
         BorderStyle = bsNone
         Enabled = False
         ParentFont = False
@@ -52,12 +52,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = lblBegin
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
-        Left = 174
-        Height = 23
+        Left = 259
+        Height = 33
         Hint = 'Начальная страница. Берется из таблицы'
-        Top = 45
-        Width = 80
-        BorderSpacing.Left = 12
+        Top = 68
+        Width = 120
+        BorderSpacing.Left = 18
         MaxValue = 99999
         ParentFont = False
         TabOrder = 1
@@ -67,12 +67,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = lblPage
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
-        Left = 474
-        Height = 23
+        Left = 706
+        Height = 33
         Hint = 'Страница, которая сейчас обрабатыватся'
-        Top = 45
-        Width = 81
-        BorderSpacing.Left = 12
+        Top = 68
+        Width = 122
+        BorderSpacing.Left = 18
         MaxValue = 99999
         ParentFont = False
         TabOrder = 2
@@ -82,50 +82,50 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
         AnchorSideTop.Side = asrCenter
-        Left = 422
-        Height = 15
-        Top = 49
-        Width = 40
-        BorderSpacing.Left = 20
+        Left = 631
+        Height = 25
+        Top = 72
+        Width = 57
+        BorderSpacing.Left = 30
         Caption = 'Сейчас'
         ParentColor = False
         ParentFont = False
       end
       object btnStart: TButton
-        Left = 5
-        Height = 28
+        Left = 8
+        Height = 42
         Hint = 'Сначала заполни таблицу!'
-        Top = 5
-        Width = 75
+        Top = 8
+        Width = 112
         Caption = 'Старт'
-        OnClick = btnStartClick
         ParentFont = False
         TabOrder = 3
+        OnClick = btnStartClick
       end
       object btnStop: TButton
         AnchorSideLeft.Control = btnStart
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = btnStart
-        Left = 90
-        Height = 28
-        Top = 5
-        Width = 75
-        BorderSpacing.Left = 10
+        Left = 135
+        Height = 42
+        Top = 8
+        Width = 112
+        BorderSpacing.Left = 15
         Caption = 'Стоп'
-        OnClick = btnStopClick
         ParentFont = False
         TabOrder = 4
+        OnClick = btnStopClick
       end
       object lblBegin: TLabel
         AnchorSideLeft.Control = SpinRow
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
         AnchorSideTop.Side = asrCenter
-        Left = 120
-        Height = 15
-        Top = 49
-        Width = 42
-        BorderSpacing.Left = 20
+        Left = 180
+        Height = 25
+        Top = 72
+        Width = 61
+        BorderSpacing.Left = 30
         Caption = 'Начало'
         ParentColor = False
         ParentFont = False
@@ -134,12 +134,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = lblEnd
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
-        Left = 320
-        Height = 23
+        Left = 478
+        Height = 33
         Hint = 'Последняя страница. Берется из таблицы'
-        Top = 45
-        Width = 82
-        BorderSpacing.Left = 12
+        Top = 68
+        Width = 123
+        BorderSpacing.Left = 18
         MaxValue = 99999
         ParentFont = False
         TabOrder = 5
@@ -149,11 +149,11 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinRow
         AnchorSideTop.Side = asrCenter
-        Left = 274
-        Height = 15
-        Top = 49
-        Width = 34
-        BorderSpacing.Left = 20
+        Left = 409
+        Height = 25
+        Top = 72
+        Width = 51
+        BorderSpacing.Left = 30
         Caption = 'Конец'
         ParentColor = False
         ParentFont = False
@@ -167,40 +167,40 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideBottom.Control = tsMain
         AnchorSideBottom.Side = asrBottom
         Left = 0
-        Height = 317
-        Top = 72
-        Width = 761
+        Height = 479
+        Top = 107
+        Width = 1146
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoFillColumns = True
-        BorderSpacing.Top = 4
+        BorderSpacing.Top = 6
         CellHintPriority = chpAll
         ColCount = 6
         Columns = <        
           item
             Title.Caption = 'Адрес'
-            Width = 296
+            Width = 418
           end        
           item
             SizePriority = 0
             Title.Caption = 'Начало'
-            Width = 80
+            Width = 120
           end        
           item
             SizePriority = 0
             Title.Caption = 'Конец'
-            Width = 80
+            Width = 120
           end        
           item
             SizePriority = 0
             Title.Caption = 'Папка'
-            Width = 133
+            Width = 200
           end        
           item
             SizePriority = 0
             Title.Caption = 'Искл. теги'
-            Width = 140
+            Width = 210
           end>
-        DefaultColWidth = 32
+        DefaultColWidth = 48
         MouseWheelOption = mwGrid
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing, goSmoothScroll, goCellHints]
         ParentFont = False
@@ -208,12 +208,12 @@ object JoySaveMainForm: TJoySaveMainForm
         TabOrder = 6
         OnGetCellHint = SGGetCellHint
         ColWidths = (
-          32
-          296
-          80
-          80
-          133
-          140
+          48
+          418
+          120
+          120
+          200
+          210
         )
         Cells = (
           15
@@ -269,11 +269,11 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Edit_FileName
         AnchorSideTop.Side = asrCenter
-        Left = 185
-        Height = 15
-        Top = 12
-        Width = 29
-        BorderSpacing.Left = 20
+        Left = 277
+        Height = 25
+        Top = 17
+        Width = 41
+        BorderSpacing.Left = 30
         Caption = 'Файл'
         Enabled = False
         ParentColor = False
@@ -284,13 +284,13 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = btnStop
         AnchorSideTop.Side = asrBottom
-        Left = 36
-        Height = 23
+        Left = 54
+        Height = 33
         Hint = 'Номер строки из таблицы с которой сейчас работаем'
-        Top = 45
-        Width = 64
-        BorderSpacing.Left = 12
-        BorderSpacing.Top = 12
+        Top = 68
+        Width = 96
+        BorderSpacing.Left = 18
+        BorderSpacing.Top = 18
         MaxValue = 99
         MinValue = -1
         OnChange = SpinRowChange
@@ -301,10 +301,10 @@ object JoySaveMainForm: TJoySaveMainForm
       object lblRow: TLabel
         AnchorSideTop.Control = SpinRow
         AnchorSideTop.Side = asrCenter
-        Left = 11
-        Height = 15
-        Top = 49
-        Width = 13
+        Left = 16
+        Height = 25
+        Top = 72
+        Width = 20
         Caption = '№'
         ParentColor = False
         ParentFont = False
@@ -312,17 +312,17 @@ object JoySaveMainForm: TJoySaveMainForm
     end
     object tsSettings: TTabSheet
       Caption = 'Настройки'
-      ClientHeight = 389
-      ClientWidth = 761
+      ClientHeight = 586
+      ClientWidth = 1146
       object Edit_proxyHost: TEdit
         AnchorSideTop.Control = lblPHost
         AnchorSideTop.Side = asrBottom
-        Left = 7
-        Height = 23
+        Left = 10
+        Height = 33
         Hint = 'Можно как IP так и именем'
-        Top = 95
-        Width = 127
-        BorderSpacing.Top = 6
+        Top = 142
+        Width = 190
+        BorderSpacing.Top = 9
         ParentFont = False
         TabOrder = 0
       end
@@ -330,23 +330,23 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = Edit_proxyHost
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Edit_proxyHost
-        Left = 146
-        Height = 23
+        Left = 218
+        Height = 33
         Hint = 'Цифрами'
-        Top = 95
-        Width = 128
-        BorderSpacing.Left = 12
+        Top = 142
+        Width = 192
+        BorderSpacing.Left = 18
         ParentFont = False
         TabOrder = 1
       end
       object lblPHost: TLabel
         AnchorSideTop.Control = SpinTimer
         AnchorSideTop.Side = asrBottom
-        Left = 7
-        Height = 15
-        Top = 74
-        Width = 76
-        BorderSpacing.Top = 8
+        Left = 10
+        Height = 25
+        Top = 108
+        Width = 114
+        BorderSpacing.Top = 12
         Caption = 'Прокси адрес'
         ParentColor = False
         ParentFont = False
@@ -355,11 +355,11 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = Edit_proxyHost
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = lblPHost
-        Left = 147
-        Height = 15
-        Top = 74
-        Width = 71
-        BorderSpacing.Left = 13
+        Left = 220
+        Height = 25
+        Top = 108
+        Width = 106
+        BorderSpacing.Left = 20
         Caption = 'Прокси порт'
         ParentColor = False
         ParentFont = False
@@ -367,10 +367,10 @@ object JoySaveMainForm: TJoySaveMainForm
       object lblTimer: TLabel
         AnchorSideTop.Control = SpinTimer
         AnchorSideTop.Side = asrCenter
-        Left = 7
-        Height = 15
-        Top = 47
-        Width = 62
+        Left = 10
+        Height = 25
+        Top = 67
+        Width = 91
         Caption = 'Таймер, мс'
         ParentColor = False
         ParentFont = False
@@ -380,13 +380,13 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Edit_Cookie
         AnchorSideTop.Side = asrBottom
-        Left = 81
-        Height = 23
+        Left = 119
+        Height = 33
         Hint = 'Минимальная задержка между запросами на сайт. '#13#10'Не ставь мало, а то заблокируют!'
-        Top = 43
-        Width = 75
-        BorderSpacing.Left = 12
-        BorderSpacing.Top = 12
+        Top = 63
+        Width = 112
+        BorderSpacing.Left = 18
+        BorderSpacing.Top = 18
         MaxValue = 5000
         MinValue = 10
         OnChange = SpinTimerChange
@@ -397,23 +397,23 @@ object JoySaveMainForm: TJoySaveMainForm
       object lblCookie: TLabel
         AnchorSideTop.Control = Edit_Cookie
         AnchorSideTop.Side = asrCenter
-        Left = 7
-        Height = 15
-        Top = 12
-        Width = 128
-        Caption = 'Куки:  joyreactor_sess3='
+        Left = 10
+        Height = 25
+        Top = 16
+        Width = 42
+        Caption = 'Куки:'
         ParentColor = False
         ParentFont = False
       end
       object Edit_proxyUser: TEdit
         AnchorSideTop.Control = lblPUser
         AnchorSideTop.Side = asrBottom
-        Left = 7
-        Height = 23
+        Left = 10
+        Height = 33
         Hint = 'ВНИМАНИЕ!!! Хранится в открытом виде!'
-        Top = 145
-        Width = 127
-        BorderSpacing.Top = 6
+        Top = 218
+        Width = 190
+        BorderSpacing.Top = 9
         ParentFont = False
         TabOrder = 3
       end
@@ -421,12 +421,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = Edit_proxyHost
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Edit_proxyUser
-        Left = 146
-        Height = 23
+        Left = 218
+        Height = 33
         Hint = 'ВНИМАНИЕ!!! Хранится в открытом виде!'
-        Top = 145
-        Width = 128
-        BorderSpacing.Left = 12
+        Top = 218
+        Width = 192
+        BorderSpacing.Left = 18
         EchoMode = emPassword
         ParentFont = False
         PasswordChar = '*'
@@ -435,11 +435,11 @@ object JoySaveMainForm: TJoySaveMainForm
       object lblPUser: TLabel
         AnchorSideTop.Control = Edit_proxyHost
         AnchorSideTop.Side = asrBottom
-        Left = 7
-        Height = 15
-        Top = 124
-        Width = 78
-        BorderSpacing.Top = 6
+        Left = 10
+        Height = 25
+        Top = 184
+        Width = 114
+        BorderSpacing.Top = 9
         Caption = 'Прокси логин'
         ParentColor = False
         ParentFont = False
@@ -448,11 +448,11 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = Edit_proxyHost
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = lblPUser
-        Left = 147
-        Height = 15
-        Top = 124
-        Width = 85
-        BorderSpacing.Left = 13
+        Left = 220
+        Height = 25
+        Top = 184
+        Width = 126
+        BorderSpacing.Left = 20
         Caption = 'Прокси пароль'
         ParentColor = False
         ParentFont = False
@@ -461,13 +461,13 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = Edit_proxyUser
         AnchorSideTop.Control = Edit_proxyUser
         AnchorSideTop.Side = asrBottom
-        Left = 7
-        Height = 136
+        Left = 10
+        Height = 204
         Hint = 'В Linux прокси не работает. Пользуйте tsocks если нужно.'
-        Top = 176
-        Width = 97
+        Top = 263
+        Width = 146
         AutoFill = True
-        BorderSpacing.Top = 8
+        BorderSpacing.Top = 12
         Caption = 'Прокси'
         ChildSizing.LeftRightSpacing = 6
         ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
@@ -476,8 +476,8 @@ object JoySaveMainForm: TJoySaveMainForm
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 116
-        ClientWidth = 93
+        ClientHeight = 174
+        ClientWidth = 142
         ItemIndex = 0
         Items.Strings = (
           'Нет'
@@ -492,13 +492,13 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinPageCount
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = 'Скачанная полностью подпапка запакуется в CBZ (по сути, в ZIP)'
-        Top = 74
-        Width = 103
-        BorderSpacing.Left = 20
-        BorderSpacing.Top = 8
+        Top = 108
+        Width = 153
+        BorderSpacing.Left = 30
+        BorderSpacing.Top = 12
         Caption = 'Паковать в CBZ'
         TabOrder = 6
       end
@@ -506,12 +506,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = cbPackToCBZ
         AnchorSideTop.Control = cbPackToCBZ
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = 'Когда папка упакована в CBZ - удалить её'
-        Top = 101
-        Width = 186
-        BorderSpacing.Top = 8
+        Top = 149
+        Width = 274
+        BorderSpacing.Top = 12
         Caption = 'Удалять папку после упаковки'
         TabOrder = 7
       end
@@ -519,12 +519,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = lblPages
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinTimer
-        Left = 279
-        Height = 23
+        Left = 415
+        Height = 33
         Hint = 'Сколько страниц с Джоя сохранится в одной подпапке. '#13#10'Не хочешь разделять - поставь МНОГО (2 млрд, например)'
-        Top = 43
-        Width = 89
-        BorderSpacing.Left = 12
+        Top = 63
+        Width = 134
+        BorderSpacing.Left = 18
         MaxValue = 2147483647
         MinValue = 1
         OnChange = SpinTimerChange
@@ -537,11 +537,11 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinPageCount
         AnchorSideTop.Side = asrCenter
-        Left = 176
-        Height = 15
-        Top = 47
-        Width = 91
-        BorderSpacing.Left = 20
+        Left = 261
+        Height = 25
+        Top = 67
+        Width = 136
+        BorderSpacing.Left = 30
         Caption = 'Страниц в папке'
         ParentColor = False
       end
@@ -550,26 +550,26 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideRight.Control = tsSettings
         AnchorSideRight.Side = asrBottom
-        Left = 143
-        Height = 23
-        Hint = 'Копируем из расширения в браузере (например, расширение Cookie-Editor)'
-        Top = 8
-        Width = 608
+        Left = 64
+        Height = 33
+        Hint = 'Копируем из расширения в браузере (например, расширение Cookie-Editor). '#13#10'Достаточно joyreactor_sess3=...'
+        Top = 12
+        Width = 1067
         Anchors = [akTop, akLeft, akRight]
-        BorderSpacing.Left = 8
-        BorderSpacing.Right = 10
+        BorderSpacing.Left = 12
+        BorderSpacing.Right = 15
         TabOrder = 9
       end
       object cbSaveFromComments: TCheckBox
         AnchorSideLeft.Control = cbPackToCBZ
         AnchorSideTop.Control = cbDelAfterPack
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = 'Много мусора, но могут быть ценнейшие шедевры!'
-        Top = 128
-        Width = 208
-        BorderSpacing.Top = 8
+        Top = 190
+        Width = 308
+        BorderSpacing.Top = 12
         Caption = 'Качать картинки из комментариев'
         TabOrder = 10
       end
@@ -577,41 +577,41 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = rgProxy
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = rgProxy
-        Left = 120
-        Height = 136
-        Top = 176
-        Width = 97
-        BorderSpacing.Left = 16
+        Left = 180
+        Height = 204
+        Top = 263
+        Width = 146
+        BorderSpacing.Left = 24
         Caption = 'Анимация'
-        ClientHeight = 116
-        ClientWidth = 93
+        ClientHeight = 174
+        ClientWidth = 142
         TabOrder = 11
         object cbAniGif: TCheckBox
-          Left = 8
-          Height = 19
+          Left = 12
+          Height = 29
           Hint = 'Формат самый тяжелый, но качественный'
-          Top = 8
-          Width = 35
+          Top = 12
+          Width = 51
           Caption = 'GIF'
           Checked = True
           State = cbChecked
           TabOrder = 0
         end
         object cbAniWebm: TCheckBox
-          Left = 8
-          Height = 19
+          Left = 12
+          Height = 29
           Hint = 'Сильно меньше весит чем GIF, но качество сильно хуже'
-          Top = 40
-          Width = 53
+          Top = 60
+          Width = 78
           Caption = 'WebM'
           TabOrder = 1
         end
         object cbAniMp4: TCheckBox
-          Left = 8
-          Height = 19
+          Left = 12
+          Height = 29
           Hint = 'По качеству как WebM, но больше весит'
-          Top = 72
-          Width = 42
+          Top = 108
+          Width = 61
           Caption = 'MP4'
           TabOrder = 2
         end
@@ -620,12 +620,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = cbDelAfterPack
         AnchorSideTop.Control = cbSaveFromComments
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = 'Это применяется если галочка GIF отключена'
-        Top = 155
-        Width = 192
-        BorderSpacing.Top = 8
+        Top = 231
+        Width = 283
+        BorderSpacing.Top = 12
         Caption = 'Качать GIF если нет Webm/MP4'
         Checked = True
         State = cbChecked
@@ -636,12 +636,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = SpinPageCount
         AnchorSideTop.Side = asrCenter
-        Left = 388
-        Height = 19
+        Left = 579
+        Height = 29
         Hint = 'Отключи если хочешь качать только анимацию'
-        Top = 45
-        Width = 120
-        BorderSpacing.Left = 20
+        Top = 65
+        Width = 176
+        BorderSpacing.Left = 30
         Caption = 'Качать JPEG и PNG'
         Checked = True
         State = cbChecked
@@ -651,12 +651,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = cbDelAfterPack
         AnchorSideTop.Control = cbSaveWebmIfNoGif
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = '<номер поста>_<1 если картинка из комментов, иначе 0>_<ID>__имя файла как на сервере без ID'
-        Top = 209
-        Width = 117
-        BorderSpacing.Top = 8
+        Top = 313
+        Width = 169
+        BorderSpacing.Top = 12
         Caption = 'Альт. имя файлов'
         Checked = True
         State = cbChecked
@@ -666,12 +666,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = cbDelAfterPack
         AnchorSideTop.Control = cbAltFileName
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = 'Если включен альт имена, но найдена картинка с именем как на сервере - переименовать в альт имя'
-        Top = 236
-        Width = 184
-        BorderSpacing.Top = 8
+        Top = 354
+        Width = 273
+        BorderSpacing.Top = 12
         Caption = 'Переименовывать в альт. имя'
         Checked = True
         State = cbChecked
@@ -681,12 +681,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = cbPackToCBZ
         AnchorSideTop.Control = cbRenameToAltName
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = 'Сохранять все теги в <номер поста>.txt для каждого поста'
-        Top = 263
-        Width = 162
-        BorderSpacing.Top = 8
+        Top = 395
+        Width = 238
+        BorderSpacing.Top = 12
         Caption = 'Сохранять в txt теги поста'
         TabOrder = 16
       end
@@ -694,12 +694,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = cbPackToCBZ
         AnchorSideTop.Control = cbSaveTagsInfo
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = 'Писать ВСЕ теги в имя файла. Будет длинно. '#13#10'Теги разделяются знаком =.'#13#10'Символы \/:*?<>" заменяюися на @.'
-        Top = 290
-        Width = 193
-        BorderSpacing.Top = 8
+        Top = 436
+        Width = 280
+        BorderSpacing.Top = 12
         Caption = 'Писать ВСЕ (!) теги в имя файла'
         TabOrder = 17
       end
@@ -707,12 +707,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = cbAllTagsToName
         AnchorSideTop.Control = cbAllTagsToName
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 23
+        Left = 440
+        Height = 33
         Hint = 'Сколько папок "до" и "после" будет использовано для поиска старой картинки'
-        Top = 317
-        Width = 66
-        BorderSpacing.Top = 8
+        Top = 477
+        Width = 99
+        BorderSpacing.Top = 12
         MaxValue = 500
         TabOrder = 18
         Value = 2
@@ -722,12 +722,12 @@ object JoySaveMainForm: TJoySaveMainForm
         AnchorSideLeft.Control = cbDelAfterPack
         AnchorSideTop.Control = cbSaveGifIfNoWebm
         AnchorSideTop.Side = asrBottom
-        Left = 294
-        Height = 19
+        Left = 440
+        Height = 29
         Hint = 'Это применяется если галочка WebM/MP4 отключена'
-        Top = 182
-        Width = 192
-        BorderSpacing.Top = 8
+        Top = 272
+        Width = 283
+        BorderSpacing.Top = 12
         Caption = 'Качать WebM/MP4 если нет GIF'
         Checked = True
         State = cbChecked
@@ -736,154 +736,154 @@ object JoySaveMainForm: TJoySaveMainForm
     end
     object tsDebug: TTabSheet
       Caption = 'Debug'
-      ClientHeight = 389
-      ClientWidth = 761
+      ClientHeight = 586
+      ClientWidth = 1146
       TabVisible = False
       object Memo_Doc: TMemo
-        Left = 21
-        Height = 57
-        Top = 159
-        Width = 216
+        Left = 32
+        Height = 86
+        Top = 238
+        Width = 324
         ParentFont = False
         ScrollBars = ssAutoBoth
         TabOrder = 0
         WordWrap = False
       end
       object btnGetHTML: TButton
-        Left = 283
-        Height = 25
-        Top = 96
-        Width = 75
+        Left = 424
+        Height = 38
+        Top = 144
+        Width = 112
         Caption = 'GetHtml'
-        OnClick = btnGetHTMLClick
         ParentFont = False
         TabOrder = 1
         Visible = False
+        OnClick = btnGetHTMLClick
       end
       object Memo_Header: TMemo
-        Left = 21
-        Height = 57
-        Top = 68
-        Width = 216
+        Left = 32
+        Height = 86
+        Top = 102
+        Width = 324
         ParentFont = False
         ScrollBars = ssAutoBoth
         TabOrder = 2
         WordWrap = False
       end
       object Label4: TLabel
-        Left = 21
-        Height = 15
-        Top = 43
-        Width = 38
+        Left = 32
+        Height = 25
+        Top = 64
+        Width = 57
         Caption = 'Header'
         ParentColor = False
         ParentFont = False
       end
       object Label5: TLabel
-        Left = 21
-        Height = 15
-        Top = 133
-        Width = 56
+        Left = 32
+        Height = 25
+        Top = 200
+        Width = 83
         Caption = 'Document'
         ParentColor = False
         ParentFont = False
       end
       object Memo_Imgs: TMemo
-        Left = 21
-        Height = 56
-        Top = 249
-        Width = 216
+        Left = 32
+        Height = 84
+        Top = 374
+        Width = 324
         ParentFont = False
         ScrollBars = ssAutoBoth
         TabOrder = 3
         WordWrap = False
       end
       object btnFindImgs: TButton
-        Left = 21
-        Height = 25
-        Top = 11
-        Width = 75
+        Left = 32
+        Height = 38
+        Top = 16
+        Width = 112
         Caption = 'FindImgs'
-        OnClick = btnFindImgsClick
         ParentFont = False
         TabOrder = 4
         Visible = False
+        OnClick = btnFindImgsClick
       end
       object btnFindPosts: TButton
-        Left = 181
-        Height = 25
-        Top = 11
-        Width = 75
+        Left = 272
+        Height = 38
+        Top = 16
+        Width = 112
         Caption = 'FindPosts'
-        OnClick = btnFindPostsClick
         ParentFont = False
         TabOrder = 5
         Visible = False
+        OnClick = btnFindPostsClick
       end
       object Memo_Posts: TMemo
-        Left = 261
-        Height = 58
-        Top = 158
-        Width = 216
+        Left = 392
+        Height = 87
+        Top = 237
+        Width = 324
         ParentFont = False
         ScrollBars = ssAutoBoth
         TabOrder = 6
         WordWrap = False
       end
       object Label7: TLabel
-        Left = 261
-        Height = 15
-        Top = 134
-        Width = 31
+        Left = 392
+        Height = 25
+        Top = 201
+        Width = 46
         Caption = 'Posts:'
         ParentColor = False
         ParentFont = False
       end
       object Label8: TLabel
-        Left = 21
-        Height = 15
-        Top = 232
-        Width = 41
+        Left = 32
+        Height = 25
+        Top = 348
+        Width = 62
         Caption = 'Images:'
         ParentColor = False
         ParentFont = False
       end
       object lblImagesOnPage: TLabel
-        Left = 83
-        Height = 15
-        Top = 232
-        Width = 6
+        Left = 124
+        Height = 25
+        Top = 348
+        Width = 10
         Caption = '0'
         ParentColor = False
         ParentFont = False
       end
       object btnSaveImg: TButton
-        Left = 283
-        Height = 25
-        Top = 53
-        Width = 75
+        Left = 424
+        Height = 38
+        Top = 80
+        Width = 112
         Caption = 'SaveImg'
-        OnClick = btnSaveImgClick
         ParentFont = False
         TabOrder = 7
         Visible = False
+        OnClick = btnSaveImgClick
       end
       object btnIncRow: TButton
-        Left = 283
-        Height = 25
-        Top = 11
-        Width = 75
+        Left = 424
+        Height = 38
+        Top = 16
+        Width = 112
         Caption = 'IncRow'
-        OnClick = btnIncRowClick
         ParentFont = False
         TabOrder = 8
         Visible = False
+        OnClick = btnIncRowClick
       end
       object Memo_SG_Save: TMemo
-        Left = 280
-        Height = 56
-        Top = 272
-        Width = 216
+        Left = 420
+        Height = 84
+        Top = 408
+        Width = 324
         ParentFont = False
         ScrollBars = ssAutoBoth
         TabOrder = 9
@@ -892,13 +892,13 @@ object JoySaveMainForm: TJoySaveMainForm
     end
     object tsHelp: TTabSheet
       Caption = 'Помощь'
-      ClientHeight = 389
-      ClientWidth = 761
+      ClientHeight = 586
+      ClientWidth = 1146
       object MemoHelp: TMemo
         Left = 0
-        Height = 389
+        Height = 586
         Top = 0
-        Width = 761
+        Width = 1146
         Align = alClient
         Lines.Strings = (
           '        === ИСПОЛЬЗОВАНИЕ ==='
@@ -973,29 +973,29 @@ object JoySaveMainForm: TJoySaveMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
+    Height = 36
     Hint = 'Когда качает ("Кач" в первом поле), то при правильном куки будет показан Кач [твой логин] (кроме скачки по тегу).'#13#10'Если будет достигнут лимит на API реактора, то в поле "Всего" будет "Lim". Будет небольшая пауза и продолжение.'
-    Top = 417
-    Width = 769
+    Top = 624
+    Width = 1154
     Panels = <    
       item
         Text = 'Стоп'
-        Width = 180
+        Width = 270
       end    
       item
         Text = 'Всего: 0'
-        Width = 180
+        Width = 270
       end    
       item
         Text = 'Файл: 0'
-        Width = 180
+        Width = 270
       end>
     SimplePanel = False
   end
   object Timer1: TTimer
     OnTimer = Timer1Timer
-    Left = 507
-    Top = 304
+    Left = 761
+    Top = 456
   end
   object IniPropStorage1: TIniPropStorage
     StoredValues = <>
@@ -1003,8 +1003,8 @@ object JoySaveMainForm: TJoySaveMainForm
     OnSavingProperties = IniPropStorage1SavingProperties
     OnRestoringProperties = IniPropStorage1RestoringProperties
     OnRestoreProperties = IniPropStorage1RestoreProperties
-    Left = 400
-    Top = 341
+    Left = 600
+    Top = 512
   end
   object EventLog1: TEventLog
     AppendContent = True
@@ -1016,8 +1016,8 @@ object JoySaveMainForm: TJoySaveMainForm
     CustomLogType = 0
     EventIDOffset = 0
     Paused = False
-    Left = 280
-    Top = 304
+    Left = 420
+    Top = 456
   end
   object TrayIcon1: TTrayIcon
     Icon.Data = {
@@ -1160,7 +1160,7 @@ object JoySaveMainForm: TJoySaveMainForm
     Hint = 'JoySave'
     Visible = True
     OnClick = TrayIcon1Click
-    Left = 141
-    Top = 351
+    Left = 212
+    Top = 527
   end
 end

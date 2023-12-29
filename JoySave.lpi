@@ -26,7 +26,7 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MinorVersionNr Value="32"/>
+      <MinorVersionNr Value="33"/>
       <Language Value="0419"/>
       <StringTable ProductName="JoySave"/>
     </VersionInfo>

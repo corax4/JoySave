@@ -237,7 +237,7 @@ begin
     if ProxyType = 3 then
         HTTP.Sock.SocksType := ST_Socks5;
     if length(Cookie) > 5 then
-        HTTP.Cookies.Text := 'joyreactor_sess3=' + Cookie
+        HTTP.Cookies.Text := Cookie
     else
         HTTP.Cookies.Text := '';
 end;

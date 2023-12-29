@@ -19,8 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="658"/>
-        <CursorPos X="72" Y="675"/>
+        <TopLine Value="154"/>
+        <CursorPos X="49" Y="170"/>
         <FoldState Value=" T3nR08="/>
         <UsageCount Value="201"/>
         <Bookmarks Count="3">
@@ -205,7 +205,7 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="1015" Column="22" TopLine="1005"/>
+        <Caret Line="452" TopLine="422"/>
       </Position1>
       <Position2>
         <Filename Value="joysave_main.pas"/>
@@ -217,55 +217,55 @@
       </Position3>
       <Position4>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="457" TopLine="422"/>
+        <Caret Line="450" TopLine="422"/>
       </Position4>
       <Position5>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="452" TopLine="422"/>
       </Position5>
       <Position6>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="452" TopLine="422"/>
+        <Caret Line="450" TopLine="422"/>
       </Position6>
       <Position7>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="452" TopLine="422"/>
       </Position7>
       <Position8>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="452" TopLine="422"/>
+        <Caret Line="450" TopLine="422"/>
       </Position8>
       <Position9>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="452" TopLine="422"/>
       </Position9>
       <Position10>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="452" TopLine="422"/>
+        <Caret Line="450" TopLine="422"/>
       </Position10>
       <Position11>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="452" TopLine="422"/>
       </Position11>
       <Position12>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="452" TopLine="422"/>
+        <Caret Line="450" TopLine="422"/>
       </Position12>
       <Position13>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="452" TopLine="422"/>
       </Position13>
       <Position14>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="452" TopLine="422"/>
+        <Caret Line="450" TopLine="422"/>
       </Position14>
       <Position15>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="452" TopLine="422"/>
       </Position15>
       <Position16>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="452" TopLine="422"/>
+        <Caret Line="457" TopLine="422"/>
       </Position16>
       <Position17>
         <Filename Value="joysave_main.pas"/>
@@ -285,43 +285,43 @@
       </Position20>
       <Position21>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="457" TopLine="422"/>
+        <Caret Line="450" TopLine="422"/>
       </Position21>
       <Position22>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="468" Column="23" TopLine="439"/>
       </Position22>
       <Position23>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="452" TopLine="422"/>
+        <Caret Line="139" Column="67" TopLine="120"/>
       </Position23>
       <Position24>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="448" Column="34" TopLine="424"/>
       </Position24>
       <Position25>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="452" TopLine="422"/>
+        <Caret Line="674" Column="71" TopLine="644"/>
       </Position25>
       <Position26>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="450" TopLine="422"/>
+        <Caret Line="892" Column="63" TopLine="861"/>
       </Position26>
       <Position27>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="468" Column="23" TopLine="439"/>
+        <Caret Line="28" Column="71"/>
       </Position27>
       <Position28>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="139" Column="67" TopLine="120"/>
+        <Caret Line="58" Column="12"/>
       </Position28>
       <Position29>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="448" Column="34" TopLine="424"/>
+        <Caret Line="87" Column="17" TopLine="19"/>
       </Position29>
       <Position30>
         <Filename Value="joysave_main.pas"/>
-        <Caret Line="674" Column="71" TopLine="644"/>
+        <Caret Line="105" Column="15" TopLine="37"/>
       </Position30>
     </JumpHistory>
     <RunParams>
