@@ -8,6 +8,6 @@
 
 - Системные требования ["версии для Linux x64"](https://github.com/corax4/JoySave/releases/download/v33.0.0/JoySave_Linux_v33.tar.gz): GTK-2.
 
-- Системные требования ["версии для MacOS"](https://github.com/corax4/JoySave/releases/download/v33.0.0/JoySave_MacOS_v33.tar.bz2): MacOS 10.12.
+- Системные требования ["версии для MacOS"](https://github.com/corax4/JoySave/releases/download/v32.0.0/JoySave_MacOS_v32.tar.bz2): MacOS 10.12.
 
 Установка не требуется - распакуйте и запускайте. Исходники содержатся в исполняемом файле (запустите прогу с ключем sources).
