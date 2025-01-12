@@ -1236,7 +1236,7 @@ procedure TJoySaveMainForm.GetLastPage;
 var
     s: TCaption;
     p, pEnd: SizeInt;
-    json: string;
+    json, pnum: string;
     last: integer;
 begin
     if IsTag then
@@ -1275,13 +1275,15 @@ begin
         Edit_FileName.Text := DecodeURL(sURL);
         btnGetHTMLClick(nil);
         s := Memo_Doc.Text;
-        p := PosEx('"pagination_expanded"><span class=''current''>', s);
+        p := PosEx(' class="pagination">', s);
         if p <> 0 then
         begin
-            p := p + Length('"pagination_expanded"><span class=''current''>');
+            p := p + Length(' class="pagination">');
+            p := PosEx('''''>', s, p) + 3;
             pEnd := PosEx('<', s, p);
             if pEnd <> 0 then
-                if StrToIntDef(MidStr(s, p, pEnd - p), -1) > 0 then
+                pnum := MidStr(s, p, pEnd - p);
+                if StrToIntDef(pnum, -1) > 0 then
                 begin
                     SG.Cells[3, StageNow + 1] := MidStr(s, p, pEnd - p);
                     SpinEnd.Value := StrToIntDef(SG.Cells[3, StageNow + 1], -1);
