@@ -31,7 +31,7 @@ interface
 uses
     Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls, base64, fpjson, types, LazUTF8,
     Spin, ExtCtrls, Grids, IniPropStorage, MaskEdit, ComCtrls, HTTPSend, synacode, dateutils, jsonparser,
-    strutils, LazFileUtils, blcksock, {$IFDEF WINDOWS} Windows,{$ENDIF} ssl_openssl, zipper, ZStream, eventlog;
+    strutils, LazFileUtils, blcksock, {$IFDEF WINDOWS} Windows,{$ENDIF} ssl_openssl, zipper, ZStream, eventlog, PropertyStorage;
 
 type
 
@@ -84,6 +84,8 @@ type
         cbRenameToAltName: TCheckBox;
         cbSaveTagsInfo: TCheckBox;
         cbAllTagsToName: TCheckBox;
+        Edit_Login: TEdit;
+        Edit_Pass: TEdit;
         Edit_Cookie: TEdit;
         Edit_ProxyPass: TEdit;
         Edit_proxyUser: TEdit;
@@ -93,6 +95,8 @@ type
         EventLog1: TEventLog;
         gbAnimation: TGroupBox;
         IniPropStorage1: TIniPropStorage;
+        lblLogin: TLabel;
+        lblPass: TLabel;
         lblPHost: TLabel;
         lblTimer: TLabel;
         lblPage: TLabel;
@@ -145,6 +149,8 @@ type
         procedure IniPropStorage1RestoreProperties(Sender: TObject);
         procedure IniPropStorage1RestoringProperties(Sender: TObject);
         procedure IniPropStorage1SavingProperties(Sender: TObject);
+        procedure IniPropStorage1StoredValues0Restore(Sender: TStoredValue; var Value: TStoredType);
+        procedure IniPropStorage1StoredValues0Save(Sender: TStoredValue; var Value: TStoredType);
         procedure SGGetCellHint(Sender: TObject; ACol, ARow: Integer; var HintText: String);
         procedure SpinRowChange(Sender: TObject);
         procedure SpinTimerChange(Sender: TObject);
@@ -193,6 +199,8 @@ var
     Global_Append: string;
     NoTags: TStringDynArray;
     ExeDir: string;
+    Login: string;
+    Password: string;
 
 implementation
 
@@ -551,6 +559,8 @@ begin
     if IsTag then
     begin
         jPostAr := TJSONArray(jData.FindPath('tag.postPager.posts'));
+        if TagStr = '#' then
+            jPostAr := TJSONArray(jData.FindPath('login.me.favoritePostPager.posts'));
         if jPostAr = nil then exit;
         for i := 0 to jPostAr.Count - 1 do
             ProcPost(jPostAr[i]);
@@ -615,6 +625,13 @@ begin
     btnStart.Enabled := False;
     ImgNow := 0;
     PostNow := 0;
+
+    Login := Edit_Login.Text;
+    Password := Edit_Pass.Text;
+    Login := ReplaceStr(Login, '\', '\\"');
+    Login := ReplaceStr(Login, '"', '\\"');
+    Password := ReplaceStr(Password, '\', '\\"');
+    Password := ReplaceStr(Password, '"', '\\"');
 
     StageNow := SpinRow.Value;
     if (StageNow < 0) or (StageNow > 99) then
@@ -759,6 +776,16 @@ var
 begin
     for i := 1 to SG.RowCount - 1 do
         IniPropStorage1.StoredValue['MainGrid_row_' + IntToStr(i - 1)] := SG.Rows[i].CommaText;
+end;
+
+procedure TJoySaveMainForm.IniPropStorage1StoredValues0Restore(Sender: TStoredValue; var Value: TStoredType);
+begin
+    Edit_Pass.Text := Value;
+end;
+
+procedure TJoySaveMainForm.IniPropStorage1StoredValues0Save(Sender: TStoredValue; var Value: TStoredType);
+begin
+    Value := Edit_Pass.Text;
 end;
 
 procedure TJoySaveMainForm.SGGetCellHint(Sender: TObject; ACol, ARow: Integer; var HintText: String);
@@ -1188,34 +1215,26 @@ var
     json: String;
     i: Integer;
     PostStr: String;
+    Comments: string;
 begin
-    json := '{"query":"{';
+    Comments := ' comments { attributes { ... on AttributePicture {id, image { type, width, height, hasVideo }} } } ';
+    if not cbSaveFromComments.Checked then  Comments := '';
+    PostStr := ' posts(page:' + SpinPage.Text + ') {... on Post {id, rating, createdAt, nsfw, unsafe, ' +
+        'user{username}, seoAttributes{title}, attributes{ ' +
+        '... on AttributePicture {id, image { type, width, height, hasVideo }} } ';
+
     if IsTag then
     begin
-        if cbSaveFromComments.Checked then
-            json := json + 'tag(name:\"' + TagStr + '\") { postPager(type:' + TagType +
-                ' ){ posts(page:' + SpinPage.Text + ') {... on Post {id, rating, createdAt, nsfw, unsafe, ' +
-                'user{username}, seoAttributes{title}, attributes{ ' +
-                '... on AttributePicture {id, image { type, width, height, hasVideo }} }  comments { attributes { ' +
-                '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } } } }'
+        if TagStr = '#' then
+            json :=  '{"query":"mutation m1 { login(name: \"' + Login + '\", password: \"' + Password +
+                '\") { me { favoritePostPager {' + PostStr + Comments + '} } } } } }","operationName":"m1" } '
         else
-            json := json + 'tag(name:\"' + TagStr + '\") { postPager(type:' + TagType +
-                ' ){ posts(page:' + SpinPage.Text + ') {... on Post {id, rating, createdAt, nsfw, unsafe, ' +
-                'user{username}, seoAttributes{title}, attributes{ ' +
-                '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } } }';
+            json := '{"query":"{ tag(name:\"' + TagStr + '\") { postPager(type:' + TagType + ' ){' +
+                PostStr + Comments + '} } } } }"}';
     end
-    else if cbSaveFromComments.Checked then
-        for i := 0 to Memo_Posts.Lines.Count - 1 do
-        begin
-            if i <> 0 then json := json + ', ';
-            json := json + 'node' + IntToStr(i + 10) + ':node(id : \"';
-            PostStr := EncodeBase64('Post:' + Memo_Posts.Lines.Strings[i]);
-            json := json + PostStr + '\") {... on Post { id, rating, createdAt, nsfw, unsafe, ' +
-                'user{username}, seoAttributes{title}, attributes{ ' +
-                '... on AttributePicture {id, image { type, width, height, hasVideo }} }  comments { attributes { ' +
-                '... on AttributePicture {id, image { type, width, height, hasVideo }} } } } }';
-        end
     else
+    begin
+        json := '{"query":"{';
         for i := 0 to Memo_Posts.Lines.Count - 1 do
         begin
             if i <> 0 then json := json + ', ';
@@ -1225,7 +1244,9 @@ begin
                 'user{username}, seoAttributes{title}, attributes{ ' +
                 '... on AttributePicture {id, image { type, width, height, hasVideo }} } } }';
         end;
-    json := json + '}"}';
+        json := json + '}"}';
+    end;
+
     HThread.PostJSON := json;
     GetInThread('api');
     Memo_Header.Lines.Text := HThread.Headers.Text;
@@ -1241,7 +1262,12 @@ var
 begin
     if IsTag then
     begin
-        json := '{"query":"{tag(name:\"' + TagStr + '\") { postPager(type:' + TagType + ') {count} } }"}';
+        if TagStr = '#' then
+            json := '{"query":"mutation m1 { login(name: \"' + Login + '\", password: \"' + Password +
+                '\") { me { favoritePostPager {count} } } }","operationName":"m1" } '
+        else
+            json := '{"query":"{tag(name:\"' + TagStr + '\") { postPager(type:' + TagType + ') {count} } }"}';
+
         HThread.PostJSON := json;
         GetInThread('api');
         Memo_Header.Lines.Text := HThread.Headers.Text;
@@ -1283,13 +1309,13 @@ begin
             pEnd := PosEx('<', s, p);
             if pEnd <> 0 then
                 pnum := MidStr(s, p, pEnd - p);
-                if StrToIntDef(pnum, -1) > 0 then
-                begin
-                    SG.Cells[3, StageNow + 1] := MidStr(s, p, pEnd - p);
-                    SpinEnd.Value := StrToIntDef(SG.Cells[3, StageNow + 1], -1);
-                    if SpinEnd.Value > 0 then
-                        IniPropStorage1.Save;
-                end;
+            if StrToIntDef(pnum, -1) > 0 then
+            begin
+                SG.Cells[3, StageNow + 1] := MidStr(s, p, pEnd - p);
+                SpinEnd.Value := StrToIntDef(SG.Cells[3, StageNow + 1], -1);
+                if SpinEnd.Value > 0 then
+                    IniPropStorage1.Save;
+            end;
         end;
     end;
 end;
